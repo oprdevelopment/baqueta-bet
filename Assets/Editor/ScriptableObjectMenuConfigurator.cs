@@ -6,12 +6,14 @@ using UnityEngine;
 
 public class ScriptableObjectMenuConfigurator
 {
+    public static List<string> names, lastNames = new();
     [MenuItem("Assets/Create/Create Random Team")]
     public static void CreateRandomTeam()
     {
         Team newTeam = ScriptableObject.CreateInstance<Team>();
-        newTeam.players = LoadRandomName(11);
+        newTeam.AddPlayers(LoadRandomName(11));
 
+        #if UNITY_EDITOR
         string folderPath = "Assets/Game/Teams";
         string assetName = "RandomTeam";
         string fullPath = $"{folderPath}/{assetName}.asset";
@@ -29,15 +31,22 @@ public class ScriptableObjectMenuConfigurator
 
         EditorUtility.FocusProjectWindow();
         Selection.activeObject = newTeam;
+        #endif
     }
 
     public static List<string> LoadRandomName(int amount)
     {
-        string namesFilePath = Path.Combine(Application.dataPath, "Game", "NameGenerator", "names.txt");
-        var names = File.ReadAllLines(namesFilePath).ToList();
+        if(names == null || names.Count == 0)
+        {
+            string namesFilePath = Path.Combine(Application.dataPath, "Game", "NameGenerator", "names.txt");
+            names = File.ReadAllLines(namesFilePath).ToList();
+        }
 
-        string lastNamesfilePath = Path.Combine(Application.dataPath, "Game", "NameGenerator", "lastnames.txt");
-        var lastNames = File.ReadAllLines(lastNamesfilePath).ToList();
+        if(lastNames == null || lastNames.Count == 0)
+        {   
+            string lastNamesfilePath = Path.Combine(Application.dataPath, "Game", "NameGenerator", "lastnames.txt");
+            lastNames = File.ReadAllLines(lastNamesfilePath).ToList();
+        }
 
         List<string> fullNames = new();
         for(int i = 0; i < amount; i++)
@@ -53,6 +62,8 @@ public class ScriptableObjectMenuConfigurator
                 fullNames.Add(fullName);
             }
         }
+
+        Debug.Log($"{names.Count} nomes restantes");
 
         return fullNames;
     }

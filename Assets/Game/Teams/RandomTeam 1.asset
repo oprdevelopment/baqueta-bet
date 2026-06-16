@@ -10,39 +10,39 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 362d6b21a987f4847a5fd536757c15c6, type: 3}
-  m_Name: RandomTeam
+  m_Name: RandomTeam 1
   m_EditorClassIdentifier: Assembly-CSharp::Team
   players:
-  - name: Cooper Bautista
+  - name: Julien Petersen
     team: {fileID: 11400000}
     card: 0
-  - name: Konnor Mccoy
+  - name: Rishi Howell
     team: {fileID: 11400000}
     card: 0
-  - name: Payton Porter
+  - name: Yahir Craig
     team: {fileID: 11400000}
     card: 0
-  - name: Tyrone Wright
+  - name: Kane Cordova
     team: {fileID: 11400000}
     card: 0
-  - name: Valentino Vance
+  - name: Landyn Chan
     team: {fileID: 11400000}
     card: 0
-  - name: Lawson Jacobson
+  - name: Shane Duke
     team: {fileID: 11400000}
     card: 0
-  - name: Kason Yang
+  - name: Eric Snyder
     team: {fileID: 11400000}
     card: 0
-  - name: Denzel Jackson
+  - name: Mike Harmon
     team: {fileID: 11400000}
     card: 0
-  - name: Jessie Anthony
+  - name: Dylan Barr
     team: {fileID: 11400000}
     card: 0
-  - name: Arjun Hicks
+  - name: Benjamin Hart
     team: {fileID: 11400000}
     card: 0
-  - name: Antonio Meyers
+  - name: Omari Mooney
     team: {fileID: 11400000}
     card: 0
