@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 9cd35ff3d74f95f42a2c63e41f6e2323
+guid: 29c3f7d7f011d424daca2e787d9975f4
 ModelImporter:
   serializedVersion: 24200
   internalIDToNameTable: []
@@ -7,8 +7,18 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: telephone
-    second: {fileID: 2100000, guid: 9b6765078df7f4341b44861f5ad1eff4, type: 2}
+      name: tv
+    second: {fileID: 2100000, guid: 2445423bf2f4a6b45aab588dc43b5088, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: tv_glass
+    second: {fileID: 2100000, guid: 7b16644783cced84eb4047177a359832, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: tv_screen
+    second: {fileID: 2100000, guid: 2d99d495b7b36744ab41b1b8e59845ff, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -76,7 +86,7 @@ ModelImporter:
     useFileScale: 1
     strictVertexDataChecks: 0
   tangentSpace:
-    normalSmoothAngle: 180
+    normalSmoothAngle: 60
     normalImportMode: 0
     tangentImportMode: 3
     normalCalculationMode: 4
