@@ -308,7 +308,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: adc4aa8e89c21ca468d02fb6561cc13f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CurrenyManager
-  Balance: 0
+  Balance: 100
 --- !u!4 &1048445316
 Transform:
   m_ObjectHideFlags: 0

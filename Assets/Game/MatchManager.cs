@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-public class GameSimulator : MonoBehaviour
+public class MatchManager : MonoBehaviour
 {
-    public event Action<MatchInfo> CreatedMatch;
+    public static event Action<MatchInfo> CreatedMatch;
     public List<MatchInfo> Matches{get; private set;}
-    public event Action Tick;
+    public static event Action Tick;
     float elapsedTime = 0;
 
     void Start()

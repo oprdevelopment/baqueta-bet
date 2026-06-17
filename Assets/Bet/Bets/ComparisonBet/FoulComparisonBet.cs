@@ -13,23 +13,24 @@ public class FoulComparisonBet : ComparisonBet
     Team comparedTeam;
     Player comparedPlayer;
     FoulComparisonType foulComparisonType;
-    public FoulComparisonBet(Team comparedTeam, float multiplier, BetManager betManager, float desiredCount, ComparisonType comparisonType, MatchInfo matchInfo) : base(multiplier, betManager, desiredCount, comparisonType, matchInfo)
+    public FoulComparisonBet(Team comparedTeam, float multiplier, BetManager betManager, float desiredCount, ComparisonType comparisonType, MatchInfo matchInfo, CurrencyManager currencyManager) : base(multiplier, betManager, desiredCount, comparisonType, matchInfo, currencyManager)
     {
         this.comparedTeam = comparedTeam;
         foulComparisonType = FoulComparisonType.TeamOnly;
     }
-    public FoulComparisonBet(Player comparedPlayer, float multiplier, BetManager betManager, float desiredCount, ComparisonType comparisonType, MatchInfo matchInfo) : base(multiplier, betManager, desiredCount, comparisonType, matchInfo)
+    public FoulComparisonBet(Player comparedPlayer, float multiplier, BetManager betManager, float desiredCount, ComparisonType comparisonType, MatchInfo matchInfo, CurrencyManager currencyManager) : base(multiplier, betManager, desiredCount, comparisonType, matchInfo, currencyManager)
     {
         this.comparedPlayer = comparedPlayer;
         foulComparisonType = FoulComparisonType.PlayerOnly;
     }
-    public FoulComparisonBet(float multiplier, BetManager betManager, float desiredCount, ComparisonType comparisonType, MatchInfo matchInfo) : base(multiplier, betManager, desiredCount, comparisonType, matchInfo)
+    public FoulComparisonBet(float multiplier, BetManager betManager, float desiredCount, ComparisonType comparisonType, MatchInfo matchInfo, CurrencyManager currencyManager) : base(multiplier, betManager, desiredCount, comparisonType, matchInfo, currencyManager)
     {
         foulComparisonType = FoulComparisonType.All;
     }
 
     void OnFoulCommited(Player player)
     {
+        Debug.Log("Check Foul");
         switch (foulComparisonType)
         {
             case FoulComparisonType.All:
@@ -44,17 +45,13 @@ public class FoulComparisonBet : ComparisonBet
         }
     }
 
-    void OnEndGame(MatchState _) => VerifyBet();
-
     protected override void OnCreateBet()
     {
         matchInfo.FoulCommited += OnFoulCommited;
-        matchInfo.MatchStateChange += OnEndGame;
     }
 
     protected override void OnEndBet()
     {
         matchInfo.FoulCommited -= OnFoulCommited;
-        matchInfo.MatchStateChange -= OnEndGame;
     }
 }

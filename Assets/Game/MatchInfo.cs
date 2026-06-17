@@ -16,7 +16,7 @@ public enum MatchState
 [Serializable]
 public class MatchInfo
 {
-    readonly GameSimulator gameSimulator;
+    readonly MatchManager matchManager;
     readonly List<Player> activePlayers;
     public event Action<Player> FoulCommited;
     public event Action<CardType, Player> CardGiven;
@@ -29,11 +29,11 @@ public class MatchInfo
     public List<Foul> Fouls {private set; get;}
     public MatchState MatchState {private set; get;}
     float tickCount;
-    public MatchInfo(Team home, Team away, GameSimulator gameSimulator)
+    public MatchInfo(Team home, Team away, MatchManager matchManager)
     {
         this.Home = home;
         this.Away = away;
-        this.gameSimulator = gameSimulator;
+        this.matchManager = matchManager;
         HomeScore = 0;
         AwayScore = 0;
         tickCount = 0;
@@ -41,7 +41,7 @@ public class MatchInfo
         MatchState = MatchState.PreMatch;
         activePlayers = GetAllActivePlayers();
 
-        gameSimulator.Tick += OnTick;
+        MatchManager.Tick += OnTick;
     }
 
     void OnTick()
@@ -53,8 +53,10 @@ public class MatchInfo
         }
         tickCount++;
 
-
-        Debug.Log(tickCount % 5);
+        if(tickCount % 5 == 0)
+        {
+            CommitFoul(Foul.RandomIntensity(), Player.GetRandomPlayer(activePlayers));
+        }
     }
 
     void ChangeState(MatchState state)
@@ -68,7 +70,7 @@ public class MatchInfo
         #if UNITY_EDITOR
         return state switch
         {
-            MatchState.PreMatch => 20,
+            MatchState.PreMatch => 10,
             MatchState.Interval => 10,
             _ => 60,
         };
@@ -147,6 +149,6 @@ public class MatchInfo
 
 
         FoulCommited?.Invoke(player);
-        Debug.Log($"{player.name} -> {intensity} : {card}");
+        Debug.Log($"Foul Commited by {player.name} -> {intensity} : {card}");
     }
 }

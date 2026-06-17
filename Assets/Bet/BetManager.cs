@@ -5,24 +5,26 @@ using UnityEngine;
 public class BetManager : MonoBehaviour
 {
     [SerializeField] CurrencyManager currencyManager;
-    [SerializeField] GameSimulator gameSimulator;
+    [SerializeField] MatchManager gameSimulator;
     List<ComparisonBet> betList;
-    public float timeElapsed;
     void Start()
     {
-        // betList = new();
-        // var newBet = new FoulComparisonBet(2, this, 4, ComparisonType.GreaterThan, gameSimulator.matches[0]);
-        // newBet.PlaceBet(20, currencyManager);
-        // betList.Add(newBet);
+        betList = new();
     }
 
-    void Update()
+    void OnCreatedMatch(MatchInfo matchInfo)
     {
-    //     if(timeElapsed > 5)
-    //     {
-    //         Debug.Log(betList[0].GetRemainingPercentageLeft());
-    //         timeElapsed = 0;
-    //     }
+        var newBet = new FoulComparisonBet(1.5f, this, 2.5f, ComparisonType.LessThan, matchInfo, currencyManager);
+        newBet.PlaceBet(5);
+        betList.Add(newBet);
     }
 
+    void OnEnable()
+    {
+        MatchManager.CreatedMatch += OnCreatedMatch;
+    }
+    void OnDisable()
+    {
+        MatchManager.CreatedMatch -= OnCreatedMatch;
+    }
 }
