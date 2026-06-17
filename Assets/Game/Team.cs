@@ -8,13 +8,22 @@ public class Team : ScriptableObject
 {
     public List<Player> players = new();
     public void AddPlayers(List<string> players) => players.ForEach((name) => this.players.Add(new Player(name, this)));
-    public static List<string> names, lastNames = new();
+    public static List<string> names, lastNames;
     public static Team GenerateRandomTeam()
     {
         Team newTeam = CreateInstance<Team>();
         newTeam.AddPlayers(LoadRandomName(11));
-
+        newTeam.name = LoadRandomCountry().name;
         return newTeam;
+    }
+
+    public static TeamInfo LoadRandomCountry()
+    {
+        int countryRandomIndex = UnityEngine.Random.Range(0, AssetManager.Instance.countries.Count);
+        var country = AssetManager.Instance.countries[countryRandomIndex];
+        AssetManager.Instance.countries.RemoveAt(countryRandomIndex);
+
+        return country;
     }
 
     public static List<string> LoadRandomName(int amount)

@@ -13,30 +13,21 @@ public abstract class ComparisonBet : Bet
     int currentCount = 0;
     float desiredCount;
     ComparisonType comparisonType;
-    protected ComparisonBet(float multiplier, BetManager betManager, float desiredCount, ComparisonType comparisonType) : base(multiplier, betManager)
+    protected ComparisonBet(float multiplier, BetManager betManager, float desiredCount, ComparisonType comparisonType, MatchInfo matchInfo) : base(multiplier, betManager, matchInfo)
     {
         this.desiredCount = desiredCount;
         this.comparisonType = comparisonType;
     }
 
-    protected override void VerifyBet()
+    protected override bool VerifyBet()
     {
-        var win = false;
-        switch (comparisonType)
+        return comparisonType switch
         {
-            case ComparisonType.Equal:
-                win = currentCount == desiredCount;
-                break;
-            case ComparisonType.GreaterThan:
-                win = currentCount > desiredCount;
-                break;
-            case ComparisonType.LessThan:
-                win = currentCount < desiredCount;
-                break;
-        }
-
-        if(win) WinBet();
-        else LoseBet();
+            ComparisonType.Equal => currentCount == desiredCount,
+            ComparisonType.GreaterThan => currentCount > desiredCount,
+            ComparisonType.LessThan => currentCount < desiredCount,
+            _ => false
+        };
     }
     protected void IncreaseCounter(int amount) => currentCount += amount;
     public virtual float GetRemainingPercentageLeft() => currentCount / desiredCount;
