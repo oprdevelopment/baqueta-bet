@@ -13,17 +13,17 @@ public class FoulComparisonBet : ComparisonBet
     Team comparedTeam;
     Player comparedPlayer;
     FoulComparisonType foulComparisonType;
-    public FoulComparisonBet(Team comparedTeam, float multiplier, BetManager betManager, float desiredCount, ComparisonType comparisonType, MatchInfo matchInfo, CurrencyManager currencyManager) : base(multiplier, betManager, desiredCount, comparisonType, matchInfo, currencyManager)
+    public FoulComparisonBet(BetManager betManager, MatchInfo matchInfo, CurrencyManager currencyManager, float multiplier, ComparisonType comparisonType, float desiredCount, Team comparedTeam) : base(betManager, matchInfo, currencyManager, multiplier, comparisonType, desiredCount)
     {
         this.comparedTeam = comparedTeam;
         foulComparisonType = FoulComparisonType.TeamOnly;
     }
-    public FoulComparisonBet(Player comparedPlayer, float multiplier, BetManager betManager, float desiredCount, ComparisonType comparisonType, MatchInfo matchInfo, CurrencyManager currencyManager) : base(multiplier, betManager, desiredCount, comparisonType, matchInfo, currencyManager)
+    public FoulComparisonBet(BetManager betManager, MatchInfo matchInfo, CurrencyManager currencyManager, float multiplier, ComparisonType comparisonType, float desiredCount, Player comparedPlayer) : base(betManager, matchInfo, currencyManager, multiplier, comparisonType, desiredCount)
     {
         this.comparedPlayer = comparedPlayer;
         foulComparisonType = FoulComparisonType.PlayerOnly;
     }
-    public FoulComparisonBet(float multiplier, BetManager betManager, float desiredCount, ComparisonType comparisonType, MatchInfo matchInfo, CurrencyManager currencyManager) : base(multiplier, betManager, desiredCount, comparisonType, matchInfo, currencyManager)
+    public FoulComparisonBet(BetManager betManager, MatchInfo matchInfo, CurrencyManager currencyManager, float multiplier, ComparisonType comparisonType, float desiredCount) : base(betManager, matchInfo, currencyManager, multiplier, comparisonType, desiredCount)
     {
         foulComparisonType = FoulComparisonType.All;
     }

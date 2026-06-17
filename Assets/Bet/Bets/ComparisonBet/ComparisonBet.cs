@@ -13,7 +13,7 @@ public abstract class ComparisonBet : Bet
     int currentCount = 0;
     float desiredCount;
     ComparisonType comparisonType;
-    protected ComparisonBet(float multiplier, BetManager betManager, float desiredCount, ComparisonType comparisonType, MatchInfo matchInfo, CurrencyManager currencyManager) : base(multiplier, betManager, matchInfo, currencyManager)
+    protected ComparisonBet(BetManager betManager, MatchInfo matchInfo, CurrencyManager currencyManager, float multiplier, ComparisonType comparisonType, float desiredCount) : base(betManager, matchInfo, currencyManager, multiplier)
     {
         ChangeDesiredAmount(desiredCount);
         this.comparisonType = comparisonType;

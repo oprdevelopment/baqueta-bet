@@ -149,6 +149,6 @@ public class MatchInfo
 
 
         FoulCommited?.Invoke(player);
-        Debug.Log($"Foul Commited by {player.name} -> {intensity} : {card}");
+        Debug.Log($"Foul Commited by {player.name}: {player.team} -> {intensity} : {card}");
     }
 }

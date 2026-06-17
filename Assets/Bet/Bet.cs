@@ -19,7 +19,7 @@ public abstract class Bet
     BetState state;
     CurrencyManager currencyManager;
     BetManager betManager;
-    public Bet(float multiplier, BetManager betManager, MatchInfo matchInfo, CurrencyManager currencyManager)
+    public Bet(BetManager betManager, MatchInfo matchInfo, CurrencyManager currencyManager, float multiplier)
     {
         this.Multiplier = multiplier;
         this.state = BetState.Pending;
@@ -59,6 +59,7 @@ public abstract class Bet
         OnEndBet();
         currencyManager.AddAmount(Amount * Multiplier);
         this.state = BetState.Won;
+        Debug.Log("Won");
     }
     protected void LoseBet()
     {
