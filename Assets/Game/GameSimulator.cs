@@ -1,58 +1,18 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
-using Unity.VisualScripting;
 using UnityEngine;
-
-public enum Card
-{
-    None,
-    Yellow,
-    Red
-}
-public enum FoulIntensity
-{
-    Light,
-    Tatical,
-    Medium,
-    Heavy,
-    Brutal,
-}
-
-[Serializable]
-public class GameInfo
-{
-    public Team home, away;
-    public int homeScore, awayScore;
-    public List<Foul> fouls;
-}
-
-[Serializable]
-public class Foul
-{
-    public Card cardGiven;
-    public Player player;
-    public Foul(Card cardGiven, Player player)
-    {
-        this.cardGiven = cardGiven;
-        this.player = player;
-    }
-}
-
 public class GameSimulator : MonoBehaviour
 {
-    public static event Action<Player> FoulCommited;
-    public static event Action<Card, Player> CardGiven;
-    public static event Action Goal;
-    public static event Action<GameInfo> GameEnded;
-    public static event Action TestAction;
-    public GameInfo gameInfo;
+    public static event Action<Player> EventFoulCommited;
+    public static event Action<Card, Player> EventCardGiven;
+    public static event Action<Player> EventGoal;
+    public static event Action<MatchInfo> EventGameEnded;
+    MatchInfo matchInfo;
     float timeElapsed = 25;
     float foulBlock = 5;
     public void CommitFoul(FoulIntensity intensity, Player player)
     {
-        var playerFouls = gameInfo.fouls.Where((p) => p.player == player).ToList().Count;
+        var playerFouls = matchInfo.fouls.Where((p) => p.player == player).ToList().Count;
         var chance = 0.20f * playerFouls;
         var card = Card.None;
 
@@ -79,13 +39,10 @@ public class GameSimulator : MonoBehaviour
         }
 
         GiveCard(card, player);
+        matchInfo.fouls.Add(new(card, player));
 
-        if(card == Card.Yellow && player.card == Card.Yellow)
-            GiveCard(Card.Red, player); 
 
-        gameInfo.fouls.Add(new(card, player));
-        FoulCommited?.Invoke(player);
-
+        EventFoulCommited?.Invoke(player);
         Debug.Log($"{player.name} -> {intensity} : {card}");
     }
     Card RandomCard(float chance, Card highestPossibleCard, Card lowestPossibleCard)
@@ -96,34 +53,50 @@ public class GameSimulator : MonoBehaviour
     }
     void CommitRandomFoul()
     {
-        var activePlayers = GetActivePlayers();
-        if(activePlayers.Count <= 0) return;
-        var randomPlayer = activePlayers[UnityEngine.Random.Range(0, activePlayers.Count)];
-        var randomIntensity = (FoulIntensity)UnityEngine.Random.Range(0, Enum.GetValues(typeof(FoulIntensity)).Length);
+        if(matchInfo.ActivePlayers.Count <= 0) return;
+        var randomPlayer = matchInfo.ActivePlayers[UnityEngine.Random.Range(0, matchInfo.ActivePlayers.Count)];
 
-        CommitFoul(randomIntensity, randomPlayer);
+        CommitFoul(FoulRarity.RandomIntensity(), randomPlayer);
     }
     void GiveCard(Card card, Player player)
     {
         if(card == Card.None) return;
-        player.card = card;
-        CardGiven?.Invoke(card, player);
-    }
-    List<Player> GetActivePlayers()
-    {
-        return gameInfo.home.players.Where((p) => p.card != Card.Red).ToList().Concat(
-        gameInfo.away.players.Where(p => p.card != Card.Red).ToList()).ToList();
+
+        EventCardGiven?.Invoke(card, player);
+
+        if(player.card != Card.Yellow || card == Card.Yellow)
+            player.card = card;
+        else {
+            player.card = Card.Red;
+            EventCardGiven.Invoke(Card.Red, player);
+        }
+
+        EventCardGiven?.Invoke(card, player);
+
+        if(player.card == Card.Red) matchInfo.InactivatePlayer(player);
     }
 
+    void Start()
+    {
+        matchInfo = null;
+        CreateNewMatch();
+    }
+
+    void CreateNewMatch()
+    {
+        matchInfo = new(Team.GenerateRandomTeam(), Team.GenerateRandomTeam());
+    }
     void Update()
     {
+        if(matchInfo == null) return;
+
         if(foulBlock < 0)
         {
             CommitRandomFoul();
             foulBlock = 5;
         }
 
-        if(timeElapsed > 30) GameEnded?.Invoke(gameInfo);
+        if(timeElapsed > 30) EventGameEnded?.Invoke(matchInfo);
         timeElapsed += Time.deltaTime;
         foulBlock -= Time.deltaTime;
     }

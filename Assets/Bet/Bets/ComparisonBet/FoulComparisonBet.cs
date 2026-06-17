@@ -43,17 +43,17 @@ public class FoulComparisonBet : ComparisonBet
         }
     }
 
-    void EndGame(GameInfo _) => VerifyBet();
+    void EndGame(MatchInfo _) => VerifyBet();
 
     protected override void OnCreateBet()
     {
-        GameSimulator.FoulCommited += GatherInfo;
-        GameSimulator.GameEnded += EndGame;
+        GameSimulator.EventFoulCommited += GatherInfo;
+        GameSimulator.EventGameEnded += EndGame;
     }
 
     protected override void OnEndBet()
     {
-        GameSimulator.FoulCommited -= GatherInfo;
-        GameSimulator.GameEnded -= EndGame;
+        GameSimulator.EventFoulCommited -= GatherInfo;
+        GameSimulator.EventGameEnded -= EndGame;
     }
 }

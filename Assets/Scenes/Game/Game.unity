@@ -353,8 +353,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameSimulator
   gameInfo:
-    home: {fileID: 0}
-    away: {fileID: 0}
+    home: {fileID: 11400000, guid: 7ae7a715ddca42f4184338c36b58ebf5, type: 2}
+    away: {fileID: 11400000, guid: c9b88bbffd8508242a59ec38046617de, type: 2}
+    homeScore: 0
+    awayScore: 0
     fouls: []
 --- !u!4 &1473511447
 Transform:
