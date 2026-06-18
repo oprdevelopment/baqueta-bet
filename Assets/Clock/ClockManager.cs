@@ -8,7 +8,7 @@ public struct TimeInfo
     public int Minutes;
     public int Day;
     public readonly string FormatedTime(char separator) => $"{Hours.Formated()}{separator}{Minutes.Formated()}";
-    public readonly string FormatedDay(char separator) => $"{ClockManager.StartingMonth}{separator}{ClockManager.StartingDay + 1}";
+    public readonly string FormatedDay(char separator) => $"{ClockManager.StartingMonth.Formated()}{separator}{ClockManager.StartingDay.Formated() + 1}";
 
     public static bool operator ==(TimeInfo left, TimeInfo right)
     {

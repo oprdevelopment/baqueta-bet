@@ -50,11 +50,6 @@ public class MatchInfo
             Minutes = possibleMinutes[UnityEngine.Random.Range(0, possibleMinutes.Length)]
         };
 
-        int targetGoals = 3;
-        (float oddG, float oddL, float oddE) = BetManager.CalculateGoalsOdd(this, targetGoals, IndividualComparisonType.TeamOnly, home);
-        var winOdd = BetManager.CalculateWinOdd(this);
-        Debug.Log($"{Home.name} x {Away.name} : {Home.Strenght} {Away.Strenght}\r\nHome: {winOdd.homeOdd} Away: {winOdd.awayOdd} Draw: {winOdd.drawOdd}\r\n>{targetGoals}: {oddG}\r\n<{targetGoals}: {oddL}\r\n={targetGoals}: {oddE}");
-
         ClockManager.Tick += OnTick;
         ClockManager.TickInfo += OnTickInfo;
     }

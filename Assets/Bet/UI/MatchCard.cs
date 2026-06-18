@@ -1,31 +1,42 @@
+using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace Assets.Bet.UI
 {
     public class MatchCard : IVisualElementDisplay
     {
-        public TemplateContainer MatchCardTemplate {get; private set;}
+        public TemplateContainer Card {get; private set;}
+        BetUiManager BetUiManager;
+        Window betWindow;
         MatchInfo matchInfo;
         VisualElement stateContainer, dayTimeContainer;
         Label teamNameDisplayer, stateDisplayer, scoreDisplayer, hourDisplayer, dayDisplayer;
         Button betButton;
-        public MatchCard(VisualTreeAsset matchCardTemplate, MatchInfo matchInfo)
+        public MatchCard(BetUiManager betUiManager, Window betWindow, VisualTreeAsset matchCardTemplate, MatchInfo matchInfo)
         {
-            this.MatchCardTemplate = matchCardTemplate.Instantiate();
+            this.Card = matchCardTemplate.Instantiate();
             this.matchInfo = matchInfo;
-            
-            dayTimeContainer = MatchCardTemplate.Q<VisualElement>("DayTimeContainer");
-            stateContainer = MatchCardTemplate.Q<VisualElement>("StateContainer");
-            teamNameDisplayer = MatchCardTemplate.Q<Label>("Team");
-            stateDisplayer = MatchCardTemplate.Q<Label>("GameState");
-            scoreDisplayer = MatchCardTemplate.Q<Label>("Score");
-            hourDisplayer = MatchCardTemplate.Q<Label>("Hour");
-            dayDisplayer = MatchCardTemplate.Q<Label>("Day");
-            betButton = MatchCardTemplate.Q<Button>("BetButton");
+            this.BetUiManager = betUiManager;
+            this.betWindow = betWindow;
+
+            dayTimeContainer = Card.Q<VisualElement>("DayTimeContainer");
+            stateContainer = Card.Q<VisualElement>("StateContainer");
+            teamNameDisplayer = Card.Q<Label>("Team");
+            stateDisplayer = Card.Q<Label>("GameState");
+            scoreDisplayer = Card.Q<Label>("Score");
+            hourDisplayer = Card.Q<Label>("Hour");
+            dayDisplayer = Card.Q<Label>("Day");
+            betButton = Card.Q<Button>("BetButton");
 
             hourDisplayer.text = matchInfo.StartTime.FormatedTime('h');
             dayDisplayer.text = matchInfo.StartTime.FormatedDay('/');
             UpdateTeamName();
+            Card.Display(false);
+        }
+        void GoToBetWindow()
+        {
+            BetUiManager.currentMatchInfo = matchInfo;
+            BetUiManager.ChangeWindow(betWindow);
         }
         void UpdateMatchState(MatchState matchState)
         {
@@ -33,10 +44,10 @@ namespace Assets.Bet.UI
             bool Playing = matchState == MatchState.FirstHalf || matchState == MatchState.SecondHalf;
             bool Endend = matchState == MatchState.MatchEnded;
             
-            scoreDisplayer.Show(!Waiting);
+            scoreDisplayer.Display(!Waiting);
             betButton.SetEnabled(!Playing);
-            dayTimeContainer.Show(Waiting);
-            stateContainer.Show(!Waiting);
+            dayTimeContainer.Display(Waiting);
+            stateContainer.Display(!Waiting);
             
             if(Endend) Hide();
         }
@@ -60,17 +71,19 @@ namespace Assets.Bet.UI
             UpdateScore();
             UpdateTime();
 
-            MatchCardTemplate.Show(true);
+            Card.Display(true);
             ClockManager.Tick += UpdateTime;
             matchInfo.MatchStateChange += UpdateMatchState;
             matchInfo.GoalScored += UpdateScore;
+            betButton.clicked += GoToBetWindow;
         }
         public void Hide()
         {
-            MatchCardTemplate.Show(false);
+            Card.Display(false);
             ClockManager.Tick -= UpdateTime;
             matchInfo.MatchStateChange -= UpdateMatchState;
             matchInfo.GoalScored -= UpdateScore;
+            betButton.clicked -= GoToBetWindow;
         }
     }
 }

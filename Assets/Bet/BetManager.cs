@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class BetManager : MonoBehaviour
@@ -71,7 +74,7 @@ public class BetManager : MonoBehaviour
         return (1 / chanceGreater, 1 / chanceLess, 1 / chanceEqual);
     }
 
-    public static WinOdd CalculateWinOdd(MatchInfo info)
+    public static (float oddHome, float oddAway, float oddDraw) CalculateWinOdd(MatchInfo info)
     {
         float timeRemaining = info.MatchState switch
         {
@@ -98,18 +101,6 @@ public class BetManager : MonoBehaviour
         awayChance = Math.Clamp(awayChance / totalChance, 0.05f, 0.95f);
         drawChance = Math.Clamp(drawChance / totalChance, 0.05f, 0.95f);
 
-        return new WinOdd
-        {
-            homeOdd = (float)Math.Round(1/homeChance, 2),
-            awayOdd = (float)Math.Round(1/awayChance, 2),
-            drawOdd = (float)Math.Round(1/drawChance, 2)
-        };
+        return ((float)Math.Round(1/homeChance, 2), (float)Math.Round(1/awayChance, 2), (float)Math.Round(1/drawChance, 2));
     }
-}
-
-public struct WinOdd
-{
-    public float homeOdd;
-    public float awayOdd;
-    public float drawOdd;
 }

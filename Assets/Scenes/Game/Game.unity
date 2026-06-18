@@ -219,6 +219,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BetManager
   currencyManager: {fileID: 1048445315}
   gameSimulator: {fileID: 1473511446}
+  baseOdd: 1.01
+  winOddstrenghtInfluence: 1.5
+  winOddGoalInfluence: 1.5
+  winOddDrawChance: 0.25
 --- !u!4 &567713743
 Transform:
   m_ObjectHideFlags: 0
