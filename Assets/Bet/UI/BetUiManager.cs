@@ -1,116 +1,59 @@
-using System.Text.RegularExpressions;
-using JetBrains.Annotations;
-using Unity.VisualScripting;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 public static class IntExtension
 {
-    public static string Formated(this int number)
-    {
-        return number < 10 ? $"0{number}" : number.ToString(); 
-    }
+    public static string Formated(this int number) => number < 10 ? $"0{number}" : number.ToString(); 
 }
 
-public class BetUiManager : MonoBehaviour
+namespace Assets.Bet.UI
 {
-    [SerializeField] VisualTreeAsset matchListItemTemplate;
-    UIDocument document;
-    VisualElement root, matchScrollView;
-    Label clock;
-    private void OnEnable()
+    public static class UIExtensions
     {
-        document = GetComponent<UIDocument>();
-        root = document.rootVisualElement;
-        matchScrollView = root.Q<VisualElement>("MatchScrollView");
-        clock = root.Q<Label>("Clock");
-
-        MatchManager.CreatedMatch += OnCreatedMatch;
-        ClockManager.TickInfo += OnTickInfo;
+        public static void Show(this VisualElement element, bool show) => element.style.display = show ? DisplayStyle.Flex : DisplayStyle.None;
     }
-
-    void OnDisable()
+    public interface IVisualElementDisplay
     {
-        MatchManager.CreatedMatch -= OnCreatedMatch;
-        ClockManager.TickInfo -= OnTickInfo;
+        public void Show();
+        public void Hide();
     }
-
-    void OnTickInfo(TimeInfo timeInfo)
+    public class BetUiManager : MonoBehaviour
     {
-        var hourString = timeInfo.Hours.Formated();
-        var minuteString = timeInfo.Minutes.Formated();
-        var dayString = (ClockManager.StartingDay + timeInfo.Day).Formated();
-        var monthString = ClockManager.StartingMonth.Formated();
-
-        clock.text = $"{monthString}/{dayString} {hourString}:{minuteString}";
-    }
-
-    void OnCreatedMatch(MatchInfo matchInfo)
-    {
-        var newItem = matchListItemTemplate.Instantiate();
-        newItem.Q<Label>("Team").text = $"{matchInfo.Home.name}\r\n{matchInfo.Away.name}";
-        UpdateOnMatchState(newItem, matchInfo);
-        matchScrollView.Add(newItem);        
-
-        var stateDisplayer = newItem.Q<Label>("GameState");
-        var scoreDisplayer = newItem.Q<Label>("Score");
-
-        matchInfo.MatchStateChange += ctx => UpdateOnMatchState(newItem, matchInfo);
-
-        ClockManager.Tick += () =>
+        [SerializeField] VisualTreeAsset matchCardTemplate;
+        UIDocument document;
+        VisualElement root, matchScrollView;
+        Label systemClock;
+        List<IVisualElementDisplay> matchCards;
+        private void OnEnable()
         {
-            if(matchInfo.MatchState == MatchState.Waiting || matchInfo.MatchState == MatchState.MatchEnded)
-                return;
-            
-            stateDisplayer.text = matchInfo.MatchState switch
-            {
-                MatchState.FirstHalf => $"{matchInfo.GameTime.Formated()}'",
-                MatchState.Interval => $"Half\r\nTime",
-                MatchState.SecondHalf => $"{(matchInfo.GameTime + 45).Formated()}'",
-                _ => ""
-            };
-        };
+            document = GetComponent<UIDocument>();
+            root = document.rootVisualElement;
+            matchScrollView = root.Q<VisualElement>("MatchScrollView");
+            systemClock = root.Q<Label>("Clock");
+            matchCards = new();
 
-        matchInfo.GoalScored += ctx => {
-            scoreDisplayer.text = $"{matchInfo.HomeScore}\r\n{matchInfo.AwayScore}";
-        };
-    }
-
-    void UpdateOnMatchState(TemplateContainer item, MatchInfo info)
-    {
-        var timeDisplay = item.Q<VisualElement>("TimeDisplay");
-        var stateDisplay = item.Q<VisualElement>("StateDisplay");
-
-        if(info.MatchState != MatchState.Waiting)
-        {   
-            item.Q<Label>("Score").style.display = DisplayStyle.Flex;
+            MatchManager.CreatedMatch += OnCreatedMatch;
+            ClockManager.TickInfo += UpdateSystemClock;
         }
 
-        if(info.MatchState == MatchState.Waiting || info.MatchState == MatchState.Interval)
+        void OnDisable()
         {
-            item.Q<Button>("BetButton").SetEnabled(true);
-        }
-        else
-        {
-            item.Q<Button>("BetButton").SetEnabled(false);
+            MatchManager.CreatedMatch -= OnCreatedMatch;
+            ClockManager.TickInfo -= UpdateSystemClock;
         }
 
-        if(info.MatchState == MatchState.Waiting)
+        void OnCreatedMatch(MatchInfo matchInfo)
         {
-            timeDisplay.style.display = DisplayStyle.Flex;
-            stateDisplay.style.display = DisplayStyle.None;
+            MatchCard matchCard = new(matchCardTemplate, matchInfo);
+            matchScrollView.Add(matchCard.MatchCardTemplate);
+            matchCards.Add(matchCard);
+            matchCard.Show();
+        }
 
-            item.Q<Label>("Hour").text = $"{info.StartTime.Hours.Formated()}:{info.StartTime.Minutes.Formated()}";
-            item.Q<Label>("Day").text = $"{ClockManager.StartingMonth.Formated()}/{(ClockManager.StartingDay + info.StartTime.Day).Formated()}";
-        }
-        else if(info.MatchState == MatchState.MatchEnded)
+        void UpdateSystemClock(TimeInfo timeInfo)
         {
-            item.style.display = DisplayStyle.None;
-        }
-        else
-        {
-            timeDisplay.style.display = DisplayStyle.None;
-            stateDisplay.style.display = DisplayStyle.Flex;
+            systemClock.text = timeInfo.FormatedDay('/') + " " + timeInfo.FormatedTime(':');
         }
     }
 }
