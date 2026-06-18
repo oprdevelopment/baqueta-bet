@@ -5,13 +5,15 @@ public class MatchManager : MonoBehaviour
 {
     public static event Action<MatchInfo> CreatedMatch;
     public List<MatchInfo> Matches{get; private set;}
-    public static event Action Tick;
     float elapsedTime = 0;
 
-    void Start()
+    void Awake()
     {
         Matches = new();
-        CreateNewMatch();
+        for(int i = 0; i <= 5; i++)
+        {
+            CreateNewMatch();
+        }
     }
 
     void CreateNewMatch()
@@ -19,15 +21,5 @@ public class MatchManager : MonoBehaviour
         MatchInfo newMatch = new(Team.GenerateRandomTeam(), Team.GenerateRandomTeam(), this);
         Matches.Add(newMatch);
         CreatedMatch?.Invoke(newMatch);
-    }
-    void Update()
-    {
-        if(elapsedTime >= 1)
-        {
-            elapsedTime = 0;
-            Tick?.Invoke();
-        }
-        
-        elapsedTime += Time.deltaTime;
     }
 }

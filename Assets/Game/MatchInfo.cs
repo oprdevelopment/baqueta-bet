@@ -6,7 +6,7 @@ using UnityEngine;
 
 public enum MatchState
 {
-    PreMatch,
+    Waiting,
     FirstHalf,
     Interval,
     SecondHalf,
@@ -18,17 +18,18 @@ public class MatchInfo
 {
     readonly MatchManager matchManager;
     readonly List<Player> activePlayers;
-    public event Action<Player> FoulCommited;
-    public event Action<CardType, Player> CardGiven;
-    public event Action<Player> Goal;
-    public event Action<MatchState> MatchStateChange;
+    public Action<Player> FoulCommited;
+    public Action<CardType, Player> CardGiven;
+    public Action<Player> GoalScored;
+    public Action<MatchState> MatchStateChange;
     public Team Home {private set; get;}
     public Team Away {private set; get;}
     public int HomeScore {private set; get;}
     public int AwayScore {private set; get;}
     public List<Foul> Fouls {private set; get;}
     public MatchState MatchState {private set; get;}
-    float tickCount;
+    public TimeInfo StartTime {private set; get;}
+    public int GameTime {private set; get;}
     public MatchInfo(Team home, Team away, MatchManager matchManager)
     {
         this.Home = home;
@@ -36,53 +37,64 @@ public class MatchInfo
         this.matchManager = matchManager;
         HomeScore = 0;
         AwayScore = 0;
-        tickCount = 0;
+        GameTime = 0;
         Fouls = new();
-        MatchState = MatchState.PreMatch;
+        MatchState = MatchState.Waiting;
         activePlayers = GetAllActivePlayers();
+        
+        int[] possibleMinutes = {0, 30, 45};
+        StartTime = new TimeInfo
+        {
+            Hours = UnityEngine.Random.Range(10, 22),
+            Minutes = possibleMinutes[UnityEngine.Random.Range(0, possibleMinutes.Length)]
+        };
 
-        MatchManager.Tick += OnTick;
+        Debug.Log($"{Home.name} x {Away.name} : {StartTime.Hours}h{StartTime.Minutes}");
+
+        ClockManager.Tick += OnTick;
+        ClockManager.TickInfo += OnTickInfo;
     }
-
     void OnTick()
     {
-        if(tickCount >= GetStateDuration(MatchState))
+        if(MatchState == MatchState.Waiting) return;
+
+        if(GameTime >= GetStateDuration(MatchState))
         {
             ChangeState(GetNextState());
-            tickCount = 0;
+            GameTime = 0;
         }
-        tickCount++;
+        GameTime++;
 
-        if(tickCount % 5 == 0)
+        if(MatchState != MatchState.SecondHalf || MatchState != MatchState.FirstHalf)
+            return;
+
+        if(GameTime % 5 == 0)
         {
             CommitFoul(Foul.RandomIntensity(), Player.GetRandomPlayer(activePlayers));
         }
     }
+    void OnTickInfo(TimeInfo tickInfo)
+    {
+        if(MatchState != MatchState.Waiting) return;
 
+        if(tickInfo == StartTime)
+        {
+            ChangeState(MatchState.FirstHalf);
+            Debug.Log($"{Home.name} x {Away.name} started");
+        }
+    }
     void ChangeState(MatchState state)
     {
         MatchState = state;
         MatchStateChange?.Invoke(state);
     }
-
     public static int GetStateDuration(MatchState state)
     {
-        #if UNITY_EDITOR
         return state switch
         {
-            MatchState.PreMatch => 10,
-            MatchState.Interval => 10,
-            _ => 60,
+            MatchState.Interval => 15,
+            _ => 45,
         };
-        #endif
-        #if !UNITY_EDITOR
-        return state switch
-        {
-            MatchState.PreMatch => 90,
-            MatchState.Interval => 90,
-            _ => 360,
-        };
-        #endif
     }
     public MatchState GetNextState()
     {
@@ -111,8 +123,6 @@ public class MatchInfo
             player.card = CardType.Red;
             CardGiven?.Invoke(CardType.Red, player);
         }
-
-        CardGiven?.Invoke(card, player);
 
         if(player.card == CardType.Red) InactivatePlayer(player);
     }

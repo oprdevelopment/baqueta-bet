@@ -1,0 +1,39 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/Bet/UI/Style.uss?fileID=7433441132597879392&amp;guid=bac7602973f7c0946b831f3906d5068e&amp;type=3#Style"/>
+    <ui:VisualElement name="VisualElement" enabled="true" style="flex-grow: 1; width: 100%; height: 100%; display: flex; color: rgb(0, 0, 0); background-color: rgb(0, 37, 255);">
+        <ui:VisualElement name="VisualElement" style="flex-grow: 0; height: 80px; color: rgb(255, 255, 255); background-color: rgb(255, 255, 255); flex-direction: row; justify-content: space-between; padding-top: 12px; padding-right: 12px; padding-bottom: 12px; padding-left: 12px;">
+            <ui:Label text="Baquetá OS" style="color: rgb(0, 0, 0); -unity-text-auto-size: best-fit 10px 100px; -unity-text-generator: advanced; padding-left: 2px;"/>
+            <ui:Label text="11h00" name="Clock" style="color: rgb(0, 0, 0); -unity-text-auto-size: best-fit 10px 100px; -unity-text-generator: advanced;"/>
+        </ui:VisualElement>
+        <ui:VisualElement name="Root" style="flex-grow: 1; margin-top: 50px; margin-bottom: 50px; margin-right: 50px; margin-left: 50px; background-color: rgb(188, 188, 188); flex-shrink: 1;">
+            <ui:VisualElement name="MenuBar" style="flex-grow: initial; align-items: center; justify-content: flex-end; align-self: flex-start; width: 100%; flex-shrink: 1; height: auto; -unity-background-image-tint-color: rgb(130, 130, 130); background-color: rgb(188, 188, 188); flex-direction: row;">
+                <ui:VisualElement name="VisualElement" style="flex-grow: 1; background-size: 25% 100%; height: auto; width: 0%; flex-direction: row; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0;">
+                    <ui:Button text="" class="windowButton" style="background-color: rgb(219, 28, 28);"/>
+                    <ui:Button text="" class="windowButton" style="background-color: rgb(255, 235, 0);"/>
+                    <ui:Button text="&#10;" class="windowButton" style="background-color: rgb(42, 219, 75);"/>
+                </ui:VisualElement>
+                <ui:VisualElement name="VisualElement" style="flex-grow: 1; height: 100%; min-width: 0; min-height: 3px; width: 75%;"/>
+            </ui:VisualElement>
+            <ui:VisualElement name="App" style="flex-grow: 1; background-color: rgb(21, 25, 35); color: rgb(40, 40, 40); border-top-width: 12px; border-right-width: 12px; border-bottom-width: 12px; border-left-width: 12px; border-left-color: rgb(188, 188, 188); border-right-color: rgb(188, 188, 188); border-top-color: rgb(188, 188, 188); border-bottom-color: rgb(188, 188, 188); -unity-background-image-tint-color: rgb(188, 188, 188);">
+                <ui:VisualElement name="TitleBar" style="flex-grow: initial; height: auto; background-color: rgb(164, 0, 0); background-image: none; flex-direction: row;">
+                    <ui:VisualElement name="TitleContainer" style="flex-grow: initial; background-color: rgba(0, 0, 0, 0); max-width: initial; width: 25%; flex-direction: row; padding-top: 0; padding-right: 4%; padding-bottom: 0; padding-left: 4%; flex-basis: auto; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; align-items: center; justify-content: space-between;">
+                        <ui:Label text="Baquetá" class="h1" style="border-left-color: rgb(255, 255, 255); border-right-color: rgb(255, 255, 255); border-top-color: rgb(255, 255, 255); border-bottom-color: rgb(255, 255, 255);"/>
+                        <ui:Label text="Bet" class="h1" style="border-left-color: rgb(255, 255, 255); border-right-color: rgb(255, 255, 255); border-top-color: rgb(255, 255, 255); border-bottom-color: rgb(255, 255, 255); color: rgb(4, 255, 0);"/>
+                    </ui:VisualElement>
+                    <ui:VisualElement name="TabsContainer" style="flex-grow: 1; width: auto; flex-basis: auto; flex-direction: row; align-items: center; justify-content: center;">
+                        <ui:Button text="&lt;u&gt;Matches" class="tabButton"/>
+                        <ui:Button text="&lt;u&gt;My Bets" class="tabButton"/>
+                    </ui:VisualElement>
+                    <ui:VisualElement name="MoneyContainer" style="flex-grow: initial; padding-top: 26px; padding-right: 26px; padding-bottom: 26px; padding-left: 26px; width: 25%; align-items: stretch;">
+                        <ui:VisualElement name="VisualElement" style="flex-grow: 1; background-color: rgba(161, 161, 161, 0.325); border-top-left-radius: 28px; border-top-right-radius: 0; border-bottom-right-radius: 0; border-bottom-left-radius: 28px; border-top-width: 13px; border-right-width: 13px; border-bottom-width: 13px; border-left-width: 13px; height: 100%; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; align-items: flex-end; justify-content: flex-end; align-self: flex-end; align-content: center;">
+                            <ui:Label text="R$ 0" class="h1" style="height: 100%; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; font-size: 23px;"/>
+                        </ui:VisualElement>
+                    </ui:VisualElement>
+                </ui:VisualElement>
+                <ui:VisualElement name="MainContainer" style="flex-grow: 1; align-items: flex-start; justify-content: flex-start; align-self: flex-start; height: initial; flex-direction: row; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; width: 100%; padding-top: 29px; padding-right: 29px; padding-bottom: 29px; padding-left: 29px; flex-wrap: wrap; align-content: center;">
+                    <ui:ScrollView name="MatchScrollView" style="width: 100%; height: 100%; flex-direction: row; align-items: flex-start; justify-content: space-evenly; align-content: auto; align-self: auto;"/>
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
