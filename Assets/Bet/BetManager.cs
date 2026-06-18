@@ -1,28 +1,15 @@
 using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using UnityEngine;
 
 public class BetManager : MonoBehaviour
 {
     [SerializeField] CurrencyManager currencyManager;
-    [SerializeField] GameSimulator gameSimulator;
+    [SerializeField] MatchManager gameSimulator;
     List<ComparisonBet> betList;
-    public float timeElapsed;
     void Start()
     {
-        // betList = new();
-        // var newBet = new FoulComparisonBet(2, this, 4, ComparisonType.GreaterThan, gameSimulator.matches[0]);
-        // newBet.PlaceBet(20, currencyManager);
-        // betList.Add(newBet);
+        betList = new();
     }
-
-    void Update()
-    {
-    //     if(timeElapsed > 5)
-    //     {
-    //         Debug.Log(betList[0].GetRemainingPercentageLeft());
-    //         timeElapsed = 0;
-    //     }
-    }
-
 }

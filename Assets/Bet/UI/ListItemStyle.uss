@@ -1,0 +1,52 @@
+:root {
+}
+
+.text {
+    font-size: 25px;
+}
+
+.background {
+    background-color: rgba(122, 122, 122, 0);
+    -unity-background-image-tint-color: rgb(255, 255, 255);
+}
+
+
+
+.card {
+    height: 146%;
+    width: 21%;
+    text-shadow: 0 0 0 rgb(99, 99, 99);
+    background-color: rgb(130, 130, 130);
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+    border-bottom-left-radius: 15px;
+}
+
+.card-h1 {
+    background-color: rgba(255, 255, 255, 0);
+    color: rgb(255, 255, 255);
+    -unity-font-style: bold;
+}
+
+.card-button {
+    scale: 1 1;
+    transform-origin: center;
+    transition-property: all;
+    transition-duration: 0.2s;
+    transition-timing-function: ease-in-out;
+    transition-delay: 0s;
+    background-color: rgb(176, 0, 8);
+}
+
+.card-button:hover {
+    scale: 1.01 1.01;
+    background-color: rgb(255, 0, 13);
+}
+
+.card-button:disabled {
+    scale: 1.01 1.01;
+    background-color: rgba(0, 0, 0, 0.482);
+    color: rgb(0, 0, 0);
+    display: flex;
+}

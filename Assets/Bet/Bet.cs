@@ -19,12 +19,13 @@ public abstract class Bet
     BetState state;
     CurrencyManager currencyManager;
     BetManager betManager;
-    public Bet(float multiplier, BetManager betManager, MatchInfo matchInfo)
+    public Bet(BetManager betManager, MatchInfo matchInfo, CurrencyManager currencyManager, float multiplier)
     {
         this.Multiplier = multiplier;
         this.state = BetState.Pending;
         this.betManager = betManager;
         this.matchInfo = matchInfo;
+        this.currencyManager = currencyManager;
 
     }
     public void ChangeMultiplier(float multiplier)
@@ -32,28 +33,38 @@ public abstract class Bet
         if(this.state != BetState.Pending) return;
         this.Multiplier = multiplier;
     }
-    public void PlaceBet(float amount, CurrencyManager currencyManager)
+    public virtual void PlaceBet(float amount)
     {
         if(this.state != BetState.Pending || !currencyManager.RemoveAmount(amount)) return;
-        this.currencyManager = currencyManager;
         this.Amount = amount;
 
         this.state = BetState.InProgress;
         OnCreateBet();
+
+        matchInfo.MatchStateChange += EndBet;
     }
-    public void EndBet()
+    public void EndBet(MatchState matchState)
     {
-        VerifyBet();
+        if(matchState != MatchState.MatchEnded) return;
+        if (VerifyBet())
+            WinBet();
+        else
+            LoseBet();
+
+        Debug.Log("Ended Bet");
     }
     protected void WinBet()
     {
         if(this.state != BetState.InProgress) return;
+        OnEndBet();
         currencyManager.AddAmount(Amount * Multiplier);
         this.state = BetState.Won;
+        Debug.Log("Won");
     }
     protected void LoseBet()
     {
         if(this.state != BetState.InProgress) return;
+        OnEndBet();
         this.state = BetState.Lost;
     }
     protected abstract bool VerifyBet();

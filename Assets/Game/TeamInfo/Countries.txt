@@ -3,13 +3,11 @@ Argentina
 Australia
 Austria
 Belgium
-Bonia and Herzegovina
 Brazil
 Cabo Verde
 Canada
 Colobia
 Congo
-Côte d'Ivoire
 Croatia
 Curaçao
 Czechia
@@ -24,7 +22,7 @@ Iran
 Iraq
 Japan
 Jordan
-Korea Republic
+Korea
 Mexico
 Morocco
 Netherlands
