@@ -1,0 +1,13 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement name="App" style="flex-grow: 1; position: absolute; width: 100%; height: 100%; display: flex; top: 50%; left: 50%; right: auto; bottom: auto; translate: -50% -50%;">
+        <ui:VisualElement name="MenuBar" style="flex-grow: initial; align-items: center; justify-content: flex-end; align-self: flex-start; width: 100%; flex-shrink: 1; height: auto; -unity-background-image-tint-color: rgb(130, 130, 130); background-color: rgb(188, 188, 188); flex-direction: row;">
+            <ui:VisualElement name="VisualElement" style="flex-grow: 1; background-size: 25% 100%; height: auto; width: 0%; flex-direction: row; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0;">
+                <ui:Button text="" class="windowButton" style="background-color: rgb(219, 28, 28);"/>
+                <ui:Button text="" class="windowButton" style="background-color: rgb(255, 235, 0);"/>
+                <ui:Button text="&#10;" class="windowButton" style="background-color: rgb(42, 219, 75);"/>
+            </ui:VisualElement>
+            <ui:VisualElement name="VisualElement" style="flex-grow: 1; height: 100%; min-width: 0; min-height: 3px; width: 75%;"/>
+        </ui:VisualElement>
+        <ui:VisualElement name="Window" style="flex-grow: 1; background-color: rgb(21, 25, 35); color: rgb(40, 40, 40); border-top-width: 12px; border-right-width: 12px; border-bottom-width: 12px; border-left-width: 12px; border-left-color: rgb(188, 188, 188); border-right-color: rgb(188, 188, 188); border-top-color: rgb(188, 188, 188); border-bottom-color: rgb(188, 188, 188); -unity-background-image-tint-color: rgb(188, 188, 188);"/>
+    </ui:VisualElement>
+</ui:UXML>

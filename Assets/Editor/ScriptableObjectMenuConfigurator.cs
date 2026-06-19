@@ -28,8 +28,6 @@ public class ScriptableObjectMenuConfigurator
             TeamInfo newTeam = ScriptableObject.CreateInstance<TeamInfo>();
             newTeam.name = country;
 
-            newTeam.strenght = Math.Clamp((float)Math.Round(UnityEngine.Random.Range(0.1f, 1f), 1), 0.1f, 1);
-
             AssetDatabase.CreateAsset(newTeam, uniquePath);
         }
 
@@ -49,7 +47,7 @@ public class ScriptableObjectMenuConfigurator
             string assetPath = AssetDatabase.GUIDToAssetPath(guid);
             TeamInfo team = AssetDatabase.LoadAssetAtPath<TeamInfo>(assetPath);
 
-            team.strenght = Math.Clamp((float)Math.Round(UnityEngine.Random.Range(0.1f, 1f), 1), 0.1f, 1);
+            team.strenght = UnityEngine.Random.Range(20, 95);
         }
     }
 }

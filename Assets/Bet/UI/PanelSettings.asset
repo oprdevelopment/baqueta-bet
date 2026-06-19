@@ -14,15 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.dll::UnityEngine.UIElements.PanelSettings
   themeUss: {fileID: -4733365628477956816, guid: 14d80294f14a3884387d346d008a174c, type: 3}
   m_DisableNoThemeWarning: 0
-  m_TargetTexture: {fileID: 8400000, guid: 33f4b86cb7812c443b0902335cd4e02d, type: 2}
-  m_RenderMode: 1
+  m_TargetTexture: {fileID: 8400000, guid: 7bac78a9248dcc042aeb84ae8a72c658, type: 2}
+  m_RenderMode: 0
   m_ColliderUpdateMode: 0
   m_ColliderIsTrigger: 1
   m_ScaleMode: 1
   m_ReferenceSpritePixelsPerUnit: 100
   m_PixelsPerUnit: 100
   m_Scale: 1
-  m_ReferenceDpi: 96
+  m_ReferenceDpi: 80
   m_FallbackDpi: 96
   m_ReferenceResolution: {x: 1200, y: 800}
   m_ScreenMatchMode: 0

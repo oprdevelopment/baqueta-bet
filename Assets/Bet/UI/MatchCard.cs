@@ -1,4 +1,3 @@
-using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace Assets.Bet.UI
@@ -6,18 +5,16 @@ namespace Assets.Bet.UI
     public class MatchCard : IVisualElementDisplay
     {
         public TemplateContainer Card {get; private set;}
-        BetUiManager BetUiManager;
-        Window betWindow;
-        MatchInfo matchInfo;
+        BetApp BetApp;
+        public MatchInfo matchInfo;
         VisualElement stateContainer, dayTimeContainer;
         Label teamNameDisplayer, stateDisplayer, scoreDisplayer, hourDisplayer, dayDisplayer;
-        Button betButton;
-        public MatchCard(BetUiManager betUiManager, Window betWindow, VisualTreeAsset matchCardTemplate, MatchInfo matchInfo)
+        public Button betButton;
+        public MatchCard(BetApp betApp, MatchInfo matchInfo)
         {
-            this.Card = matchCardTemplate.Instantiate();
+            this.Card = betApp.ctx.matchCardTemplate.Instantiate();
             this.matchInfo = matchInfo;
-            this.BetUiManager = betUiManager;
-            this.betWindow = betWindow;
+            this.BetApp = betApp;
 
             dayTimeContainer = Card.Q<VisualElement>("DayTimeContainer");
             stateContainer = Card.Q<VisualElement>("StateContainer");
@@ -35,32 +32,30 @@ namespace Assets.Bet.UI
         }
         void GoToBetWindow()
         {
-            BetUiManager.currentMatchInfo = matchInfo;
-            BetUiManager.ChangeWindow(betWindow);
+            BetApp.betMakerWindow.SetMatchInfo(matchInfo);
+            BetApp.ChangeWindow(BetApp.betMakerWindow);
         }
         void UpdateMatchState(MatchState matchState)
         {
             bool Waiting = matchState == MatchState.Waiting;
             bool Playing = matchState == MatchState.FirstHalf || matchState == MatchState.SecondHalf;
-            bool Endend = matchState == MatchState.MatchEnded;
-            
+            bool Ended = matchState == MatchState.MatchEnded;
+
             scoreDisplayer.Display(!Waiting);
-            betButton.SetEnabled(!Playing);
+            betButton.SetEnabled(!Ended && !Playing);
             dayTimeContainer.Display(Waiting);
-            stateContainer.Display(!Waiting);
-            
-            if(Endend) Hide();
+            stateContainer.Display(!Waiting);            
         }
         void UpdateTime()
         {
-            if(matchInfo.MatchState == MatchState.Waiting || matchInfo.MatchState == MatchState.MatchEnded) return;
+            if(matchInfo.MatchState == MatchState.Waiting) return;
 
             stateDisplayer.text = matchInfo.MatchState switch
             {
                 MatchState.FirstHalf => $"{matchInfo.GameTime.Formated()}'",
                 MatchState.Interval => $"Half\r\nTime",
                 MatchState.SecondHalf => $"{(matchInfo.GameTime + 45).Formated()}'",
-                _ => ""
+                _ => $"Match\r\nEnded"
             };
         }
         void UpdateScore() => scoreDisplayer.text = $"{matchInfo.HomeScore}\r\n{matchInfo.AwayScore}";
@@ -71,11 +66,12 @@ namespace Assets.Bet.UI
             UpdateScore();
             UpdateTime();
 
-            Card.Display(true);
             ClockManager.Tick += UpdateTime;
             matchInfo.MatchStateChange += UpdateMatchState;
             matchInfo.GoalScored += UpdateScore;
             betButton.clicked += GoToBetWindow;
+
+            Card.Display(true);
         }
         public void Hide()
         {
