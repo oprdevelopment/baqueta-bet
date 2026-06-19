@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine.UIElements;
 
@@ -42,6 +43,7 @@ namespace Assets.Bet.UI
         Label titleLabel, oddLabel;
         FloatField riskField, rewardField;
         Button placeBetButton;
+        MatchInfo currentMatchInfo;
         public PaymentApp(BetUiManager betUiManager, VisualElement appContainer) : base(betUiManager, appContainer)
         {
             titleLabel = appContainer.Q<Label>("Title");
@@ -53,9 +55,13 @@ namespace Assets.Bet.UI
         public void SetWinBet(MatchInfo matchInfo, float odd, Team winnerTeam)
         {
             currentBet = new WinBet(ctx.betManager, matchInfo, odd, winnerTeam);
+            ChangeMatchInfo(matchInfo);
 
-            titleLabel.text = $"{matchInfo.Home.name} x {matchInfo.Away.name}\r\nWin({winnerTeam.name})";
-            oddLabel.text = $"Odd: <color=green>{odd}x";
+            if(winnerTeam)
+                titleLabel.text = $"{matchInfo.Home.name} x {matchInfo.Away.name}\r\nWin({winnerTeam.name})";
+            else
+                titleLabel.text = $"{matchInfo.Home.name} x {matchInfo.Away.name}\r\nDraw)";
+            oddLabel.text = $"Odd: <color=green>{odd:F2}x";
             riskField.value = 0;
             rewardField.value = 0;
 
@@ -68,13 +74,26 @@ namespace Assets.Bet.UI
                 Hide();
             };
         }
+        void ChangeOnStateChange(MatchState state)
+        {
+            if(state != MatchState.Waiting && state != MatchState.Interval) Hide();
+        }
+        void ChangeMatchInfo(MatchInfo newInfo)
+        {
+            if(currentMatchInfo != null)
+            {
+                currentMatchInfo.MatchStateChange -= ChangeOnStateChange;
+            }
+            currentMatchInfo = newInfo;
+            currentMatchInfo.MatchStateChange += ChangeOnStateChange;
+        }
         void UpdateRiskField(ChangeEvent<float> evt)
         {
-            rewardField.SetValueWithoutNotify(evt.newValue * currentBet.Multiplier);
+            rewardField.SetValueWithoutNotify((float)Math.Round(evt.newValue * currentBet.Multiplier, 2));
         }
         void UpdateRewardField(ChangeEvent<float> evt)
         {
-            riskField.SetValueWithoutNotify(evt.newValue / currentBet.Multiplier);
+            riskField.SetValueWithoutNotify((float)Math.Round(evt.newValue / currentBet.Multiplier, 2));
         }
     }
 
@@ -91,8 +110,8 @@ namespace Assets.Bet.UI
             matchSelectionWindow = new MatchSelectionWindow(this, windowContainer.Q<VisualElement>("MatchSelectionContainer"));
             betMakerWindow = new BetMakerWindow(this, windowContainer.Q<VisualElement>("BetMakerContainer"));
 
-            matchesButton = windowContainer.Q<VisualElement>("TitleBar").Q<VisualElement>("TabsContainer").Q<Button>("MatchesButton");
-            myBetsButton = windowContainer.Q<VisualElement>("TitleBar").Q<VisualElement>("TabsContainer").Q<Button>("MyBetsButton");
+            matchesButton = windowContainer.Q<Button>("MatchesButton");
+            myBetsButton = windowContainer.Q<Button>("MyBetsButton");
 
             matchesButton.clicked += () =>
             {

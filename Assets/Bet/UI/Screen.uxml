@@ -2,8 +2,8 @@
     <ui:Template name="MatchCardTemplate" src="project://database/Assets/Bet/UI/MatchCardTemplate.uxml?fileID=9197481963319205126&amp;guid=439b6e4b167cfbe44b43f6f2fe7b694b&amp;type=3#MatchCardTemplate"/>
     <Style src="project://database/Assets/Bet/UI/Style.uss?fileID=7433441132597879392&amp;guid=bac7602973f7c0946b831f3906d5068e&amp;type=3#Style"/>
     <ui:VisualElement name="VisualElement" enabled="true" style="flex-grow: 1; width: 100%; height: 100%; display: flex; color: rgb(0, 0, 0); background-color: rgb(0, 37, 255); background-position-x: center;">
-        <ui:VisualElement name="VisualElement" style="flex-grow: 0; height: 80px; color: rgb(255, 255, 255); background-color: rgb(255, 255, 255); flex-direction: row; justify-content: space-between; padding-top: 12px; padding-right: 12px; padding-bottom: 12px; padding-left: 12px;">
-            <ui:Label text="Baquetá OS" style="color: rgb(0, 0, 0); -unity-text-auto-size: best-fit 10px 100px; -unity-text-generator: advanced; padding-left: 2px;"/>
+        <ui:VisualElement name="VisualElement" style="flex-grow: 0; height: 101px; color: rgb(255, 255, 255); background-color: rgb(255, 255, 255); flex-direction: row; justify-content: space-between; padding-top: 12px; padding-right: 30px; padding-bottom: 12px; padding-left: 30px;">
+            <ui:Label text="Baquetá OS" style="color: rgb(0, 0, 0); -unity-text-auto-size: best-fit 10px 100px; -unity-text-generator: advanced; padding-left: 2px; font-size: 31px;"/>
             <ui:Label text="11h00" name="Clock" style="color: rgb(0, 0, 0); -unity-text-auto-size: best-fit 10px 100px; -unity-text-generator: advanced;"/>
         </ui:VisualElement>
         <ui:VisualElement name="Root" style="flex-grow: 1; margin-top: 50px; margin-bottom: 50px; margin-right: 50px; margin-left: 50px; background-color: rgba(188, 188, 188, 0); flex-shrink: 1; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;">
@@ -16,22 +16,22 @@
                     </ui:VisualElement>
                 </ui:VisualElement>
                 <ui:VisualElement name="Window" style="flex-grow: 1; background-color: rgba(21, 25, 35, 0); color: rgb(40, 40, 40); border-top-width: 12px; border-right-width: 12px; border-bottom-width: 12px; border-left-width: 12px; border-left-color: rgba(188, 188, 188, 0); border-right-color: rgba(188, 188, 188, 0); border-top-color: rgba(188, 188, 188, 0); border-bottom-color: rgba(188, 188, 188, 0); -unity-background-image-tint-color: rgb(188, 188, 188);">
-                    <ui:VisualElement name="TitleBar" style="flex-grow: initial; height: auto; background-color: rgb(164, 0, 0); background-image: none; flex-direction: row; border-top-left-radius: 10px; border-top-right-radius: 10px;">
-                        <ui:VisualElement name="TitleContainer" style="flex-grow: initial; background-color: rgba(0, 0, 0, 0); max-width: initial; width: 25%; flex-direction: row; padding-top: 0; padding-right: 4%; padding-bottom: 0; padding-left: 4%; flex-basis: auto; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; align-items: center; justify-content: space-between;">
+                    <ui:VisualElement name="" style="flex-grow: initial; height: auto; background-color: rgb(164, 0, 0); background-image: none; flex-direction: row; border-top-left-radius: 10px; border-top-right-radius: 10px;">
+                        <ui:VisualElement name="" style="flex-grow: initial; background-color: rgba(0, 0, 0, 0); max-width: initial; width: 25%; flex-direction: row; padding-top: 0; padding-right: 4%; padding-bottom: 0; padding-left: 4%; flex-basis: auto; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; align-items: center; justify-content: space-between;">
                             <ui:Label text="Baquetá" class="h1" style="border-left-color: rgb(255, 255, 255); border-right-color: rgb(255, 255, 255); border-top-color: rgb(255, 255, 255); border-bottom-color: rgb(255, 255, 255);"/>
                             <ui:Label text="Bet" class="h1" style="border-left-color: rgb(255, 255, 255); border-right-color: rgb(255, 255, 255); border-top-color: rgb(255, 255, 255); border-bottom-color: rgb(255, 255, 255); color: rgb(4, 255, 0);"/>
                         </ui:VisualElement>
-                        <ui:VisualElement name="TabsContainer" style="flex-grow: 1; width: auto; flex-basis: auto; flex-direction: row; align-items: center; justify-content: center;">
+                        <ui:VisualElement name="" style="flex-grow: 1; width: auto; flex-basis: auto; flex-direction: row; align-items: center; justify-content: center;">
                             <ui:Button text="&lt;u&gt;Matches" name="MatchesButton" class="tabButton"/>
                             <ui:Button text="&lt;u&gt;My Bets" name="MyBetsButton" class="tabButton"/>
                         </ui:VisualElement>
-                        <ui:VisualElement name="MoneyContainer" style="flex-grow: initial; padding-top: 26px; padding-right: 26px; padding-bottom: 26px; padding-left: 26px; width: 25%; align-items: stretch;">
-                            <ui:VisualElement name="VisualElement" style="flex-grow: 1; background-color: rgba(161, 161, 161, 0.325); border-top-left-radius: 28px; border-top-right-radius: 0; border-bottom-right-radius: 0; border-bottom-left-radius: 28px; border-top-width: 13px; border-right-width: 13px; border-bottom-width: 13px; border-left-width: 13px; height: 100%; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; align-items: flex-end; justify-content: flex-end; align-self: flex-end; align-content: center;">
-                                <ui:Label text="R$ 0" class="h1" style="height: 100%; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; font-size: 23px;"/>
+                        <ui:VisualElement name="" style="flex-grow: initial; padding-top: 26px; padding-right: 26px; padding-bottom: 26px; padding-left: 26px; width: 25%; align-items: stretch;">
+                            <ui:VisualElement name="" style="flex-grow: 1; background-color: rgba(161, 161, 161, 0.325); border-top-left-radius: 28px; border-top-right-radius: 0; border-bottom-right-radius: 0; border-bottom-left-radius: 28px; border-top-width: 13px; border-right-width: 13px; border-bottom-width: 13px; border-left-width: 13px; height: 100%; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; align-items: flex-end; justify-content: flex-end; align-self: flex-end; align-content: center;">
+                                <ui:Label text="R$ 0" name="MoneyDisplay" class="h1" style="height: 100%; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; font-size: 23px;"/>
                             </ui:VisualElement>
                         </ui:VisualElement>
                     </ui:VisualElement>
-                    <ui:VisualElement style="flex-grow: 1; color: rgb(21, 25, 35);">
+                    <ui:VisualElement name="" style="flex-grow: 1; color: rgb(21, 25, 35);">
                         <ui:VisualElement name="MatchSelectionContainer" style="flex-grow: 1; align-items: flex-start; justify-content: flex-start; align-self: flex-start; height: initial; flex-direction: row; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; width: 100%; padding-top: 29px; padding-right: 29px; padding-bottom: 29px; padding-left: 29px; flex-wrap: wrap; align-content: center; display: none; background-color: rgb(21, 25, 35); border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 10px; border-bottom-left-radius: 10px; border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0; color: rgba(0, 73, 255, 0);">
                             <ui:ScrollView name="MatchScrollView" style="width: 100%; height: 100%; flex-direction: row; align-items: flex-start; justify-content: space-evenly; align-content: auto; align-self: auto;">
                                 <ui:Instance template="MatchCardTemplate"/>
@@ -43,7 +43,7 @@
                         </ui:VisualElement>
                         <ui:VisualElement name="BetMakerContainer" style="flex-grow: 1; align-items: center; justify-content: center; align-self: center; height: initial; flex-direction: column; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; width: 100%; padding-top: 29px; padding-right: 29px; padding-bottom: 29px; padding-left: 29px; flex-wrap: wrap; align-content: center; display: flex; background-color: rgb(21, 25, 35); border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 10px; border-bottom-left-radius: 10px; color: rgba(144, 158, 192, 0);">
                             <ui:Label text="17/06 11h20" name="Time" class="h1"/>
-                            <ui:VisualElement name="" style="flex-grow: 0; flex-direction: row; justify-content: space-evenly; align-content: center; align-items: center; width: 76%; align-self: center; padding-top: 31px; padding-right: 31px; padding-bottom: 31px; padding-left: 31px;">
+                            <ui:VisualElement name="VisualElement" style="flex-grow: 0; flex-direction: row; justify-content: space-evenly; align-content: center; align-items: center; width: 100%; align-self: center; padding-top: 31px; padding-right: 31px; padding-bottom: 31px; padding-left: 31px;">
                                 <ui:Button text="Brazil &lt;color=green&gt;1.2x" name="HomeWinButton" class="teamName h1"/>
                                 <ui:Button text="Draw &lt;color=green&gt;1.2x" name="DrawButton" class="teamName h1 draw"/>
                                 <ui:Button text="Croatia &lt;color=green&gt;1.2x" name="AwayWinButton" class="teamName h1"/>

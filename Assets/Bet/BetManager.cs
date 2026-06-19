@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 
 namespace Assets.Bet
 {
@@ -74,32 +75,42 @@ namespace Assets.Bet
 
         public static (float oddHome, float oddAway, float oddDraw) CalculateWinOdd(MatchInfo info)
         {
-            float timeRemaining = info.MatchState switch
+            float minutesPlayed = info.MatchState switch
             {
-                MatchState.Waiting => 1,
-                MatchState.Interval => 0.5f,
-                _ => 0.5f
+                MatchState.FirstHalf => info.GameTime,
+                MatchState.SecondHalf => info.GameTime + 45,
+                _ => 0
             };
 
-            float homeScore = info.HomeScore;
-            float awayScore = info.AwayScore;
-            float scoreDifference = Mathf.Abs(homeScore - awayScore);
+            float scoreDiference = info.HomeScore - info.AwayScore;
+            float timeFactor = 10 + minutesPlayed / 90 * 50;
 
-            float homeStrenght = info.Home.Strenght * timeRemaining;
-            float awayStrenght = info.Away.Strenght * timeRemaining;
+            float pointsHome = info.Home.Strenght;
+            float pointsAway = info.Away.Strenght;
 
-            float homeChance = 0.33f + (homeStrenght - awayStrenght) * 0.4f + (scoreDifference * 0.40f * (1.1f - timeRemaining));
-            float awayChance = 0.33f + (awayStrenght - homeStrenght) * 0.4f - (scoreDifference * 0.40f * (1.1f - timeRemaining));
-            float drawChance = scoreDifference == 0 
-            ? .33f + (1 - timeRemaining) * .5f
-            : .33f + Math.Abs(scoreDifference) * .3f * (1.1f - timeRemaining);
+            if(scoreDiference > 0)
+                pointsHome += scoreDiference * timeFactor;
+            else if(scoreDiference < 0)
+                pointsAway -= scoreDiference * timeFactor;
 
-            float totalChance = homeChance + awayChance + drawChance;
-            homeChance = Math.Clamp(homeChance / totalChance, 0.05f, 0.95f);
-            awayChance = Math.Clamp(awayChance / totalChance, 0.05f, 0.95f);
-            drawChance = Math.Clamp(drawChance / totalChance, 0.05f, 0.95f);
+            float drawPoints = 25f;
+            drawPoints *= 1 - minutesPlayed/90 * 0.5f;
+            drawPoints = Math.Max(drawPoints, 1f);
 
-            return ((float)Math.Round(1/homeChance, 2), (float)Math.Round(1/awayChance, 2), (float)Math.Round(1/drawChance, 2));
+
+            float totalPoints = pointsHome + pointsAway + drawPoints;
+
+            float homeChance = pointsHome / totalPoints;
+            float awayChance = pointsAway / totalPoints;
+            float drawChance = drawPoints / totalPoints;
+
+            float margin = 0.95f;
+
+            float oddHome = margin / homeChance;
+            float oddAway = margin / awayChance;
+            float oddDraw = margin / drawChance;
+
+            return (oddHome, oddAway, oddDraw);
         }
     }
 }

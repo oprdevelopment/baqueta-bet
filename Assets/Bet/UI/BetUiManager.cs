@@ -25,22 +25,20 @@ namespace Assets.Bet.UI
         public PaymentApp paymentApp;
         public VisualElement root;
         UIDocument document;
-        Label systemClock;
+        Label systemClock, moneyDisplay;
         private void OnEnable()
         {
             document = GetComponent<UIDocument>();
             root = document.rootVisualElement;
             systemClock = root.Q<Label>("Clock");
+            moneyDisplay = root.Q<Label>("MoneyDisplay");
 
             betApp = new BetApp(this, root.Q<VisualElement>("BetApp"));
             paymentApp = new PaymentApp(this, root.Q<VisualElement>("PaymentApp"));
 
             ClockManager.TickInfo += UpdateSystemClock;
-        }
-
-        public void OpenApp(App app)
-        {
-            app.Show();
+            CurrencyManager.BalanceChanged += UpdateMoneyDisplay;
+            betApp.Show();
         }
 
         void OnDisable()
@@ -52,11 +50,10 @@ namespace Assets.Bet.UI
         {
             systemClock.text = timeInfo.FormatedDay('/') + " " + timeInfo.FormatedTime(':');
         }
-
-        void OnMouseOver()
+        void UpdateMoneyDisplay(CurrencyManager currencyManager)
         {
-            if(Input.GetMouseButtonDown(0))
-                OpenApp(betApp);
+            // var moneytext = currencyManager.Balance % 1 != 0 ? ""
+            moneyDisplay.text = $"${currencyManager.Balance:F2}";
         }
     }
 }

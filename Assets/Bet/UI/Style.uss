@@ -4,7 +4,7 @@
 .h1 {
     color: rgb(255, 255, 255);
     font-size: 45px;
-    -unity-font-definition: url("project://database/Assets/UI%20Toolkit/UnityThemes/UnityDefaultRuntimeTheme.tss?fileID=2230732570650464555&guid=14d80294f14a3884387d346d008a174c&type=3#NotInter-Regular");
+    -unity-font-definition: resource("Inter-VariableFont_opsz,wght");
     -unity-font-style: bold;
     -unity-text-align: middle-center;
 }

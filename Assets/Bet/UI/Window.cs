@@ -74,15 +74,15 @@ namespace Assets.Bet.UI
 
             homeButton.clicked += () => {
                 betApp.ctx.paymentApp.SetWinBet(currentMatchInfo, oddHome, currentMatchInfo.Home);
-                betApp.ctx.OpenApp(betApp.ctx.paymentApp);
+                betApp.ctx.paymentApp.Show();
             };
             awayButton.clicked += () => {
                 betApp.ctx.paymentApp.SetWinBet(currentMatchInfo, oddHome, currentMatchInfo.Away);
-                betApp.ctx.OpenApp(betApp.ctx.paymentApp);
+                betApp.ctx.paymentApp.Show();
             };
             drawButton.clicked += () => {
                 betApp.ctx.paymentApp.SetWinBet(currentMatchInfo, oddHome, null);
-                betApp.ctx.OpenApp(betApp.ctx.paymentApp);
+                betApp.ctx.paymentApp.Show();
             };
         }
         public void SetMatchInfo(MatchInfo newMatch)
@@ -96,9 +96,9 @@ namespace Assets.Bet.UI
         }
         void UpdateTeamName()
         {
-            homeButton.text = $"{currentMatchInfo.Home.name} <color=green>{oddHome}x";
-            awayButton.text = $"{currentMatchInfo.Away.name} <color=green>{oddAway}x";
-            drawButton.text = $"Draw <color=green>{oddDraw}x";
+            homeButton.text = $"{currentMatchInfo.Home.name}\r\n<color=green>{oddHome:F2}x";
+            awayButton.text = $"{currentMatchInfo.Away.name}\r\n<color=green>{oddAway:F2}x";
+            drawButton.text = $"Draw<color=green>\r\n{oddDraw:F2}x";
             timeDisplay.text = currentMatchInfo.MatchState == MatchState.Waiting ? $"{currentMatchInfo.StartTime.FormatedDay('/')} {currentMatchInfo.StartTime.FormatedTime('h')}" : "Half Time";
         }
         void UpdateOnStateChange(MatchState state)
@@ -111,6 +111,10 @@ namespace Assets.Bet.UI
         {
             UpdateTeamName();
             base.Show();
+        }
+        public override void Hide()
+        {
+            base.Hide();
         }
     }
 }
