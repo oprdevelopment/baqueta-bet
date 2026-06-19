@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
-using UnityEngine;
 
 public enum MatchState
 {
@@ -55,7 +53,7 @@ public class MatchInfo
     }
     void OnTick()
     {
-        if(MatchState == MatchState.Waiting) return;
+        if(MatchState == MatchState.Waiting || MatchState == MatchState.MatchEnded) return;
 
         if(GameTime >= GetStateDuration(MatchState))
         {

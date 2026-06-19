@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -21,53 +19,44 @@ namespace Assets.Bet.UI
     }
     public class BetUiManager : MonoBehaviour
     {
-        [SerializeField] VisualTreeAsset matchCardTemplate;
+        public BetManager betManager;
+        public VisualTreeAsset matchCardTemplate;
+        public App betApp; 
+        public PaymentApp paymentApp;
+        public VisualElement root;
         UIDocument document;
-        VisualElement root, matchScrollView;
-        public Window matchSelectionWindow, betMakerWindow, currentWindow;
         Label systemClock;
-        List<IVisualElementDisplay> matchCards;
-        public MatchInfo currentMatchInfo;
-        public void ChangeWindow(Window newWindow)
-        {
-            currentWindow?.Hide();
-            newWindow.Show();
-            currentWindow = newWindow;
-        }
         private void OnEnable()
         {
             document = GetComponent<UIDocument>();
             root = document.rootVisualElement;
-            matchScrollView = root.Q<VisualElement>("MatchScrollView");
-            
-            betMakerWindow = new BetMakerWindow(this, root.Q<VisualElement>("BetMakeContainer"));
-            matchSelectionWindow = new(this, root.Q<VisualElement>("MatchSelectionContainer"));
-
-            ChangeWindow(matchSelectionWindow);
-
             systemClock = root.Q<Label>("Clock");
-            matchCards = new();
 
-            MatchManager.CreatedMatch += OnCreatedMatch;
+            betApp = new BetApp(this, root.Q<VisualElement>("BetApp"));
+            paymentApp = new PaymentApp(this, root.Q<VisualElement>("PaymentApp"));
+
             ClockManager.TickInfo += UpdateSystemClock;
         }
-        void OnDisable()
+
+        public void OpenApp(App app)
         {
-            MatchManager.CreatedMatch -= OnCreatedMatch;
-            ClockManager.TickInfo -= UpdateSystemClock;
+            app.Show();
         }
 
-        void OnCreatedMatch(MatchInfo matchInfo)
+        void OnDisable()
         {
-            MatchCard matchCard = new(this, betMakerWindow, matchCardTemplate, matchInfo);
-            matchScrollView.Add(matchCard.Card);
-            matchCards.Add(matchCard);
-            matchCard.Show();
+            ClockManager.TickInfo -= UpdateSystemClock;
         }
 
         void UpdateSystemClock(TimeInfo timeInfo)
         {
             systemClock.text = timeInfo.FormatedDay('/') + " " + timeInfo.FormatedTime(':');
+        }
+
+        void OnMouseOver()
+        {
+            if(Input.GetMouseButtonDown(0))
+                OpenApp(betApp);
         }
     }
 }
