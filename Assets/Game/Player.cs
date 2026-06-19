@@ -11,6 +11,7 @@ public class Player
     public string name;
     public Team team;
     public CardType card;
+    public int goals;
     public static Player GetRandomPlayer(List<Player> players)
     {
         return players[UnityEngine.Random.Range(0, players.Count)];

@@ -1,6 +1,3 @@
-using System;
-using System.Text.RegularExpressions;
-using Unity.Mathematics;
 using UnityEngine;
 public enum BetState
 {

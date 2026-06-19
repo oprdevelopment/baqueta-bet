@@ -187,7 +187,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f82660b56e1f87e46bc72ecc72703d0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BetUiManager
-  matchListItemTemplate: {fileID: 9197481963319205126, guid: 439b6e4b167cfbe44b43f6f2fe7b694b, type: 3}
+  matchCardTemplate: {fileID: 9197481963319205126, guid: 439b6e4b167cfbe44b43f6f2fe7b694b, type: 3}
 --- !u!1 &567713741
 GameObject:
   m_ObjectHideFlags: 0
@@ -219,6 +219,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BetManager
   currencyManager: {fileID: 1048445315}
   gameSimulator: {fileID: 1473511446}
+  baseOdd: 1.01
+  winOddstrenghtInfluence: 1.5
+  winOddGoalInfluence: 1.5
+  winOddDrawChance: 0.25
 --- !u!4 &567713743
 Transform:
   m_ObjectHideFlags: 0

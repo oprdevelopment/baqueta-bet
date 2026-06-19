@@ -12,3 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53f42a7ed7da2124aae3442791023c28, type: 3}
   m_Name: Algeria
   m_EditorClassIdentifier: Assembly-CSharp::TeamInfo
+  strenght: 0.6

@@ -1,116 +1,73 @@
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using JetBrains.Annotations;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 public static class IntExtension
 {
-    public static string Formated(this int number)
-    {
-        return number < 10 ? $"0{number}" : number.ToString(); 
-    }
+    public static string Formated(this int number) => number < 10 ? $"0{number}" : number.ToString(); 
 }
 
-public class BetUiManager : MonoBehaviour
+namespace Assets.Bet.UI
 {
-    [SerializeField] VisualTreeAsset matchListItemTemplate;
-    UIDocument document;
-    VisualElement root, matchScrollView;
-    Label clock;
-    private void OnEnable()
+    public static class UIExtensions
     {
-        document = GetComponent<UIDocument>();
-        root = document.rootVisualElement;
-        matchScrollView = root.Q<VisualElement>("MatchScrollView");
-        clock = root.Q<Label>("Clock");
-
-        MatchManager.CreatedMatch += OnCreatedMatch;
-        ClockManager.TickInfo += OnTickInfo;
+        public static void Display(this VisualElement element, bool show) => element.style.display = show ? DisplayStyle.Flex : DisplayStyle.None;
     }
-
-    void OnDisable()
+    public interface IVisualElementDisplay
     {
-        MatchManager.CreatedMatch -= OnCreatedMatch;
-        ClockManager.TickInfo -= OnTickInfo;
+        public void Show();
+        public void Hide();
     }
-
-    void OnTickInfo(TimeInfo timeInfo)
+    public class BetUiManager : MonoBehaviour
     {
-        var hourString = timeInfo.Hours.Formated();
-        var minuteString = timeInfo.Minutes.Formated();
-        var dayString = (ClockManager.StartingDay + timeInfo.Day).Formated();
-        var monthString = ClockManager.StartingMonth.Formated();
-
-        clock.text = $"{monthString}/{dayString} {hourString}:{minuteString}";
-    }
-
-    void OnCreatedMatch(MatchInfo matchInfo)
-    {
-        var newItem = matchListItemTemplate.Instantiate();
-        newItem.Q<Label>("Team").text = $"{matchInfo.Home.name}\r\n{matchInfo.Away.name}";
-        UpdateOnMatchState(newItem, matchInfo);
-        matchScrollView.Add(newItem);        
-
-        var stateDisplayer = newItem.Q<Label>("GameState");
-        var scoreDisplayer = newItem.Q<Label>("Score");
-
-        matchInfo.MatchStateChange += ctx => UpdateOnMatchState(newItem, matchInfo);
-
-        ClockManager.Tick += () =>
+        [SerializeField] VisualTreeAsset matchCardTemplate;
+        UIDocument document;
+        VisualElement root, matchScrollView;
+        public Window matchSelectionWindow, betMakerWindow, currentWindow;
+        Label systemClock;
+        List<IVisualElementDisplay> matchCards;
+        public MatchInfo currentMatchInfo;
+        public void ChangeWindow(Window newWindow)
         {
-            if(matchInfo.MatchState == MatchState.Waiting || matchInfo.MatchState == MatchState.MatchEnded)
-                return;
+            currentWindow?.Hide();
+            newWindow.Show();
+            currentWindow = newWindow;
+        }
+        private void OnEnable()
+        {
+            document = GetComponent<UIDocument>();
+            root = document.rootVisualElement;
+            matchScrollView = root.Q<VisualElement>("MatchScrollView");
             
-            stateDisplayer.text = matchInfo.MatchState switch
-            {
-                MatchState.FirstHalf => $"{matchInfo.GameTime.Formated()}'",
-                MatchState.Interval => $"Half\r\nTime",
-                MatchState.SecondHalf => $"{(matchInfo.GameTime + 45).Formated()}'",
-                _ => ""
-            };
-        };
+            betMakerWindow = new BetMakerWindow(this, root.Q<VisualElement>("BetMakeContainer"));
+            matchSelectionWindow = new(this, root.Q<VisualElement>("MatchSelectionContainer"));
 
-        matchInfo.GoalScored += ctx => {
-            scoreDisplayer.text = $"{matchInfo.HomeScore}\r\n{matchInfo.AwayScore}";
-        };
-    }
+            ChangeWindow(matchSelectionWindow);
 
-    void UpdateOnMatchState(TemplateContainer item, MatchInfo info)
-    {
-        var timeDisplay = item.Q<VisualElement>("TimeDisplay");
-        var stateDisplay = item.Q<VisualElement>("StateDisplay");
+            systemClock = root.Q<Label>("Clock");
+            matchCards = new();
 
-        if(info.MatchState != MatchState.Waiting)
-        {   
-            item.Q<Label>("Score").style.display = DisplayStyle.Flex;
+            MatchManager.CreatedMatch += OnCreatedMatch;
+            ClockManager.TickInfo += UpdateSystemClock;
+        }
+        void OnDisable()
+        {
+            MatchManager.CreatedMatch -= OnCreatedMatch;
+            ClockManager.TickInfo -= UpdateSystemClock;
         }
 
-        if(info.MatchState == MatchState.Waiting || info.MatchState == MatchState.Interval)
+        void OnCreatedMatch(MatchInfo matchInfo)
         {
-            item.Q<Button>("BetButton").SetEnabled(true);
-        }
-        else
-        {
-            item.Q<Button>("BetButton").SetEnabled(false);
+            MatchCard matchCard = new(this, betMakerWindow, matchCardTemplate, matchInfo);
+            matchScrollView.Add(matchCard.Card);
+            matchCards.Add(matchCard);
+            matchCard.Show();
         }
 
-        if(info.MatchState == MatchState.Waiting)
+        void UpdateSystemClock(TimeInfo timeInfo)
         {
-            timeDisplay.style.display = DisplayStyle.Flex;
-            stateDisplay.style.display = DisplayStyle.None;
-
-            item.Q<Label>("Hour").text = $"{info.StartTime.Hours.Formated()}:{info.StartTime.Minutes.Formated()}";
-            item.Q<Label>("Day").text = $"{ClockManager.StartingMonth.Formated()}/{(ClockManager.StartingDay + info.StartTime.Day).Formated()}";
-        }
-        else if(info.MatchState == MatchState.MatchEnded)
-        {
-            item.style.display = DisplayStyle.None;
-        }
-        else
-        {
-            timeDisplay.style.display = DisplayStyle.None;
-            stateDisplay.style.display = DisplayStyle.Flex;
+            systemClock.text = timeInfo.FormatedDay('/') + " " + timeInfo.FormatedTime(':');
         }
     }
 }

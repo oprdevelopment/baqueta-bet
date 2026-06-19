@@ -70,15 +70,104 @@
 .customScroll {
 }
 
-
-
-
-
-
-
 .unity-scroll-view__content-container--vertical {
     flex-direction: row;
     flex-wrap: wrap;
 }
 
+.teamName {
+    padding-top: 52px;
+    padding-right: 52px;
+    padding-bottom: 52px;
+    padding-left: 52px;
+    border-top-left-radius: 43px;
+    border-top-right-radius: 43px;
+    border-bottom-right-radius: 43px;
+    border-bottom-left-radius: 43px;
+    -unity-text-align: upper-center;
+    flex-grow: 1;
+    flex-basis: 0;
+    background-color: rgba(255, 0, 0, 0.482);
+    border-top-width: 0;
+    border-right-width: 6px;
+    border-bottom-width: 6px;
+    border-left-width: 0;
+    border-left-color: rgba(0, 0, 0, 0.702);
+    border-right-color: rgba(0, 0, 0, 0.702);
+    border-top-color: rgba(0, 0, 0, 0.702);
+    border-bottom-color: rgba(0, 0, 0, 0.702);
+    transition-duration: 0.3s;
+    transition-timing-function: ease-in-out;
+}
 
+.teamName:hover {
+    padding-top: 52px;
+    padding-right: 52px;
+    padding-bottom: 52px;
+    padding-left: 52px;
+    border-top-left-radius: 43px;
+    border-top-right-radius: 43px;
+    border-bottom-right-radius: 43px;
+    border-bottom-left-radius: 43px;
+    -unity-text-align: upper-center;
+    flex-grow: 1;
+    flex-basis: 0;
+    border-top-width: 0;
+    border-right-width: 6px;
+    border-bottom-width: 6px;
+    border-left-width: 0;
+    border-left-color: rgba(0, 0, 0, 0.702);
+    border-right-color: rgba(0, 0, 0, 0.702);
+    border-top-color: rgba(0, 0, 0, 0.702);
+    border-bottom-color: rgba(0, 0, 0, 0.702);
+    transition-duration: 0.3s;
+    transition-timing-function: ease-in-out;
+    scale: 1.02 1.02;
+    -unity-background-image-tint-color: rgb(255, 255, 255);
+    -unity-slice-left: 0;
+    -unity-slice-top: 0;
+    -unity-slice-right: 0;
+    -unity-slice-bottom: 0;
+    background-color: rgb(195, 13, 18);
+}
+
+.draw {
+    background-color: rgb(55, 55, 55);
+}
+
+.draw:hover {
+    background-color: rgb(103, 103, 103);
+}
+
+#VisualElement > #Root > #App > #BetMakeContainer > #MatchScrollView > VisualElement > .unity-slider-int > .unity-slider-int__label {
+}
+
+.unity-slider-int__label {
+    display: none;
+}
+
+.unity-enum-field__label {
+    display: none;
+}
+
+.unity-enum-field__input {
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 26px;
+    padding-right: 26px;
+    padding-bottom: 26px;
+    padding-left: 26px;
+}
+
+.unity-enum-field__arrow {
+    display: none;
+}
+
+.unity-enum-field__text {
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+}

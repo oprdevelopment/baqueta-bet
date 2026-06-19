@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -7,19 +6,24 @@ using UnityEngine;
 public class Team : ScriptableObject
 {
     public List<Player> players = new();
+    public float Strenght {private set; get;}
     public void AddPlayers(List<string> players) => players.ForEach((name) => this.players.Add(new Player(name, this)));
     public static List<string> names, lastNames;
     public static Team GenerateRandomTeam()
     {
         Team newTeam = CreateInstance<Team>();
         newTeam.AddPlayers(LoadRandomName(11));
-        newTeam.name = LoadRandomCountry().name;
+        var country = LoadRandomCountry();
+
+        newTeam.name = country.name;
+        newTeam.Strenght = country.strenght;
+
         return newTeam;
     }
 
     public static TeamInfo LoadRandomCountry()
     {
-        int countryRandomIndex = UnityEngine.Random.Range(0, AssetManager.Instance.countries.Count);
+        int countryRandomIndex = Random.Range(0, AssetManager.Instance.countries.Count);
         var country = AssetManager.Instance.countries[countryRandomIndex];
         AssetManager.Instance.countries.RemoveAt(countryRandomIndex);
 

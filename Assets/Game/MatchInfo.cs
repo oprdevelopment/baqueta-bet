@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEditor.Rendering;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public enum MatchState
@@ -20,7 +20,8 @@ public class MatchInfo
     readonly List<Player> activePlayers;
     public Action<Player> FoulCommited;
     public Action<CardType, Player> CardGiven;
-    public Action<Player> GoalScored;
+    public Action<Player> GoalScoredInfo;
+    public Action GoalScored;
     public Action<MatchState> MatchStateChange;
     public Team Home {private set; get;}
     public Team Away {private set; get;}
@@ -49,8 +50,6 @@ public class MatchInfo
             Minutes = possibleMinutes[UnityEngine.Random.Range(0, possibleMinutes.Length)]
         };
 
-        Debug.Log($"{Home.name} x {Away.name} : {StartTime.Hours}h{StartTime.Minutes}");
-
         ClockManager.Tick += OnTick;
         ClockManager.TickInfo += OnTickInfo;
     }
@@ -65,12 +64,16 @@ public class MatchInfo
         }
         GameTime++;
 
-        if(MatchState != MatchState.SecondHalf || MatchState != MatchState.FirstHalf)
+        if(MatchState != MatchState.SecondHalf && MatchState != MatchState.FirstHalf)
             return;
 
         if(GameTime % 5 == 0)
         {
             CommitFoul(Foul.RandomIntensity(), Player.GetRandomPlayer(activePlayers));
+        }
+        if(GameTime % 10 == 0)
+        {
+            ScoreGoal(Player.GetRandomPlayer(activePlayers));
         }
     }
     void OnTickInfo(TimeInfo tickInfo)
@@ -80,7 +83,6 @@ public class MatchInfo
         if(tickInfo == StartTime)
         {
             ChangeState(MatchState.FirstHalf);
-            Debug.Log($"{Home.name} x {Away.name} started");
         }
     }
     void ChangeState(MatchState state)
@@ -159,6 +161,12 @@ public class MatchInfo
 
 
         FoulCommited?.Invoke(player);
-        Debug.Log($"Foul Commited by {player.name}: {player.team} -> {intensity} : {card}");
+    }
+    public void ScoreGoal(Player player)
+    {
+        if(player.team == Home) HomeScore++;
+        if(player.team == Away) AwayScore++;
+
+        GoalScored?.Invoke();
     }
 }
