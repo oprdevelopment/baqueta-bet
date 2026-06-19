@@ -1,14 +1,9 @@
 fileFormatVersion: 2
-guid: d6f32b1047803294fa8b0f81f586a318
+guid: 284ec5f9645a28d45a9bd98c5d3527e6
 ModelImporter:
   serializedVersion: 24200
   internalIDToNameTable: []
-  externalObjects:
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: bath_door
-    second: {fileID: 2100000, guid: 09fee57ce7c86a8419ebeba01894d8b2, type: 2}
+  externalObjects: {}
   materials:
     materialImportMode: 2
     materialName: 0
