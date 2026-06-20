@@ -4,10 +4,10 @@ public class Interactable : MonoBehaviour
 {
     Outline outline;
     bool canEnable = true;
-    void Start()
+    void Awake()
     {
         outline = GetComponent<Outline>();
-        outline. enabled = false;
+        outline.enabled = false;
     }
     public virtual void Interact()
     {
@@ -34,5 +34,4 @@ public class Interactable : MonoBehaviour
         if(canEnable && Input.GetMouseButtonDown(0))
             Interact();
     }
-
 }

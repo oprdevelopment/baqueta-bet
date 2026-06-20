@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
@@ -10,9 +11,11 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] [Range(-90, 90)] float camRotationMin, camRotationMax;
     [SerializeField] float gravity;
     float camRotation;
+    bool canMove = false;
     Vector2 movementInput, rotationInput;
     InputSystem_Actions inputActions;
     CharacterController characterController;
+    [SerializeField] float camTransitionTime = 1.2f;
     void Awake()
     {
         inputActions = new InputSystem_Actions();
@@ -24,12 +27,12 @@ public class PlayerMovement : MonoBehaviour
         movementInput = Vector2.zero;
         rotationInput = Vector2.zero;
 
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        LockCam(false);
     }
 
     void Update()
     {
+        if(!canMove) return;
 
         if(movementInput.sqrMagnitude != 0 || characterController.isGrounded)
         {
@@ -66,8 +69,34 @@ public class PlayerMovement : MonoBehaviour
             rotationInput = Vector2.zero;
     }
 
-    void OnDsable()
+    void OnDisable()
     {
         inputActions.Player.Disable();
+    }
+
+    public void LockCam(bool lockCam)
+    {
+        canMove = !lockCam;
+        Cursor.lockState = lockCam ? CursorLockMode.Confined : CursorLockMode.Locked;
+        Cursor.visible = lockCam;
+    }
+
+    public IEnumerator LerpCam(Transform target)
+    {
+        camTransform.GetPositionAndRotation(out Vector3 camStartPosition, out Quaternion camStartRotation);
+        float elapsedTime = 0;
+
+        while(elapsedTime < camTransitionTime)
+        {
+            elapsedTime += Time.deltaTime;
+            float percentage = elapsedTime / camTransitionTime;
+
+            camTransform.SetPositionAndRotation(
+                Vector3.Lerp(camStartPosition, target.position, percentage),
+                Quaternion.Lerp(camStartRotation, target.rotation, percentage)
+            );
+            yield return null;
+        }
+        camTransform.SetPositionAndRotation(target.position, target.rotation);
     }
 }

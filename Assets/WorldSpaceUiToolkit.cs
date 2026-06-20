@@ -29,7 +29,7 @@ public class WorldSpaceUIToolkit : MonoBehaviour
                 return new Vector2(float.NaN, float.NaN);
 
         Vector2 uv = hit.textureCoord;
-
+        Debug.Log(uv);
         Vector2 panelPos = new(
             uv.x * panelSettings.targetTexture.width,
             uv.y * panelSettings.targetTexture.height
