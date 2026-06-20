@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using UnityEditor.Rendering;
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]

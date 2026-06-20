@@ -1,5 +1,4 @@
 using Assets.Interaction;
-using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -31,6 +30,7 @@ namespace Assets.Bet.UI
         public PlayerMovement playerMovement;
         public OpenBetApp monitor {get; private set;}
         Image mouse;
+        bool mouseOnScreen;
         void Awake()
         {
             playerMovement = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
@@ -51,11 +51,24 @@ namespace Assets.Bet.UI
             CurrencyManager.BalanceChanged += UpdateMoneyDisplay;
             betApp.Show();
 
-            root.RegisterCallback<PointerMoveEvent>(evt =>
+            root.RegisterCallback<PointerEnterEvent>(evt =>
             {
-                mouse.style.left = evt.position.x;
-                mouse.style.top = evt.position.y;
+                mouseOnScreen = true;
             });
+            root.RegisterCallback<PointerLeaveEvent>(evt =>
+            {
+                mouseOnScreen = false;
+            });
+        }
+        void Update()
+        {
+            if(!mouseOnScreen) return;
+
+            Vector2 screenPos = Input.mousePosition;
+            screenPos.y = Screen.height - screenPos.y;
+            Vector2 panelPos = RuntimePanelUtils.ScreenToPanel(mouse.panel, screenPos);
+            mouse.style.left = panelPos.x;
+            mouse.style.top = panelPos.y;
         }
         void OnDisable()
         {

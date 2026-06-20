@@ -27,6 +27,7 @@ namespace Assets.Bet.UI
         public List<MatchCard> matchCards = new();
         BetApp betApp;
         VisualElement matchScrollView;
+        MatchState mask;
         public MatchSelectionWindow(BetApp app, VisualElement windowContainer) : base(app, windowContainer)
         {
             this.betApp = app;
@@ -39,7 +40,6 @@ namespace Assets.Bet.UI
             matchScrollView.Clear();
             matchCards.Sort((a, b) => a.matchInfo.StartTime.CompareTo(b.matchInfo.StartTime));
             matchCards.ForEach(c => {
-                c.Hide();
                 matchScrollView.Add(c.Card);
                 c.Show();
             });        
