@@ -1,4 +1,5 @@
 using Assets.Interaction;
+using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -29,6 +30,7 @@ namespace Assets.Bet.UI
         Label systemClock, moneyDisplay;
         public PlayerMovement playerMovement;
         public OpenBetApp monitor {get; private set;}
+        Image mouse;
         void Awake()
         {
             playerMovement = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
@@ -40,6 +42,7 @@ namespace Assets.Bet.UI
             root = document.rootVisualElement;
             systemClock = root.Q<Label>("Clock");
             moneyDisplay = root.Q<Label>("MoneyDisplay");
+            mouse = root.Q<Image>("Mouse");
 
             paymentApp = new PaymentApp(this, root.Q<VisualElement>("PaymentApp"));
             betApp = new BetApp(this, root.Q<VisualElement>("BetApp"));
@@ -47,8 +50,13 @@ namespace Assets.Bet.UI
             ClockManager.TickInfo += UpdateSystemClock;
             CurrencyManager.BalanceChanged += UpdateMoneyDisplay;
             betApp.Show();
-        }
 
+            root.RegisterCallback<PointerMoveEvent>(evt =>
+            {
+                mouse.style.left = evt.position.x;
+                mouse.style.top = evt.position.y;
+            });
+        }
         void OnDisable()
         {
             ClockManager.TickInfo -= UpdateSystemClock;
