@@ -77,11 +77,11 @@ namespace Assets.Bet.UI
                 betApp.ctx.paymentApp.Show();
             };
             awayButton.clicked += () => {
-                betApp.ctx.paymentApp.SetWinBet(currentMatchInfo, oddHome, currentMatchInfo.Away);
+                betApp.ctx.paymentApp.SetWinBet(currentMatchInfo, oddAway, currentMatchInfo.Away);
                 betApp.ctx.paymentApp.Show();
             };
             drawButton.clicked += () => {
-                betApp.ctx.paymentApp.SetWinBet(currentMatchInfo, oddHome, null);
+                betApp.ctx.paymentApp.SetWinBet(currentMatchInfo, oddDraw, null);
                 betApp.ctx.paymentApp.Show();
             };
         }

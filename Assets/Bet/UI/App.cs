@@ -60,7 +60,7 @@ namespace Assets.Bet.UI
             if(winnerTeam)
                 titleLabel.text = $"{matchInfo.Home.name} x {matchInfo.Away.name}\r\nWin({winnerTeam.name})";
             else
-                titleLabel.text = $"{matchInfo.Home.name} x {matchInfo.Away.name}\r\nDraw)";
+                titleLabel.text = $"{matchInfo.Home.name} x {matchInfo.Away.name}\r\nDraw";
             oddLabel.text = $"Odd: <color=green>{odd:F2}x";
             riskField.value = 0;
             rewardField.value = 0;
