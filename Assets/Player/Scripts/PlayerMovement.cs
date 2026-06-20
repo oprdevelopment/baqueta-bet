@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using UnityEditor.Rendering;
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
@@ -7,11 +8,11 @@ public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] float speed;
     [SerializeField] Vector2 sensitivity;
-    [SerializeField] Transform camTransform;
+    [SerializeField] Transform camTransform, camHolder;
     [SerializeField] [Range(-90, 90)] float camRotationMin, camRotationMax;
     [SerializeField] float gravity;
     float camRotation;
-    bool canMove = false;
+    public bool canMove {get; private set;} = true;
     Vector2 movementInput, rotationInput;
     InputSystem_Actions inputActions;
     CharacterController characterController;
@@ -48,7 +49,9 @@ public class PlayerMovement : MonoBehaviour
             transform.localEulerAngles = playerRotation;
 
             camRotation = Math.Clamp(camRotation + rotationInput.y * Time.deltaTime * sensitivity.y, camRotationMin, camRotationMax);
-            camTransform.localEulerAngles = new(-camRotation, 0, 0);
+            camHolder.localEulerAngles = new(-camRotation, 0, 0);
+
+            camTransform.SetPositionAndRotation(camHolder.position, camHolder.rotation);
         }
     }
 
@@ -81,8 +84,12 @@ public class PlayerMovement : MonoBehaviour
         Cursor.visible = lockCam;
     }
 
-    public IEnumerator LerpCam(Transform target)
+    public IEnumerator LerpCam(Transform target = null)
     {
+        if(target == null) {
+            target = camHolder;
+            LockCam(false);
+        }
         camTransform.GetPositionAndRotation(out Vector3 camStartPosition, out Quaternion camStartRotation);
         float elapsedTime = 0;
 
@@ -98,5 +105,6 @@ public class PlayerMovement : MonoBehaviour
             yield return null;
         }
         camTransform.SetPositionAndRotation(target.position, target.rotation);
+        if(target != camHolder) LockCam(true);
     }
 }

@@ -1,3 +1,4 @@
+using Assets.Interaction;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -21,11 +22,18 @@ namespace Assets.Bet.UI
     {
         public BetManager betManager;
         public VisualTreeAsset matchCardTemplate;
-        public App betApp; 
+        public BetApp betApp; 
         public PaymentApp paymentApp;
         public VisualElement root;
         UIDocument document;
         Label systemClock, moneyDisplay;
+        public PlayerMovement playerMovement;
+        public OpenBetApp monitor {get; private set;}
+        void Awake()
+        {
+            playerMovement = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
+            monitor = FindAnyObjectByType<OpenBetApp>();
+        }
         private void OnEnable()
         {
             document = GetComponent<UIDocument>();
@@ -33,8 +41,8 @@ namespace Assets.Bet.UI
             systemClock = root.Q<Label>("Clock");
             moneyDisplay = root.Q<Label>("MoneyDisplay");
 
-            betApp = new BetApp(this, root.Q<VisualElement>("BetApp"));
             paymentApp = new PaymentApp(this, root.Q<VisualElement>("PaymentApp"));
+            betApp = new BetApp(this, root.Q<VisualElement>("BetApp"));
 
             ClockManager.TickInfo += UpdateSystemClock;
             CurrencyManager.BalanceChanged += UpdateMoneyDisplay;
@@ -52,7 +60,6 @@ namespace Assets.Bet.UI
         }
         void UpdateMoneyDisplay(CurrencyManager currencyManager)
         {
-            // var moneytext = currencyManager.Balance % 1 != 0 ? ""
             moneyDisplay.text = $"${currencyManager.Balance:F2}";
         }
     }

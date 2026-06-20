@@ -7,7 +7,7 @@ namespace Assets.Bet.UI
     public class App : IVisualElementDisplay
     {
         public BetUiManager ctx;
-        VisualElement appContainer;
+        public VisualElement appContainer {get; private set;}
         Window currentWindow;
         Button closeButton;
         protected List<Window> windows = new();
@@ -18,7 +18,7 @@ namespace Assets.Bet.UI
             closeButton = appContainer.Q<Button>("CloseButton");
             closeButton.clicked += Hide;
 
-            Hide();
+           appContainer.Display(false);
         }
         public void ChangeWindow(Window newWindow)
         {
@@ -70,6 +70,7 @@ namespace Assets.Bet.UI
 
             placeBetButton.clicked += () => 
             {
+                if(riskField.value <= 0) return;
                 currentBet.PlaceBet(riskField.value);
                 Hide();
             };
@@ -89,10 +90,12 @@ namespace Assets.Bet.UI
         }
         void UpdateRiskField(ChangeEvent<float> evt)
         {
+            if(evt.newValue < 0) riskField.SetValueWithoutNotify(0);
             rewardField.SetValueWithoutNotify((float)Math.Round(evt.newValue * currentBet.Multiplier, 2));
         }
         void UpdateRewardField(ChangeEvent<float> evt)
         {
+            if(evt.newValue < 0) rewardField.SetValueWithoutNotify(0);
             riskField.SetValueWithoutNotify((float)Math.Round(evt.newValue / currentBet.Multiplier, 2));
         }
     }
@@ -123,9 +126,9 @@ namespace Assets.Bet.UI
 
             ChangeWindow(matchSelectionWindow);
         }
-
         public override void Hide()
         {
+            ctx.monitor.DeInteract();
             base.Hide();
         }
         public override void Show()

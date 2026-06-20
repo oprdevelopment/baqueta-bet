@@ -2,6 +2,8 @@ using System;
 using UnityEngine;
 using UnityEngine.UIElements;
 
+namespace UnityEngine.UIElements
+{
 [RequireComponent(typeof(UIDocument))]
 public class WorldSpaceUIToolkit : MonoBehaviour
 {
@@ -29,7 +31,6 @@ public class WorldSpaceUIToolkit : MonoBehaviour
                 return new Vector2(float.NaN, float.NaN);
 
         Vector2 uv = hit.textureCoord;
-        Debug.Log(uv);
         Vector2 panelPos = new(
             uv.x * panelSettings.targetTexture.width,
             uv.y * panelSettings.targetTexture.height
@@ -37,4 +38,5 @@ public class WorldSpaceUIToolkit : MonoBehaviour
         
         return panelPos;
     }
+}
 }

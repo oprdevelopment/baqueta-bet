@@ -4,7 +4,7 @@ namespace Assets.Interaction
 {    
 public class LockToScreen : Interactable
 {
-    PlayerMovement playerMovement;
+    protected PlayerMovement playerMovement;
     [SerializeField] Transform lockPosition;
     void Start()
     {
@@ -14,8 +14,12 @@ public class LockToScreen : Interactable
         public override void Interact()
         {
             base.Interact();
-            playerMovement.LockCam(true);
             playerMovement.StartCoroutine(playerMovement.LerpCam(lockPosition));
+        }
+        public override void DeInteract()
+        {
+            base.DeInteract();
+            playerMovement.StartCoroutine(playerMovement.LerpCam());
         }
 }
 }
