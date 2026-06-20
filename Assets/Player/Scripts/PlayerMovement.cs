@@ -8,6 +8,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] Vector2 sensitivity;
     [SerializeField] Transform camTransform;
     [SerializeField] [Range(-90, 90)] float camRotationMin, camRotationMax;
+    [SerializeField] float gravity;
     float camRotation;
     Vector2 movementInput, rotationInput;
     InputSystem_Actions inputActions;
@@ -29,9 +30,10 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        if(movementInput.sqrMagnitude != 0)
+
+        if(movementInput.sqrMagnitude != 0 || characterController.isGrounded)
         {
-            var moveDirection = transform.TransformDirection(new(movementInput.x, 0, movementInput.y));
+            var moveDirection = transform.TransformDirection(new(movementInput.x, -gravity, movementInput.y));
             characterController.Move(speed * Time.deltaTime * moveDirection);
         }
 
