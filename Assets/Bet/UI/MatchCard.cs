@@ -1,3 +1,4 @@
+using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace Assets.Bet.UI
@@ -28,7 +29,6 @@ namespace Assets.Bet.UI
             hourDisplayer.text = matchInfo.StartTime.FormatedTime('h');
             dayDisplayer.text = matchInfo.StartTime.FormatedDay('/');
             UpdateTeamName();
-            Card.Display(false);
         }
         void GoToBetWindow()
         {
@@ -37,6 +37,7 @@ namespace Assets.Bet.UI
         }
         void UpdateMatchState(MatchState matchState)
         {
+            Debug.Log(matchState);
             bool Waiting = matchState == MatchState.Waiting;
             bool Playing = matchState == MatchState.FirstHalf || matchState == MatchState.SecondHalf;
             bool Ended = matchState == MatchState.MatchEnded;
@@ -44,7 +45,8 @@ namespace Assets.Bet.UI
             scoreDisplayer.Display(!Waiting);
             betButton.SetEnabled(!Ended && !Playing);
             dayTimeContainer.Display(Waiting);
-            stateContainer.Display(!Waiting);            
+            stateContainer.Display(!Waiting);       
+            if(Ended) Hide();     
         }
         void UpdateTime()
         {
@@ -55,7 +57,8 @@ namespace Assets.Bet.UI
                 MatchState.FirstHalf => $"{matchInfo.GameTime.Formated()}'",
                 MatchState.Interval => $"Half\r\nTime",
                 MatchState.SecondHalf => $"{(matchInfo.GameTime + 45).Formated()}'",
-                _ => $"Match\r\nEnded"
+                MatchState.MatchEnded => $"Match\r\nEnded",
+                _ => ""
             };
         }
         void UpdateScore() => scoreDisplayer.text = $"{matchInfo.HomeScore}\r\n{matchInfo.AwayScore}";
@@ -76,10 +79,6 @@ namespace Assets.Bet.UI
         public void Hide()
         {
             Card.Display(false);
-            ClockManager.Tick -= UpdateTime;
-            matchInfo.MatchStateChange -= UpdateMatchState;
-            matchInfo.GoalScored -= UpdateScore;
-            betButton.clicked -= GoToBetWindow;
         }
     }
 }

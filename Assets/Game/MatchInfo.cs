@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 public enum MatchState
 {
@@ -29,6 +30,7 @@ public class MatchInfo
     public MatchState MatchState {private set; get;}
     public TimeInfo StartTime {private set; get;}
     public int GameTime {private set; get;}
+    int extraTime = 0;
     public MatchInfo(Team home, Team away, MatchManager matchManager)
     {
         this.Home = home;
@@ -45,7 +47,8 @@ public class MatchInfo
         StartTime = new TimeInfo
         {
             Hours = UnityEngine.Random.Range(10, 22),
-            Minutes = possibleMinutes[UnityEngine.Random.Range(0, possibleMinutes.Length)]
+            Minutes = possibleMinutes[UnityEngine.Random.Range(0, possibleMinutes.Length)],
+            Day = UnityEngine.Random.Range(0, 3)
         };
 
         ClockManager.Tick += OnTick;
@@ -55,7 +58,7 @@ public class MatchInfo
     {
         if(MatchState == MatchState.Waiting || MatchState == MatchState.MatchEnded) return;
 
-        if(GameTime >= GetStateDuration(MatchState))
+        if(GameTime >= GetStateDuration(MatchState) + extraTime)
         {
             ChangeState(GetNextState());
             GameTime = 0;
@@ -65,14 +68,38 @@ public class MatchInfo
         if(MatchState != MatchState.SecondHalf && MatchState != MatchState.FirstHalf)
             return;
 
-        if(GameTime % 5 == 0)
+        float timePassed = this.MatchState switch
         {
-            CommitFoul(Foul.RandomIntensity(), Player.GetRandomPlayer(activePlayers));
-        }
-        if(GameTime % 10 == 0)
-        {
-            ScoreGoal(Player.GetRandomPlayer(activePlayers));
-        }
+            MatchState.FirstHalf => GameTime,
+            MatchState.SecondHalf => 45 + GameTime,
+            _ => 0
+        };
+
+        float combinedStrenght = Home.Strenght + Away.Strenght;
+        float goalScoredChance = combinedStrenght * (1 + timePassed / 90f / 4) / 2500 / 2;
+
+        float randomTick = UnityEngine.Random.Range(0f, 1f);
+        if(randomTick <= goalScoredChance)
+            RandomGoal(combinedStrenght);
+
+        
+        Debug.Log(goalScoredChance);
+
+    }
+    void RandomGoal(float combinedStrenght)
+    {
+        float homeChance = Home.Strenght / combinedStrenght;
+
+        if(UnityEngine.Random.Range(0f, 1f) < homeChance)
+            ScoreGoal(Player.GetRandomPlayer(activePlayers.Where(p => p.team == Home).ToList()));
+        else
+            ScoreGoal(Player.GetRandomPlayer(activePlayers.Where(p => p.team == Away).ToList()));
+
+
+    }
+    void RandomFoul()
+    {
+        CommitFoul(Foul.RandomIntensity(), Player.GetRandomPlayer(activePlayers));
     }
     void OnTickInfo(TimeInfo tickInfo)
     {
@@ -87,6 +114,7 @@ public class MatchInfo
     {
         MatchState = state;
         MatchStateChange?.Invoke(state);
+        extraTime = UnityEngine.Random.Range(1, 8);
     }
     public static int GetStateDuration(MatchState state)
     {

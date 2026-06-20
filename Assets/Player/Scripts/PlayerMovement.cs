@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using UnityEditor.Rendering;
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
@@ -29,6 +28,7 @@ public class PlayerMovement : MonoBehaviour
         rotationInput = Vector2.zero;
 
         LockCam(false);
+        Cursor.visible = false;
     }
 
     void Update()
@@ -81,7 +81,6 @@ public class PlayerMovement : MonoBehaviour
     {
         canMove = !lockCam;
         Cursor.lockState = lockCam ? CursorLockMode.Confined : CursorLockMode.Locked;
-        Cursor.visible = lockCam;
     }
 
     public IEnumerator LerpCam(Transform target = null)

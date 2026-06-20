@@ -29,6 +29,8 @@ namespace Assets.Bet.UI
         Label systemClock, moneyDisplay;
         public PlayerMovement playerMovement;
         public OpenBetApp monitor {get; private set;}
+        Image mouse;
+        bool mouseOnScreen;
         void Awake()
         {
             playerMovement = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
@@ -40,6 +42,7 @@ namespace Assets.Bet.UI
             root = document.rootVisualElement;
             systemClock = root.Q<Label>("Clock");
             moneyDisplay = root.Q<Label>("MoneyDisplay");
+            mouse = root.Q<Image>("Mouse");
 
             paymentApp = new PaymentApp(this, root.Q<VisualElement>("PaymentApp"));
             betApp = new BetApp(this, root.Q<VisualElement>("BetApp"));
@@ -47,8 +50,26 @@ namespace Assets.Bet.UI
             ClockManager.TickInfo += UpdateSystemClock;
             CurrencyManager.BalanceChanged += UpdateMoneyDisplay;
             betApp.Show();
-        }
 
+            root.RegisterCallback<PointerEnterEvent>(evt =>
+            {
+                mouseOnScreen = true;
+            });
+            root.RegisterCallback<PointerLeaveEvent>(evt =>
+            {
+                mouseOnScreen = false;
+            });
+        }
+        void Update()
+        {
+            if(!mouseOnScreen) return;
+
+            Vector2 screenPos = Input.mousePosition;
+            screenPos.y = Screen.height - screenPos.y;
+            Vector2 panelPos = RuntimePanelUtils.ScreenToPanel(mouse.panel, screenPos);
+            mouse.style.left = panelPos.x;
+            mouse.style.top = panelPos.y;
+        }
         void OnDisable()
         {
             ClockManager.TickInfo -= UpdateSystemClock;
