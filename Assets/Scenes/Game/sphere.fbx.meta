@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 53ef57abadac4ba43bebc02a7f047208
+guid: 9bbc5c0a11871a3458ed4193d0954ff2
 ModelImporter:
   serializedVersion: 24200
   internalIDToNameTable: []
@@ -7,8 +7,8 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: floor
-    second: {fileID: 2100000, guid: e277973ca370c5c43af83a6fbc3052d6, type: 2}
+      name: Material.020
+    second: {fileID: 2100000, guid: 533f0b12607fb2b4a9f4574e53767715, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -51,7 +51,7 @@ ModelImporter:
     nodeNameCollisionStrategy: 1
     fileIdsGeneration: 2
     swapUVChannels: 0
-    generateSecondaryUV: 1
+    generateSecondaryUV: 0
     useFileUnits: 1
     keepQuads: 0
     weldVertices: 1
