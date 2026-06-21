@@ -45,6 +45,7 @@ public class ClockManager : MonoBehaviour
 {
     public static event Action<TimeInfo> TickInfo;
     public static event Action Tick;
+    public static event Action<int> DayPassed;
     [SerializeField] float secondsPerMinute;
     [SerializeField] TimeInfo timeInfo;
     public static int StartingDay {get; private set;} = 16;
@@ -79,6 +80,7 @@ public class ClockManager : MonoBehaviour
             {
                 timeInfo.Hours = 0;
                 timeInfo.Day++;
+                DayPassed?.Invoke(timeInfo.Day);
             }
 
             Tick?.Invoke();

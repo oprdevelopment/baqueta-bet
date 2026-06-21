@@ -4,13 +4,7 @@ namespace Assets.Interaction
 {    
 public class LockToScreen : Interactable
 {
-    protected PlayerMovement playerMovement;
     [SerializeField] Transform lockPosition;
-    void Start()
-    {
-        playerMovement = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
-    }
-
         public override void Interact()
         {
             base.Interact();

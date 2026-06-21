@@ -106,9 +106,9 @@ namespace Assets.Bet
 
             float margin = 0.95f;
 
-            float oddHome = margin / homeChance;
-            float oddAway = margin / awayChance;
-            float oddDraw = margin / drawChance;
+            float oddHome = (float) Math.Round(margin / homeChance, 2);
+            float oddAway = (float) Math.Round(margin / awayChance, 2);
+            float oddDraw = (float) Math.Round(margin / drawChance, 2);
 
             return (oddHome, oddAway, oddDraw);
         }

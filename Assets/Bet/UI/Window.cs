@@ -1,12 +1,13 @@
 using UnityEngine.UIElements;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Assets.Bet.UI
 {
 
     public abstract class Window : IVisualElementDisplay
     {
-        protected VisualElement window;
+        public VisualElement window;
         public Window(App app, VisualElement windowContainer)
         {
             this.window = windowContainer;
@@ -27,7 +28,6 @@ namespace Assets.Bet.UI
         public List<MatchCard> matchCards = new();
         BetApp betApp;
         VisualElement matchScrollView;
-        MatchState mask;
         public MatchSelectionWindow(BetApp app, VisualElement windowContainer) : base(app, windowContainer)
         {
             this.betApp = app;
@@ -48,8 +48,34 @@ namespace Assets.Bet.UI
         {
             MatchCard newMatchCard = new(betApp, matchInfo);
             matchCards.Add(newMatchCard);
-            matchScrollView.Add(newMatchCard.Card);
+            UpdateCards();
+        }
+    }
+    public class BetVisualizationWindow : Window
+    {
+        public List<BetCard> betCards = new();
+        BetApp betApp;
+        VisualElement betScrollView;
+        public BetVisualizationWindow(BetApp app, VisualElement windowContainer) : base(app, windowContainer)
+        {
+            this.betApp = app;
+            betScrollView = windowContainer.Q<ScrollView>("BetScrollView");
 
+            Bet.BetPlaced += OnCreatedBet;
+        }
+        public void UpdateCards()
+        {
+            betScrollView.Clear();
+            betCards.Sort((a, b) => a.betInfo.betTime.CompareTo(b.betInfo.betTime));
+            betCards.ForEach(c => {
+                betScrollView.Add(c.Card);
+                c.Show();
+            });        
+        }
+        void OnCreatedBet(Bet betInfo)
+        {
+            BetCard newBetCard = new(betApp, betInfo);
+            betCards.Add(newBetCard);
             UpdateCards();
         }
     }

@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace Assets.Bet
+namespace Assets.Bet.Bets
 {
 
     public enum ComparisonType
@@ -94,6 +94,11 @@ namespace Assets.Bet
         protected void IncreaseCounter(int amount) {
             currentCount += amount;
             VerifyBet();
+        }
+
+        public override string GetBetType()
+        {
+            throw new NotImplementedException();
         }
     }
 }

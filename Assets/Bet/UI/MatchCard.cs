@@ -37,7 +37,6 @@ namespace Assets.Bet.UI
         }
         void UpdateMatchState(MatchState matchState)
         {
-            Debug.Log(matchState);
             bool Waiting = matchState == MatchState.Waiting;
             bool Playing = matchState == MatchState.FirstHalf || matchState == MatchState.SecondHalf;
             bool Ended = matchState == MatchState.MatchEnded;

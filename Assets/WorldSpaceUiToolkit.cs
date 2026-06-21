@@ -12,6 +12,7 @@ public class WorldSpaceUIToolkit : MonoBehaviour
 
     private UIDocument document;
     private PanelSettings panelSettings;
+    Vector2 lastPos = new(float.NaN, float.NaN);
 
     void Awake()
     {
@@ -24,19 +25,20 @@ public class WorldSpaceUIToolkit : MonoBehaviour
     Vector2 ScreenToPanel(Vector2 screenPosition)
     {
         if (inputCamera == null || uiCollider == null)
-            return new Vector2(float.NaN, float.NaN);
+            return lastPos;
 
         Ray ray = inputCamera.ScreenPointToRay(screenPosition);
         if (!uiCollider.Raycast(ray, out RaycastHit hit, 1000f))
-                return new Vector2(float.NaN, float.NaN);
+            return lastPos;
 
         Vector2 uv = hit.textureCoord;
         Vector2 panelPos = new(
             uv.x * panelSettings.targetTexture.width,
             uv.y * panelSettings.targetTexture.height
         );
-        
-        return panelPos;
+
+        lastPos = panelPos;
+        return lastPos;
     }
 }
 }

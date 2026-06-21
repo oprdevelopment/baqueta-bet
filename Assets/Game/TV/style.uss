@@ -1,0 +1,17 @@
+:root {
+}
+
+.h1 {
+    -unity-text-auto-size: best-fit 10px 100px;
+    -unity-text-generator: advanced;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    font-size: 98px;
+}
+
+.text {
+    -unity-text-auto-size: best-fit 10px 100px;
+    -unity-text-generator: advanced;
+}

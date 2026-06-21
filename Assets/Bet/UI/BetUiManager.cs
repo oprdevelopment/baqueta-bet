@@ -1,5 +1,6 @@
 using Assets.Interaction;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
 
 public static class IntExtension
@@ -21,13 +22,13 @@ namespace Assets.Bet.UI
     public class BetUiManager : MonoBehaviour
     {
         public BetManager betManager;
-        public VisualTreeAsset matchCardTemplate;
+        public VisualTreeAsset matchCardTemplate, betCardTemplate;
         public BetApp betApp; 
         public PaymentApp paymentApp;
         public VisualElement root;
         UIDocument document;
         Label systemClock, moneyDisplay;
-        public PlayerMovement playerMovement;
+        public PlayerMovement playerMovement {get; private set;}
         public OpenBetApp monitor {get; private set;}
         Image mouse;
         bool mouseOnScreen;
@@ -49,7 +50,6 @@ namespace Assets.Bet.UI
 
             ClockManager.TickInfo += UpdateSystemClock;
             CurrencyManager.BalanceChanged += UpdateMoneyDisplay;
-            betApp.Show();
 
             root.RegisterCallback<PointerEnterEvent>(evt =>
             {
@@ -64,7 +64,7 @@ namespace Assets.Bet.UI
         {
             if(!mouseOnScreen) return;
 
-            Vector2 screenPos = Input.mousePosition;
+            Vector2 screenPos = Mouse.current.position.ReadValue();
             screenPos.y = Screen.height - screenPos.y;
             Vector2 panelPos = RuntimePanelUtils.ScreenToPanel(mouse.panel, screenPos);
             mouse.style.left = panelPos.x;

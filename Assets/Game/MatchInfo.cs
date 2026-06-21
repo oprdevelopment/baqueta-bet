@@ -16,7 +16,7 @@ public enum MatchState
 public class MatchInfo
 {
     readonly MatchManager matchManager;
-    readonly List<Player> activePlayers;
+    public readonly List<Player> activePlayers;
     public Action<Player> FoulCommited;
     public Action<CardType, Player> CardGiven;
     public Action<Player> GoalScoredInfo;
@@ -30,6 +30,7 @@ public class MatchInfo
     public MatchState MatchState {private set; get;}
     public TimeInfo StartTime {private set; get;}
     public int GameTime {private set; get;}
+    public Team throwingTeam;
     int extraTime = 0;
     public MatchInfo(Team home, Team away, MatchManager matchManager)
     {
@@ -78,13 +79,15 @@ public class MatchInfo
         float combinedStrenght = Home.Strenght + Away.Strenght;
         float goalScoredChance = combinedStrenght * (1 + timePassed / 90f / 4) / 2500 / 2;
 
-        float randomTick = UnityEngine.Random.Range(0f, 1f);
-        if(randomTick <= goalScoredChance)
+        float foulChance = 0.08f;
+
+        float randomGoalTick = UnityEngine.Random.Range(0f, 1f);
+        if(randomGoalTick <= goalScoredChance)
             RandomGoal(combinedStrenght);
 
-        
-        Debug.Log(goalScoredChance);
-
+        float randomFoulTick = UnityEngine.Random.Range(0f, 1f);
+        if(randomFoulTick <= foulChance)
+            RandomFoul();
     }
     void RandomGoal(float combinedStrenght)
     {
@@ -94,7 +97,6 @@ public class MatchInfo
             ScoreGoal(Player.GetRandomPlayer(activePlayers.Where(p => p.team == Home).ToList()));
         else
             ScoreGoal(Player.GetRandomPlayer(activePlayers.Where(p => p.team == Away).ToList()));
-
 
     }
     void RandomFoul()
@@ -192,6 +194,13 @@ public class MatchInfo
     {
         if(player.team == Home) HomeScore++;
         if(player.team == Away) AwayScore++;
+
+        GoalScored?.Invoke();
+    }
+    public void RandomOwnGoal(Team team)
+    {
+        if(team == Home) AwayScore++;
+        if(team == Away) HomeScore++;
 
         GoalScored?.Invoke();
     }

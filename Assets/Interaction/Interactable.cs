@@ -4,10 +4,25 @@ public class Interactable : MonoBehaviour
 {
     Outline outline;
     bool canEnable = true;
+    InputSystem_Actions input;
+    protected PlayerMovement playerMovement;
+    void OnEnable()
+    {
+        input.Player.Enable();
+    }
+    void OnDisable()
+    {
+        input.Player.Disable();
+    }
     void Awake()
     {
         outline = GetComponent<Outline>();
         outline.enabled = false;
+        input = new();
+    }
+    void Start()
+    {
+        playerMovement = FindAnyObjectByType<PlayerMovement>();
     }
     public virtual void Interact()
     {
@@ -31,7 +46,7 @@ public class Interactable : MonoBehaviour
     }
     void OnMouseOver()
     {
-        if(canEnable && Input.GetMouseButtonDown(0))
+        if(canEnable && input.Player.Interact.WasPressedThisFrame())
             Interact();
     }
 }

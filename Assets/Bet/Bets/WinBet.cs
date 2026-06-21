@@ -1,4 +1,4 @@
-namespace Assets.Bet
+namespace Assets.Bet.Bets
 {       
     public class WinBet : Bet
     {
@@ -6,6 +6,11 @@ namespace Assets.Bet
         public WinBet(BetManager betManager, MatchInfo matchInfo, float multiplier, Team winnerTeam) : base(betManager, matchInfo, multiplier)
         {
             this.winnerTeam = winnerTeam;
+        }
+
+        public override string GetBetType()
+        {
+            return winnerTeam != null ? $"Win ({winnerTeam.name})" : "Draw";
         }
 
         protected override void OnCreateBet()

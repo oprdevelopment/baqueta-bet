@@ -1,0 +1,42 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/style.uss?fileID=7433441132597879392&amp;guid=8fef9d918d6981342983b2a32111364e&amp;type=3#style"/>
+    <ui:VisualElement name="Manipulacao" style="flex-grow: 1; position: absolute; width: 20%; height: 50%; top: 50%; translate: -50% -50%; left: 15%; background-color: rgb(255, 249, 182); border-bottom-left-radius: 0; border-bottom-right-radius: 60px; border-top-right-radius: 60px; border-top-left-radius: 0; border-top-width: 9px; border-right-width: 9px; border-bottom-width: 9px; border-left-width: 9px; border-left-color: rgba(0, 0, 0, 0.361); border-right-color: rgba(0, 0, 0, 0); border-top-color: rgba(0, 0, 0, 0); border-bottom-color: rgba(0, 0, 0, 0); padding-top: 0; align-items: stretch; justify-content: flex-start; align-self: auto;">
+        <ui:VisualElement name="MatchSelection" style="flex-grow: 1; display: none;">
+            <ui:Label text="Game Manipulation" name="Label" style="-unity-text-auto-size: best-fit 10px 100px; -unity-text-generator: advanced; height: 12%; -unity-text-align: upper-center; padding-top: 11px; padding-right: 11px; padding-bottom: 11px; padding-left: 11px; -unity-font-style: bold; -unity-font-definition: resource(&quot;Inter-VariableFont_opsz,wght&quot;);"/>
+            <ui:ScrollView horizontal-scroller-visibility="Hidden" vertical-scroller-visibility="Hidden" name="ScrollView" style="width: 100%; height: 100%; padding-bottom: 31px;">
+                <ui:Button text="Brazil x Croatia" name="Button" class="button"/>
+            </ui:ScrollView>
+        </ui:VisualElement>
+        <ui:VisualElement name="ManipulacaoSelection" style="flex-grow: 1; justify-content: space-between; padding-top: 1%; padding-right: 0; padding-bottom: 6%; padding-left: 0; display: flex;">
+            <ui:VisualElement name="" style="flex-grow: 0; border-top-width: 0; border-right-width: 0; border-bottom-width: 1px; border-left-width: 0; border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0); height: 22%; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px;">
+                <ui:Label text="Yellow Card" enable-rich-text="true" name="" class="h1" style="height: 42%;"/>
+                <ui:VisualElement name="" style="flex-grow: 1; flex-direction: row; width: 100%; border-bottom-width: 0; border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0); border-top-width: 0; border-right-width: 0; border-left-width: 0; height: 0%;">
+                    <ui:Button text="Home" name="HomeYellow" class="button" style="width: 50%; height: auto;"/>
+                    <ui:Button text="Away" name="AwayYellow" class="button" style="width: 50%; height: initial;"/>
+                </ui:VisualElement>
+            </ui:VisualElement>
+            <ui:VisualElement name="" style="flex-grow: 0; border-top-width: 0; border-right-width: 0; border-bottom-width: 1px; border-left-width: 0; border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0); height: 22%; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px;">
+                <ui:Label text="Red Card" enable-rich-text="true" name="" class="h1" style="height: 42%;"/>
+                <ui:VisualElement style="flex-grow: 1; flex-direction: row; width: 100%; border-bottom-width: 0; border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0); border-top-width: 0; border-right-width: 0; border-left-width: 0; height: 0%;">
+                    <ui:Button text="Home" name="HomeRed" class="button" style="width: 50%; height: auto;"/>
+                    <ui:Button text="Away" name="AwayRed" class="button" style="width: 50%; height: initial;"/>
+                </ui:VisualElement>
+            </ui:VisualElement>
+            <ui:VisualElement name="" style="flex-grow: 0; border-top-width: 0; border-right-width: 0; border-bottom-width: 1px; border-left-width: 0; border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0); height: 22%; margin-top: 0; margin-right: 0; margin-bottom: 0%; margin-left: 0; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px;">
+                <ui:Label text="Own Goal" enable-rich-text="true" name="" class="h1" style="height: 42%;"/>
+                <ui:VisualElement style="flex-grow: 1; flex-direction: row; width: 100%; border-bottom-width: 0; border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0); border-top-width: 0; border-right-width: 0; border-left-width: 0; height: 0%;">
+                    <ui:Button text="Home" name="HomeOwnGoal" class="button" style="width: 50%; height: auto;"/>
+                    <ui:Button text="Away" name="AwayOwnGoal" class="button" style="width: 50%; height: initial;"/>
+                </ui:VisualElement>
+            </ui:VisualElement>
+            <ui:VisualElement name="" style="flex-grow: 0; border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0; border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0); height: 22%; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px;">
+                <ui:Label text="Throw Match" enable-rich-text="true" name="" class="h1" style="height: 42%;"/>
+                <ui:VisualElement style="flex-grow: 1; flex-direction: row; width: 100%; border-bottom-width: 0; border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0); border-top-width: 0; border-right-width: 0; border-left-width: 0; height: 0%;">
+                    <ui:Button text="Home" name="HomeThrow" class="button" style="width: 50%; height: auto;"/>
+                    <ui:Button text="Away" name="AwayThrow" class="button" style="width: 50%; height: initial;"/>
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:Button text="X" name="Close" class="button" style="position: absolute; border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0; color: rgb(255, 0, 0); -unity-font-style: bold; font-size: 20px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; left: 2%; top: 0%; width: 7%; height: 4%;"/>
+    </ui:VisualElement>
+</ui:UXML>

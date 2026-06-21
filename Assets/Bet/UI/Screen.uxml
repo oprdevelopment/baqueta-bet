@@ -1,4 +1,5 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:Template name="BetCard" src="project://database/Assets/Bet/UI/BetCard.uxml?fileID=9197481963319205126&amp;guid=7293d64301f6b904f97ea90c67446949&amp;type=3#BetCard"/>
     <ui:Template name="MatchCardTemplate" src="project://database/Assets/Bet/UI/MatchCardTemplate.uxml?fileID=9197481963319205126&amp;guid=439b6e4b167cfbe44b43f6f2fe7b694b&amp;type=3#MatchCardTemplate"/>
     <Style src="project://database/Assets/Bet/UI/Style.uss?fileID=7433441132597879392&amp;guid=bac7602973f7c0946b831f3906d5068e&amp;type=3#Style"/>
     <ui:VisualElement name="VisualElement" enabled="true" style="flex-grow: 1; width: 100%; height: 100%; display: flex; color: rgb(0, 0, 0); background-color: rgb(0, 37, 255); background-position-x: center;">
@@ -32,7 +33,7 @@
                         </ui:VisualElement>
                     </ui:VisualElement>
                     <ui:VisualElement name="" style="flex-grow: 1; color: rgb(21, 25, 35);">
-                        <ui:VisualElement name="MatchSelectionContainer" style="flex-grow: 1; align-items: flex-start; justify-content: flex-start; align-self: flex-start; height: initial; flex-direction: row; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; width: 100%; padding-top: 29px; padding-right: 29px; padding-bottom: 29px; padding-left: 29px; flex-wrap: wrap; align-content: center; display: flex; background-color: rgb(21, 25, 35); border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 10px; border-bottom-left-radius: 10px; border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0; color: rgba(0, 73, 255, 0);">
+                        <ui:VisualElement name="MatchSelectionContainer" style="flex-grow: 1; align-items: flex-start; justify-content: flex-start; align-self: flex-start; height: initial; flex-direction: row; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; width: 100%; padding-top: 29px; padding-right: 29px; padding-bottom: 29px; padding-left: 29px; flex-wrap: wrap; align-content: center; display: none; background-color: rgb(21, 25, 35); border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 10px; border-bottom-left-radius: 10px; border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0; color: rgba(0, 73, 255, 0);">
                             <ui:ScrollView name="MatchScrollView" style="width: 100%; height: 100%; flex-direction: row; align-items: flex-start; justify-content: space-evenly; align-content: auto; align-self: auto;">
                                 <ui:Instance template="MatchCardTemplate"/>
                                 <ui:Instance template="MatchCardTemplate"/>
@@ -48,6 +49,11 @@
                                 <ui:Button text="Draw &lt;color=green&gt;1.2x" name="DrawButton" class="teamName h1 draw"/>
                                 <ui:Button text="Croatia &lt;color=green&gt;1.2x" name="AwayWinButton" class="teamName h1"/>
                             </ui:VisualElement>
+                        </ui:VisualElement>
+                        <ui:VisualElement name="MyBetsContainer" style="flex-grow: 1; align-items: flex-start; justify-content: flex-start; align-self: flex-start; height: initial; flex-direction: row; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; width: 100%; padding-top: 29px; padding-right: 29px; padding-bottom: 29px; padding-left: 29px; flex-wrap: wrap; align-content: center; display: flex; background-color: rgb(21, 25, 35); border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 10px; border-bottom-left-radius: 10px; border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0; color: rgba(0, 73, 255, 0);">
+                            <ui:ScrollView name="BetScrollView" style="width: 100%; height: 100%; flex-direction: row; align-items: flex-start; justify-content: space-evenly; align-content: auto; align-self: auto;">
+                                <ui:Instance template="BetCard" name="BetCard"/>
+                            </ui:ScrollView>
                         </ui:VisualElement>
                     </ui:VisualElement>
                 </ui:VisualElement>

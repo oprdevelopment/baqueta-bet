@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
-
+using Assets.Bet.Bets;
 using UnityEngine.UIElements;
+using UnityEngine;
+using UnityEngine.Assertions.Must;
 
 namespace Assets.Bet.UI
 {
@@ -24,7 +26,7 @@ namespace Assets.Bet.UI
         public void ChangeWindow(Window newWindow)
         {
             currentWindow?.Hide();
-            newWindow.Show();
+            newWindow?.Show();
             currentWindow = newWindow;
         }
 
@@ -58,10 +60,8 @@ namespace Assets.Bet.UI
             currentBet = new WinBet(ctx.betManager, matchInfo, odd, winnerTeam);
             ChangeMatchInfo(matchInfo);
 
-            if(winnerTeam)
-                titleLabel.text = $"{matchInfo.Home.name} x {matchInfo.Away.name}\r\nWin({winnerTeam.name})";
-            else
-                titleLabel.text = $"{matchInfo.Home.name} x {matchInfo.Away.name}\r\nDraw";
+            titleLabel.text = $"{matchInfo.Home.name} x {matchInfo.Away.name}\r\n{currentBet.GetBetType()}";
+
             oddLabel.text = $"Odd: <color=green>{odd:F2}x";
             riskField.value = 0;
             rewardField.value = 0;
@@ -72,7 +72,7 @@ namespace Assets.Bet.UI
             placeBetButton.clicked += () => 
             {
                 if(riskField.value <= 0) return;
-                currentBet.PlaceBet(riskField.value);
+                currentBet.PlaceBet(riskField.value, currentBet.GetBetType());
                 Hide();
             };
         }
@@ -105,7 +105,8 @@ namespace Assets.Bet.UI
     {
         public VisualElement windowContainer;
         public BetMakerWindow betMakerWindow;
-        public Window matchSelectionWindow;
+        public MatchSelectionWindow matchSelectionWindow;
+        public BetVisualizationWindow betVisualizationWindow;
         public VisualTreeAsset matchCardTemplate;
         public Button matchesButton, myBetsButton;
         public BetApp(BetUiManager betUiManager, VisualElement appContainer) : base(betUiManager, appContainer)
@@ -113,6 +114,7 @@ namespace Assets.Bet.UI
             windowContainer = appContainer.Q<VisualElement>("Window");
             matchSelectionWindow = new MatchSelectionWindow(this, windowContainer.Q<VisualElement>("MatchSelectionContainer"));
             betMakerWindow = new BetMakerWindow(this, windowContainer.Q<VisualElement>("BetMakerContainer"));
+            betVisualizationWindow = new BetVisualizationWindow(this, windowContainer.Q<VisualElement>("MyBetsContainer"));
 
             matchesButton = windowContainer.Q<Button>("MatchesButton");
             myBetsButton = windowContainer.Q<Button>("MyBetsButton");
@@ -121,11 +123,14 @@ namespace Assets.Bet.UI
             {
                 ChangeWindow(matchSelectionWindow);  
             };
+            myBetsButton.clicked += () =>
+            {
+                ChangeWindow(betVisualizationWindow);
+            };
             
             windows.Add(matchSelectionWindow);
             windows.Add(betMakerWindow);
-
-            ChangeWindow(matchSelectionWindow);
+            windows.Add(betVisualizationWindow);
         }
         public override void Hide()
         {
@@ -134,6 +139,7 @@ namespace Assets.Bet.UI
         }
         public override void Show()
         {
+            ChangeWindow(matchSelectionWindow);
             base.Show();
         }
     }
