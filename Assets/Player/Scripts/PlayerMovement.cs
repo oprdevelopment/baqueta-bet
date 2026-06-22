@@ -26,9 +26,6 @@ public class PlayerMovement : MonoBehaviour
     {
         movementInput = Vector2.zero;
         rotationInput = Vector2.zero;
-
-        LockCam(false);
-        Cursor.visible = false;
     }
 
     void Update()

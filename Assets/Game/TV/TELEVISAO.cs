@@ -15,8 +15,11 @@ public class TELEVISAO : MonoBehaviour
     public int currentDay = 0;
     Interactable interactable;
     List<MatchVisu> matchVisus = new();
+    public SoundEffects soundEffects;
+    MatchVisu currentVisu = null;
     void OnEnable()
     {
+        soundEffects = FindAnyObjectByType<SoundEffects>();
         root = document.rootVisualElement;
         controllerRoot = controllerDocument.rootVisualElement.Q<VisualElement>("TVSelection");
         
@@ -61,18 +64,33 @@ public class TELEVISAO : MonoBehaviour
     }
     public void EnableMatchVisu(MatchVisu visu)
     {
-        matchVisus.ForEach(v =>
-        {
-            if(v != visu) v.visu.Display(false);
-        });
-
+        if(currentVisu != null)
+        {   
+            currentVisu.visu.Display(false);
+            currentVisu.info.GoalScored -= PlayGoalSound;
+            currentVisu.info.MatchStateChange -= EffectOnChange;   
+        }
+        currentVisu = visu;
         visu.visu.Display(true);
+        visu.info.GoalScored += PlayGoalSound;
+        visu.info.MatchStateChange += EffectOnChange;
     }
     void OnCreatedMatch(MatchInfo info)
     {
         var visu = new MatchVisu(this, info);
         matchVisus.Add(visu);
         UpdateCards();
+    }
+    void EffectOnChange(MatchState state)
+    {
+        if(state == MatchState.MatchEnded)
+            soundEffects.PlayClip(soundEffects.clips[1]);
+        else
+            soundEffects.PlayClip(soundEffects.clips[2]);
+    }
+    void PlayGoalSound()
+    {
+        soundEffects.PlayClip(soundEffects.clips[0]);
     }
 }
 

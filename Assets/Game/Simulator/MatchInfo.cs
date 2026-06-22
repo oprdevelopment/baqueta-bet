@@ -87,7 +87,7 @@ public class MatchInfo
         float combinedStrenght = Home.Strenght + Away.Strenght;
         float goalScoredChance = combinedStrenght * (1 + timePassed / 90f / 4) / 2500 / 2;
 
-        float foulChance = 0.20f;
+        float foulChance = 0.15f;
 
         float randomGoalTick = UnityEngine.Random.Range(0f, 1f);
         if(randomGoalTick <= goalScoredChance)
@@ -100,7 +100,13 @@ public class MatchInfo
     void RandomGoal(float combinedStrenght)
     {
         float homeChance = Home.Strenght / combinedStrenght;
-
+        if(throwingTeam != null)
+        {
+            if(throwingTeam == Home)
+                homeChance -= .50f;
+            else 
+                homeChance += .5f;
+        }
         if(UnityEngine.Random.Range(0f, 1f) < homeChance)
             ScoreGoal(Player.GetRandomPlayer(activePlayers.Where(p => p.team == Home).ToList()));
         else

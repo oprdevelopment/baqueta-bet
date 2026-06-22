@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Assets.Bet.Bets;
 using UnityEngine;
 using Unity.Mathematics;
+using Unity.VisualScripting;
 
 namespace Assets.Bet.UI
 {
@@ -176,12 +177,28 @@ namespace Assets.Bet.UI
                     ComparisonType.Over => oddGreater,
                     ComparisonType.Under => oddLess,
                 };     
-                oddYellowLabel.text = oddYellow.ToString();        
+                oddYellowLabel.text = $"{oddYellow:F2}x";        
+            });
+            sliderRed.RegisterValueChangedCallback(c =>
+            {
+                UpdateCount(CardType.Red, c.newValue);
+                (float oddGreater, float oddLess) = BetManager.CalculateOddCard(currentMatchInfo, CardType.Red, countRed);
+                oddRed = comparisonRed switch
+                {
+                    ComparisonType.Over => oddGreater,
+                    ComparisonType.Under => oddLess,
+                };     
+                oddRedLabel.text = $"{oddRed:F2}x";        
             });
 
             betYellow.clicked += () =>
             {
                 betApp.ctx.paymentApp.SetCardBet(CardType.Yellow, oddYellow, currentMatchInfo, comparisonYellow, countYellow + 0.5f);
+                betApp.ctx.paymentApp.Show();
+            };
+            betRed.clicked += () =>
+            {
+                betApp.ctx.paymentApp.SetCardBet(CardType.Red, oddRed, currentMatchInfo, comparisonRed, countRed + 0.5f);
                 betApp.ctx.paymentApp.Show();
             };
 
@@ -209,8 +226,10 @@ namespace Assets.Bet.UI
 
             sliderYellow.value = 5;
             dropdownYellow.value = "Over";
-            sliderRed.value = 5;
+            oddYellowLabel.text = "0x";
+            sliderRed.value = 2;
             dropdownRed.value = "Over";
+            oddRedLabel.text = "0x";
         }
         void UpdateTeamName()
         {
