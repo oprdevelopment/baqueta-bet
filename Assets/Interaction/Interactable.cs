@@ -13,15 +13,19 @@ public class Interactable : MonoBehaviour
         outline = GetComponent<Outline>();
         outline.enabled = false;
         input = new();
+        playerMovement = FindAnyObjectByType<PlayerMovement>();
+    }
+    protected virtual void Enabled()
+    {
         input.Player.Enable();
+    }
+    void OnEnable()
+    {
+        Enabled();
     }
     void OnDisable()
     {
         input.Player.Disable();
-    }
-    void Start()
-    {
-        playerMovement = FindAnyObjectByType<PlayerMovement>();
     }
     public virtual void Interact()
     {
@@ -57,8 +61,9 @@ public class Interactable : MonoBehaviour
             outline.enabled = true;
             outlineEnabled = true;
         }
-
         if(canEnable && input.Player.Interact.WasPressedThisFrame())
+        {
             Interact();
+        }
     }
 }

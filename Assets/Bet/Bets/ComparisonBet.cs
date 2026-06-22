@@ -39,7 +39,6 @@ namespace Assets.Bet.Bets
         void OnCardGiven(CardType card, Player player)
         {
             if(card != cardType) return;
-            Debug.Log("Check Foul");
             IncreaseCounter(1);
         }
 

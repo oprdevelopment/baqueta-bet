@@ -32,7 +32,7 @@ public class MatchInfo
     public int GameTime {private set; get;}
     public Team throwingTeam;
     int extraTime = 0;
-    public MatchInfo(Team home, Team away, MatchManager matchManager)
+    public MatchInfo(Team home, Team away, MatchManager matchManager, int day)
     {
         this.Home = home;
         this.Away = away;
@@ -49,7 +49,7 @@ public class MatchInfo
         {
             Hours = UnityEngine.Random.Range(10, 22),
             Minutes = possibleMinutes[UnityEngine.Random.Range(0, possibleMinutes.Length)],
-            Day = UnityEngine.Random.Range(0, Objective.MaxDays)
+            Day = day
         };
 
         ClockManager.Tick += OnTick;

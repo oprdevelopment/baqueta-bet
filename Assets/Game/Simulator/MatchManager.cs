@@ -10,15 +10,19 @@ public class MatchManager : MonoBehaviour
     void Awake()
     {
         Matches = new();
-        for(int i = 0; i < 20; i++)
+        int matchPerDay = 23 / Objective.MaxDays;
+        for(int i = 0; i <= Objective.MaxDays; i++)
         {
-            CreateNewMatch();
+            for(int j = 0; i < matchPerDay; i++)
+            {
+                CreateNewMatch(j);
+            }
         }
     }
 
-    void CreateNewMatch()
+    void CreateNewMatch(int day)
     {
-        MatchInfo newMatch = new(Team.GenerateRandomTeam(), Team.GenerateRandomTeam(), this);
+        MatchInfo newMatch = new(Team.GenerateRandomTeam(), Team.GenerateRandomTeam(), this, day);
         Matches.Add(newMatch);
         CreatedMatch?.Invoke(newMatch);
     }

@@ -88,7 +88,6 @@ namespace Assets.Bet.UI
         }
         void OnCreatedBet(Bet betInfo)
         {
-            Debug.Log("InsertBet");
             BetCard newBetCard = new(betApp, betInfo);
             betCards.Add(newBetCard);
             UpdateCards();

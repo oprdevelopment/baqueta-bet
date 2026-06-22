@@ -11,9 +11,11 @@ public class Sleeeep : Interactable
     Label clock;
     Button wakeUp;
     ClockManager clockManager;
+    public bool canInteract;
     public float sleepTransitionTime, sleepSpeed, startingSpeed;
-    void OnEnable()
+    protected override void Enabled()
     {
+        base.Enabled();
         clockManager = FindAnyObjectByType<ClockManager>();
         startingSpeed = clockManager.secondsPerMinute;
 
@@ -31,9 +33,11 @@ public class Sleeeep : Interactable
         {
             clock.text = $"{info.FormatedDay('/')} {info.FormatedTime('h')}";  
         };
+        canInteract = false;
     }
     IEnumerator Sleep()
     {
+        canInteract = false;
         float elapsedTime = 0;
         root.Display(true);
 
@@ -48,9 +52,11 @@ public class Sleeeep : Interactable
 
         clockManager.secondsPerMinute = sleepSpeed;
         root.style.opacity = 1;
+        canInteract = true;
     }
     IEnumerator WakeUp()
     {
+        canInteract = false;
         float elapsedTime = 0;
 
         while(elapsedTime < sleepTransitionTime)
@@ -65,9 +71,11 @@ public class Sleeeep : Interactable
         clockManager.secondsPerMinute = startingSpeed;
         root.style.opacity = 0;
         root.Display(false);
+        canInteract = true;
     }
     public override void Interact()
     {
+        if(!canInteract) return;
         base.Interact();
         UnityEngine.Cursor.lockState = CursorLockMode.Confined;
         UnityEngine.Cursor.visible = true;
