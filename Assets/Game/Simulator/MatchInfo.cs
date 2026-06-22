@@ -87,7 +87,7 @@ public class MatchInfo
         float combinedStrenght = Home.Strenght + Away.Strenght;
         float goalScoredChance = combinedStrenght * (1 + timePassed / 90f / 4) / 2500 / 2;
 
-        float foulChance = 0.08f;
+        float foulChance = 0.20f;
 
         float randomGoalTick = UnityEngine.Random.Range(0f, 1f);
         if(randomGoalTick <= goalScoredChance)
@@ -179,11 +179,11 @@ public class MatchInfo
                 card = CardType.Yellow;
                 break;
             case FoulIntensity.Medium:
-                chance += 0.2f;
+                chance += 0.4f;
                 card = Card.RandomCard(chance, CardType.Yellow, CardType.None);
                 break;
             case FoulIntensity.Heavy:
-                chance += 0.35f;
+                chance += 0.25f;
                 card = Card.RandomCard(chance, CardType.Red, CardType.Yellow);
                 break;
             case FoulIntensity.Brutal:
@@ -192,11 +192,9 @@ public class MatchInfo
                 break;
         }
 
-        GiveCard(card, player);
         Fouls.Add(new(card, player));
-
-
         FoulCommited?.Invoke(player);
+        GiveCard(card, player);
     }
     public void ScoreGoal(Player player)
     {

@@ -54,6 +54,26 @@ namespace Assets.Bet.UI
             riskField = appContainer.Q<FloatField>("RiskField");
             rewardField = appContainer.Q<FloatField>("RewardField");
             placeBetButton = appContainer.Q<Button>("PlaceBetButton");
+
+            riskField.RegisterValueChangedCallback(UpdateRiskField);
+            rewardField.RegisterValueChangedCallback(UpdateRewardField);
+            placeBetButton.clicked += () => 
+            {
+                if(riskField.value <= 0) return;
+                if(!currentBet.PlaceBet(riskField.value, currentBet.GetBetType())) return;
+                Hide();
+            };
+        }
+        internal void SetCardBet(CardType card, float odd, MatchInfo matchInfo, ComparisonType comparisonType, float desiredAmount)
+        {
+            currentBet = new ComparisonBet(ctx.betManager, card, matchInfo, odd, comparisonType, desiredAmount);
+            ChangeMatchInfo(matchInfo);
+
+            titleLabel.text = $"{matchInfo.Home.name} x {matchInfo.Away.name}\r\n{currentBet.GetBetType()}";
+
+            oddLabel.text = $"Odd: <color=green>{odd:F2}x";
+            riskField.value = 0;
+            rewardField.value = 0;
         }
         public void SetWinBet(MatchInfo matchInfo, float odd, Team winnerTeam)
         {
@@ -65,16 +85,6 @@ namespace Assets.Bet.UI
             oddLabel.text = $"Odd: <color=green>{odd:F2}x";
             riskField.value = 0;
             rewardField.value = 0;
-
-            riskField.RegisterValueChangedCallback(UpdateRiskField);
-            rewardField.RegisterValueChangedCallback(UpdateRewardField);
-
-            placeBetButton.clicked += () => 
-            {
-                if(riskField.value <= 0) return;
-                currentBet.PlaceBet(riskField.value, currentBet.GetBetType());
-                Hide();
-            };
         }
         void ChangeOnStateChange(MatchState state)
         {
@@ -91,14 +101,17 @@ namespace Assets.Bet.UI
         }
         void UpdateRiskField(ChangeEvent<float> evt)
         {
+            if(currentBet == null) return;
             if(evt.newValue < 0) riskField.SetValueWithoutNotify(0);
             rewardField.SetValueWithoutNotify((float)Math.Round(evt.newValue * currentBet.Multiplier, 2));
         }
         void UpdateRewardField(ChangeEvent<float> evt)
         {
+            if(currentBet == null) return;
             if(evt.newValue < 0) rewardField.SetValueWithoutNotify(0);
             riskField.SetValueWithoutNotify((float)Math.Round(evt.newValue / currentBet.Multiplier, 2));
         }
+
     }
 
     public class BetApp : App

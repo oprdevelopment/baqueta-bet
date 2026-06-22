@@ -42,11 +42,13 @@ public class TELEVISAO : MonoBehaviour
     public void ShowController(Interactable interactable)
     {
         this.interactable = interactable;
+        controllerRoot.pickingMode = PickingMode.Position;
         controllerRoot.Display(true);
     }
     public void HideController()
     {
         controllerRoot.Display(false);
+        controllerRoot.pickingMode = PickingMode.Ignore;
         interactable.DeInteract();
     }
     public void UpdateCards()
@@ -124,6 +126,23 @@ public class MatchVisu
 
             infoAsset.Q<Label>("Time").text = $"{info.GetRealGameTime()}'";
 
+            scrollView.Insert(0, infoAsset);
+        };
+
+        info.FoulCommited += player =>
+        {
+            var infoAsset = tv.infoTreeAsset.Instantiate();
+            infoAsset.Q<Label>("HomeInfo").text = player.team != info.Home ? "Foul" : "";
+            infoAsset.Q<Label>("AwayInfo").text = player.team != info.Away ? "Foul" : "";
+            infoAsset.Q<Label>("Time").text = $"{info.GetRealGameTime()}'";
+            scrollView.Insert(0, infoAsset);
+        };
+        info.CardGiven += (cardType, player) =>
+        {
+            var infoAsset = tv.infoTreeAsset.Instantiate();
+            infoAsset.Q<Label>("HomeInfo").text = player.team != info.Home ? $"{cardType} to {player.name}" : "";
+            infoAsset.Q<Label>("AwayInfo").text = player.team != info.Away ? $"{cardType} to {player.name}" : "";
+            infoAsset.Q<Label>("Time").text = $"{info.GetRealGameTime()}'";
             scrollView.Insert(0, infoAsset);
         };
 

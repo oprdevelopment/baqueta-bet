@@ -1,11 +1,11 @@
 using System;
 public enum FoulIntensity
 {
-    Light = 16,
-    Medium = 8,
-    Tatical = 4,
-    Heavy = 2,
-    Brutal = 1,
+    Light = 20,
+    Medium = 19,
+    Tatical = 15,
+    Heavy = 5,
+    Brutal = 2,
 }
 
 [Serializable]

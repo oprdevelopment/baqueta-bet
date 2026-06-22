@@ -1,7 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using Assets.Bet.Bets;
 using UnityEngine;
 using UnityEngine.SocialPlatforms.Impl;
+using UnityEngine.UIElements;
 
 namespace Assets.Bet
 {
@@ -32,46 +35,42 @@ namespace Assets.Bet
             betList = new();
         }
 
-        // public static (float oddGreater, float oddLess, float oddEqual) CalculateGoalsOdd(MatchInfo info, int targetGoals, IndividualComparisonType individual = IndividualComparisonType.All, Team individualTeam = null, Player individualPlayer= null)
-        // {
-        //     float timeRemaining = info.MatchState switch
-        //     {
-        //         MatchState.Waiting => 1,
-        //         MatchState.Interval => 0.5f,
-        //         _ => 0.5f
-        //     };
+        private static float ToOdd(float probability)
+        {
+            return (float ) Math.Round(probability <= 0.001f
+                ? 999f
+                : 1f / probability, 2);
+        }
 
-        //     float mediaHome = (.8f + (2.8f * (info.Home.Strenght - 0.1f) / 0.9f)) * timeRemaining;
-        //     float mediaAway = (.2f + (2.8f * (info.Away.Strenght - 0.1f) / 0.9f)) * timeRemaining;
+        public static (float oddGreater, float oddLess) CalculateOddCard(MatchInfo info, CardType cardType, int targetCards)
+        {
+            int totalCards = info.Fouls.Count(f => f.cardGiven == cardType);
 
-        //     int currentGoals = individual switch
-        //     {
-        //         IndividualComparisonType.All => info.AwayScore + info.HomeScore,
-        //         IndividualComparisonType.TeamOnly => individualTeam == info.Home ? info.HomeScore : info.AwayScore,
-        //         IndividualComparisonType.PlayerOnly => individualPlayer.goals
-        //     };
+            float progress = Math.Clamp(info.GetRealGameTime() / 90f, 0f, 1f);
+            float remaining = 1f - progress;
 
-        //     float totalStrengt = individual switch
-        //     {
-        //         IndividualComparisonType.All => mediaAway + mediaHome,
-        //         IndividualComparisonType.TeamOnly => individualTeam == info.Home ? mediaHome : mediaAway,
-        //         IndividualComparisonType.PlayerOnly => individualPlayer.team == info.Home ? mediaHome : mediaAway
-        //     };
+            float averagePerGame = cardType switch
+            {
+                CardType.Yellow => 6f,
+                CardType.Red => 0.4f,
+                _ => 5f
+            };
 
-        //     int remainingGoals = targetGoals - currentGoals;
+            float expectedRemaining = averagePerGame * remaining;
+            float expectedFinal = totalCards + expectedRemaining;
 
-        //     float difference = totalStrengt - remainingGoals;
+            float distance = expectedFinal - targetCards;
 
-        //     float chanceGreater = .5f + (difference * .25f);
-        //     float chanceEqual = .25f - (Math.Abs(difference) * .15f);
-        //     float chanceLess = 1 - chanceEqual - chanceGreater;
+            float over = 0.5f + distance * 0.1f;
 
-        //     chanceGreater = Math.Clamp(chanceGreater, 0.05f, 0.99f);
-        //     chanceLess = Math.Clamp(chanceLess, 0.05f, 0.99f);
-        //     chanceEqual = Math.Clamp(chanceEqual, 0.05f, 0.99f);
+            over = Math.Clamp(over, 0.01f, 0.99f);
 
-        //     return (1 / chanceGreater, 1 / chanceLess, 1 / chanceEqual);
-        // }
+            float under = 1f - over;
+            return (
+                ToOdd(over),
+                ToOdd(under)
+            );
+        }
 
         public static (float oddHome, float oddAway, float oddDraw) CalculateWinOdd(MatchInfo info)
         {

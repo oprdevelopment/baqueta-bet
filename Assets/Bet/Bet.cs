@@ -35,9 +35,9 @@ namespace Assets.Bet
             if(this.state != BetState.Pending) return;
             this.Multiplier = multiplier;
         }
-        public virtual void PlaceBet(float amount, string betType)
+        public virtual bool PlaceBet(float amount, string betType)
         {
-            if(this.state != BetState.Pending || !ctx.currencyManager.RemoveAmount(amount)) return;
+            if(this.state != BetState.Pending || !ctx.currencyManager.RemoveAmount(amount)) return false;
             this.Amount = amount;
 
             this.state = BetState.InProgress;
@@ -45,6 +45,7 @@ namespace Assets.Bet
 
             matchInfo.MatchStateChange += EndBet;
             BetPlaced?.Invoke(this);            
+            return true;
         }
         public void EndBet(MatchState matchState)
         {

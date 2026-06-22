@@ -6,9 +6,8 @@ namespace Assets.Bet.Bets
 
     public enum ComparisonType
     {
-        Equal,
-        GreaterThan,
-        LessThan
+        Over,
+        Under
     }
     public enum IndividualComparisonType
     {
@@ -20,73 +19,43 @@ namespace Assets.Bet.Bets
     {
         int currentCount = 0;
         float desiredCount;
-        Team comparedTeam;
-        Player comparedPlayer;
         ComparisonType comparisonType;
-        Action<Player> playerDependentEvent;
-        IndividualComparisonType invidualComparisonType;
-        public ComparisonBet(BetManager betManager, MatchInfo matchInfo, CurrencyManager currencyManager, float multiplier, ComparisonType comparisonType, Action<Player> playerDependentEvent, float desiredCount) : base(betManager, matchInfo, multiplier)
+        CardType cardType;
+        public ComparisonBet(BetManager betManager, CardType cardType, MatchInfo matchInfo, float multiplier, ComparisonType comparisonType, float desiredCount) : base(betManager, matchInfo, multiplier)
         {
             this.comparisonType = comparisonType;
-            invidualComparisonType = IndividualComparisonType.All;
-        }
-        public void SetIndividualComparisonType(Player player)
-        {
-            comparedPlayer = player;
-        }
-        public void SetIndividualComparisonType(Team team)
-        {
-            comparedTeam = team;
-        }
-        public void ChangeDesiredAmount(float newAmount)
-        {
-            this.desiredCount = comparisonType switch
-            {
-                ComparisonType.GreaterThan => (int)Mathf.Ceil(newAmount),
-                ComparisonType.LessThan => (int)Math.Floor(newAmount),
-                _ => (int)newAmount
-            };
+            this.cardType = cardType;
+            this.desiredCount = desiredCount;
         }
         protected override void OnCreateBet()
         {
-            playerDependentEvent += OnPlayerDependentEvent;
+            matchInfo.CardGiven += OnCardGiven;
         }
 
         protected override void OnEndBet()
         {
-            playerDependentEvent -= OnPlayerDependentEvent;
+            matchInfo.CardGiven -= OnCardGiven;
         }
-        void OnPlayerDependentEvent(Player player)
+        void OnCardGiven(CardType card, Player player)
         {
+            if(card != cardType) return;
             Debug.Log("Check Foul");
-            switch (invidualComparisonType)
-            {
-                case IndividualComparisonType.All:
-                    IncreaseCounter(1);
-                    break;
-                case IndividualComparisonType.PlayerOnly:
-                    if(player == comparedPlayer) IncreaseCounter(1);
-                    break;
-                case IndividualComparisonType.TeamOnly:
-                    if(player.team == comparedTeam) IncreaseCounter(1);
-                    break;
-            }
+            IncreaseCounter(1);
         }
 
         protected override bool VerifyBet()
         {
             var win = comparisonType switch
             {
-                ComparisonType.Equal => currentCount == desiredCount,
-                ComparisonType.GreaterThan => currentCount >= desiredCount,
-                ComparisonType.LessThan => currentCount <= desiredCount,
+                ComparisonType.Over => currentCount > desiredCount,
+                ComparisonType.Under => currentCount < desiredCount,
                 _ => false
             };
 
-            if(win && comparisonType == ComparisonType.GreaterThan)
+            if(win && comparisonType == ComparisonType.Over)
                 WinBet();
 
-            if(!win && comparisonType == ComparisonType.LessThan)
+            if(!win && comparisonType == ComparisonType.Under)
                 LoseBet();
 
             return win;
@@ -98,7 +67,12 @@ namespace Assets.Bet.Bets
 
         public override string GetBetType()
         {
-            throw new NotImplementedException();
+            var comparison = comparisonType switch
+            {
+                ComparisonType.Over => ">",
+                ComparisonType.Under => "<",
+            };
+            return $"{cardType} Card {comparison} {desiredCount}";
         }
     }
 }
