@@ -21,8 +21,10 @@ public class Sleeeep : Interactable
         clock = root.Q<Label>("Clock");
         wakeUp = root.Q<Button>("WakeUp");
         
-        root.Display(false);
-        root.style.opacity = 0;
+        root.Display(true);
+        root.style.opacity = 1;
+        UnityEngine.Cursor.visible = true;
+        UnityEngine.Cursor.lockState = CursorLockMode.Confined;
 
         wakeUp.clicked += DeInteract;
         ClockManager.TickInfo += info =>
