@@ -9,5 +9,6 @@ public class VideoAcabar : MonoBehaviour
     {
         video = GetComponent<VideoPlayer>();
         video.loopPointReached += c => SceneManager.LoadScene(1);
+        Cursor.visible = false;
     }
 }

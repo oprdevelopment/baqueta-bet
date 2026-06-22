@@ -7,14 +7,16 @@ public class SoundEffects : MonoBehaviour
     void Start()
     {
         Bet.BetPlaced += Bettts;
-        PlayClip(clips[4]);
     }
     void Bettts(Bet b)
     {
+        PlayClip(clips[6]);
         b.StateChanged += state =>
         {
             if(state == BetState.Won)   
                 PlayClip(clips[3]);
+            if(state == BetState.Lost)
+                PlayClip(clips[7]);
         };
     }
     public void PlayClip(AudioClip clip)

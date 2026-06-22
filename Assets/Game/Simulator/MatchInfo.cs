@@ -17,7 +17,7 @@ public class MatchInfo
 {
     readonly MatchManager matchManager;
     public readonly List<Player> activePlayers;
-    public Action<Player> FoulCommited;
+    public Action<FoulIntensity, Player> FoulCommited;
     public Action<CardType, Player> CardGiven;
     public Action<Team, bool> GoalScoredInfo;
     public Action GoalScored;
@@ -199,7 +199,7 @@ public class MatchInfo
         }
 
         Fouls.Add(new(card, player));
-        FoulCommited?.Invoke(player);
+        FoulCommited?.Invoke(intensity, player);
         GiveCard(card, player);
     }
     public void ScoreGoal(Player player)

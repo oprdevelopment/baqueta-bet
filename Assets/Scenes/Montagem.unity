@@ -4641,6 +4641,9 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 9178e5fe02c1b4d4fb6a6335bc78e973, type: 3}
   - {fileID: 8300000, guid: 06ab7b5e2017ee846bb3f061fbe14fd7, type: 3}
   - {fileID: 8300000, guid: 307d69378d7a65449865a67bd3ee738f, type: 3}
+  - {fileID: 8300000, guid: aca1e5ad97b3c404abc2c2609b568701, type: 3}
+  - {fileID: 8300000, guid: 7e82a36abb4e6534c8894a535ce338c5, type: 3}
+  - {fileID: 8300000, guid: d228e470a32dcc244aa402734368d513, type: 3}
 --- !u!4 &747960636
 Transform:
   m_ObjectHideFlags: 0
@@ -11230,7 +11233,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: adc4aa8e89c21ca468d02fb6561cc13f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CurrenyManager
-  initialBalance: 1000
+  initialBalance: 100
 --- !u!114 &1982441112
 MonoBehaviour:
   m_ObjectHideFlags: 0

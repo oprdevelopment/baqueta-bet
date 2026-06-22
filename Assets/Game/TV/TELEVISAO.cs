@@ -69,17 +69,33 @@ public class TELEVISAO : MonoBehaviour
             currentVisu.visu.Display(false);
             currentVisu.info.GoalScored -= PlayGoalSound;
             currentVisu.info.MatchStateChange -= EffectOnChange;   
+            currentVisu.info.FoulCommited -= EffectOnFoul;   
+            visu.info.CardGiven -= EffectOnCard;
         }
         currentVisu = visu;
+        currentVisu.info.FoulCommited += EffectOnFoul;   
         visu.visu.Display(true);
         visu.info.GoalScored += PlayGoalSound;
         visu.info.MatchStateChange += EffectOnChange;
+        visu.info.CardGiven += EffectOnCard;
     }
     void OnCreatedMatch(MatchInfo info)
     {
         var visu = new MatchVisu(this, info);
         matchVisus.Add(visu);
         UpdateCards();
+    }
+    void EffectOnFoul(FoulIntensity intensity, Player _)
+    {
+        var sf = FindAnyObjectByType<SoundEffects>();
+        if(intensity == FoulIntensity.Brutal)
+            sf.PlayClip(sf.clips[4]);
+    }
+    void EffectOnCard(CardType card, Player _)
+    {
+        var sf = FindAnyObjectByType<SoundEffects>();
+        if(card == CardType.Yellow)
+            sf.PlayClip(sf.clips[5]);
     }
     void EffectOnChange(MatchState state)
     {
@@ -147,7 +163,7 @@ public class MatchVisu
             scrollView.Insert(0, infoAsset);
         };
 
-        info.FoulCommited += player =>
+        info.FoulCommited += (intensity, player) =>
         {
             var infoAsset = tv.infoTreeAsset.Instantiate();
             infoAsset.Q<Label>("HomeInfo").text = player.team != info.Home ? "Foul" : "";
@@ -158,8 +174,8 @@ public class MatchVisu
         info.CardGiven += (cardType, player) =>
         {
             var infoAsset = tv.infoTreeAsset.Instantiate();
-            infoAsset.Q<Label>("HomeInfo").text = player.team != info.Home ? $"{cardType} to {player.name}" : "";
-            infoAsset.Q<Label>("AwayInfo").text = player.team != info.Away ? $"{cardType} to {player.name}" : "";
+            infoAsset.Q<Label>("HomeInfo").text = player.team != info.Home ? $"{cardType} Card" : "";
+            infoAsset.Q<Label>("AwayInfo").text = player.team != info.Away ? $"{cardType} Card" : "";
             infoAsset.Q<Label>("Time").text = $"{info.GetRealGameTime()}'";
             scrollView.Insert(0, infoAsset);
         };

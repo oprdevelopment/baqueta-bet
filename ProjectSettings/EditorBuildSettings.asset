@@ -11,5 +11,11 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Montagem.unity
     guid: 5f5119392ee3dd942a838191555662d8
+  - enabled: 1
+    path: Assets/Scenes/Vitoria.unity
+    guid: fa682fa7057149b4cb85428bc10cb781
+  - enabled: 1
+    path: Assets/Scenes/Derrota.unity
+    guid: 9f790436aae77ca4db31205cdb133e35
   m_configObjects:
     com.unity.addressableassets: {fileID: 11400000, guid: 4cce7663ec7177248b2a180f7c598847, type: 2}

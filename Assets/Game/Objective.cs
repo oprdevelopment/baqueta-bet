@@ -11,10 +11,10 @@ public class Objective : MonoBehaviour
         ClockManager.DayPassed += day =>
         {
             if(targetMoney == 0 || suspiciounes > 0)
-                Debug.Log("Perdeu");
+                UnityEngine.SceneManagement.SceneManager.LoadScene(3);
 
             if(day >= MaxDays && !ganho)
-                Debug.Log("Perd");
+                UnityEngine.SceneManagement.SceneManager.LoadScene(3);
         };
 
         CurrencyManager.BalanceChanged += ctx =>
@@ -22,7 +22,7 @@ public class Objective : MonoBehaviour
             if(ctx.Balance > targetMoney)
             {
                 ganho = true;  
-                Debug.Log("Ganho");
+                UnityEngine.SceneManagement.SceneManager.LoadScene(2);
             }
         };
     }
