@@ -1,7 +1,8 @@
 using UnityEngine.UIElements;
 using System.Collections.Generic;
 using Assets.Bet.Bets;
-using Unity.VisualScripting;
+using UnityEngine;
+using Unity.Mathematics;
 
 namespace Assets.Bet.UI
 {
@@ -77,6 +78,7 @@ namespace Assets.Bet.UI
         }
         public void UpdateCards()
         {
+            betScrollView.Clear();
             betCards.Sort((a, b) => a.betInfo.betTime.CompareTo(b.betInfo.betTime));
             betCards.ForEach(c => {
                 betScrollView.Insert(0, c.Card);
@@ -85,6 +87,7 @@ namespace Assets.Bet.UI
         }
         void OnCreatedBet(Bet betInfo)
         {
+            Debug.Log("InsertBet");
             BetCard newBetCard = new(betApp, betInfo);
             betCards.Add(newBetCard);
             UpdateCards();
@@ -93,28 +96,29 @@ namespace Assets.Bet.UI
     public class BetMakerWindow : Window
     {
         Button homeButton, awayButton, drawButton, betYellow, betRed;
-        Label timeDisplay, oddYellow, oddRed, countYellowLabel, countRedLabel;
+        Label timeDisplay, oddYellowLabel, oddRedLabel, countYellowLabel, countRedLabel;
         DropdownField dropdownYellow, dropdownRed;
         SliderInt sliderYellow, sliderRed;
         BetApp betApp;
         public VisualElement BetMakerContainer;
         public List<MatchCard> matchCards = new();
         float oddHome, oddAway, oddDraw;
+        float oddYellow, oddRed;
         MatchInfo currentMatchInfo;
         int countYellow, countRed;
-        ComparisonType comparisonYellow = ComparisonType.Equal, comparisonRed = ComparisonType.Equal;
+        ComparisonType comparisonYellow = ComparisonType.Over, comparisonRed = ComparisonType.Over;
 
         void UpdateCount(CardType color, int count)
         {
             if(color == CardType.Yellow)
             {
                 countYellow = count;
-                countYellowLabel.text = (comparisonYellow == ComparisonType.Equal ? count : count + .5f).ToString();
+                countYellowLabel.text = (count + .5f).ToString();
             }
             if(color == CardType.Red)
             {
                 countRed = count;
-                countRedLabel.text = (comparisonRed == ComparisonType.Equal ? count : count + .5f).ToString();
+                countRedLabel.text = (count + .5f).ToString();
             }
         }
         public BetMakerWindow(BetApp betApp, VisualElement window) : base(betApp, window)
@@ -127,13 +131,13 @@ namespace Assets.Bet.UI
             timeDisplay = window.Q<Label>("Time");
 
             betYellow = window.Q<Button>("BetYellow");
-            oddYellow = window.Q<Label>("OddYellow");
+            oddYellowLabel = window.Q<Label>("OddYellow");
             countYellowLabel = window.Q<Label>("CountYellow");
             dropdownYellow = window.Q<DropdownField>("DropdownYellow");
             sliderYellow = window.Q<SliderInt>("SliderYellow");
 
             betRed = window.Q<Button>("BetRed");
-            oddRed = window.Q<Label>("OddRed");
+            oddRedLabel = window.Q<Label>("OddRed");
             countRedLabel = window.Q<Label>("CountRed");
             dropdownRed = window.Q<DropdownField>("DropdownRed");
             sliderRed = window.Q<SliderInt>("SliderRed");
@@ -142,11 +146,10 @@ namespace Assets.Bet.UI
             {
                 comparisonYellow = c.newValue switch
                 {
-                    "More Than" => ComparisonType.GreaterThan,
-                    "Less Than" => ComparisonType.LessThan,
-                    _ => ComparisonType.Equal
+                    "Over" => ComparisonType.Over,
+                    "Under" => ComparisonType.Under,
                 };
-                if(comparisonYellow == ComparisonType.LessThan) sliderYellow.lowValue = 1;
+                if(comparisonYellow == ComparisonType.Under) sliderYellow.lowValue = 1;
                 else sliderYellow.lowValue = 0;
                 
                 UpdateCount(CardType.Yellow, countYellow);
@@ -155,24 +158,32 @@ namespace Assets.Bet.UI
             {
                 comparisonRed = c.newValue switch
                 {
-                    "More Than" => ComparisonType.GreaterThan,
-                    "Less Than" => ComparisonType.LessThan,
-                    _ => ComparisonType.Equal
+                    "Over" => ComparisonType.Over,
+                    "Under" => ComparisonType.Under,
                 };
-                if(comparisonRed == ComparisonType.LessThan) sliderRed.lowValue = 1;
+                if(comparisonRed == ComparisonType.Under) sliderRed.lowValue = 1;
                 else sliderRed.lowValue = 0;
 
                 UpdateCount(CardType.Red, countRed);
             });
 
-            sliderYellow.RegisterCallback<ChangeEvent<int>>(c =>
+            sliderYellow.RegisterValueChangedCallback(c =>
             {
                 UpdateCount(CardType.Yellow, c.newValue);
+                (float oddGreater, float oddLess) = BetManager.CalculateOddCard(currentMatchInfo, CardType.Yellow, countYellow);
+                oddYellow = comparisonYellow switch
+                {
+                    ComparisonType.Over => oddGreater,
+                    ComparisonType.Under => oddLess,
+                };     
+                oddYellowLabel.text = oddYellow.ToString();        
             });
-            sliderRed.RegisterCallback<ChangeEvent<int>>(c =>
+
+            betYellow.clicked += () =>
             {
-                UpdateCount(CardType.Red, c.newValue);
-            });
+                betApp.ctx.paymentApp.SetCardBet(CardType.Yellow, oddYellow, currentMatchInfo, comparisonYellow, countYellow + 0.5f);
+                betApp.ctx.paymentApp.Show();
+            };
 
             homeButton.clicked += () => {
                 betApp.ctx.paymentApp.SetWinBet(currentMatchInfo, oddHome, currentMatchInfo.Home);
@@ -195,6 +206,11 @@ namespace Assets.Bet.UI
             currentMatchInfo = newMatch;
             currentMatchInfo.MatchStateChange += UpdateOnStateChange;
             (oddHome, oddAway, oddDraw) = BetManager.CalculateWinOdd(currentMatchInfo);
+
+            sliderYellow.value = 5;
+            dropdownYellow.value = "Over";
+            sliderRed.value = 5;
+            dropdownRed.value = "Over";
         }
         void UpdateTeamName()
         {

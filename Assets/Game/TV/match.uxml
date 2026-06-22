@@ -12,7 +12,7 @@
                 <ui:Label text="Portugal" name="Away" class="h1" style="-unity-text-align: upper-left; -unity-text-auto-size: none; font-size: 55px;"/>
             </ui:VisualElement>
         </ui:VisualElement>
-        <ui:VisualElement style="flex-grow: 1;">
+        <ui:VisualElement style="flex-grow: 1; padding-top: 125px; padding-right: 125px; padding-bottom: 125px; padding-left: 125px;">
             <ui:ScrollView horizontal-scroller-visibility="Hidden" vertical-scroller-visibility="Hidden" name="ScrollView" style="flex-grow: 1; height: 100%; align-items: stretch;"/>
         </ui:VisualElement>
     </ui:VisualElement>

@@ -12,7 +12,6 @@ public class WorldSpaceUIToolkit : MonoBehaviour
 
     private UIDocument document;
     private PanelSettings panelSettings;
-    Vector2 lastPos = new(float.NaN, float.NaN);
 
     void Awake()
     {
@@ -26,13 +25,13 @@ public class WorldSpaceUIToolkit : MonoBehaviour
     {
         if (inputCamera == null || uiCollider == null)
         {
-            return lastPos;
+            return new Vector2(float.NaN, float.NaN);
         }
 
         Ray ray = inputCamera.ScreenPointToRay(screenPosition);
         if (!uiCollider.Raycast(ray, out RaycastHit hit, 1000f))
         {
-            return lastPos;
+            return new Vector2(float.NaN, float.NaN);
         }
 
         Vector2 uv = hit.textureCoord;
@@ -41,8 +40,7 @@ public class WorldSpaceUIToolkit : MonoBehaviour
             uv.y * panelSettings.targetTexture.height
         );
 
-        lastPos = panelPos;
-        return lastPos;
+        return panelPos;
     }
 }
 }
