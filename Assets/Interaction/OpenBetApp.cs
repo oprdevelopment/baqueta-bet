@@ -11,6 +11,7 @@ public class OpenBetApp : LockToScreen
         {
             base.Interact();
             betUiManager.betApp.Show();
+            SoundEffects.Instance.PlayClip(SoundEffects.Instance.clips[8]);
         }
 }
 }

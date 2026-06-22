@@ -1,9 +1,21 @@
 using Assets.Bet;
+using Unity.Collections;
 using UnityEngine;
 
 public class SoundEffects : MonoBehaviour
 {
+    public static SoundEffects Instance;
     public AudioClip[] clips;
+    void Awake()
+    {
+        if(Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(this);
+        }
+        else
+            Destroy(this);
+    }
     void Start()
     {
         Bet.BetPlaced += Bettts;
