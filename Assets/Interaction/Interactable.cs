@@ -15,6 +15,10 @@ public class Interactable : MonoBehaviour
         input = new();
         input.Player.Enable();
     }
+    void OnDisable()
+    {
+        input.Player.Disable();
+    }
     void Start()
     {
         playerMovement = FindAnyObjectByType<PlayerMovement>();

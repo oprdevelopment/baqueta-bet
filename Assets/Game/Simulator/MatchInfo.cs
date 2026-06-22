@@ -87,6 +87,11 @@ public class MatchInfo
         float combinedStrenght = Home.Strenght + Away.Strenght;
         float goalScoredChance = combinedStrenght * (1 + timePassed / 90f / 4) / 2500 / 2;
 
+        if(throwingTeam != null)
+        {
+            goalScoredChance += .5f;
+        }
+
         float foulChance = 0.15f;
 
         float randomGoalTick = UnityEngine.Random.Range(0f, 1f);
