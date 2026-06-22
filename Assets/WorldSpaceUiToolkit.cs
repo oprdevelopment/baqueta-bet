@@ -26,7 +26,6 @@ public class WorldSpaceUIToolkit : MonoBehaviour
     {
         if (inputCamera == null || uiCollider == null)
         {
-            Debug.Log("asd");
             return lastPos;
         }
 
