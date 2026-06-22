@@ -1,6 +1,7 @@
 using UnityEngine.UIElements;
 using System.Collections.Generic;
-using UnityEngine;
+using Assets.Bet.Bets;
+using Unity.VisualScripting;
 
 namespace Assets.Bet.UI
 {
@@ -28,12 +29,22 @@ namespace Assets.Bet.UI
         public List<MatchCard> matchCards = new();
         BetApp betApp;
         VisualElement matchScrollView;
+        int currentDay = 0;
         public MatchSelectionWindow(BetApp app, VisualElement windowContainer) : base(app, windowContainer)
         {
             this.betApp = app;
             matchScrollView = windowContainer.Q<ScrollView>("MatchScrollView");
 
             MatchManager.CreatedMatch += OnCreatedMatch;
+            ClockManager.DayPassed += info => 
+            {
+                currentDay = info;
+                matchCards.ForEach(m =>
+                {
+                    if(m.matchInfo.StartTime.Day != currentDay) m.Hide();
+                    else m.Show(); 
+                });
+            };
         }
         public void UpdateCards()
         {
@@ -41,13 +52,13 @@ namespace Assets.Bet.UI
             matchCards.Sort((a, b) => a.matchInfo.StartTime.CompareTo(b.matchInfo.StartTime));
             matchCards.ForEach(c => {
                 matchScrollView.Add(c.Card);
-                c.Show();
             });        
         }
         void OnCreatedMatch(MatchInfo matchInfo)
         {
             MatchCard newMatchCard = new(betApp, matchInfo);
             matchCards.Add(newMatchCard);
+            if(matchInfo.StartTime.Day != currentDay) newMatchCard.Hide();
             UpdateCards();
         }
     }
@@ -62,13 +73,13 @@ namespace Assets.Bet.UI
             betScrollView = windowContainer.Q<ScrollView>("BetScrollView");
 
             Bet.BetPlaced += OnCreatedBet;
+            betScrollView.Clear();
         }
         public void UpdateCards()
         {
-            betScrollView.Clear();
             betCards.Sort((a, b) => a.betInfo.betTime.CompareTo(b.betInfo.betTime));
             betCards.ForEach(c => {
-                betScrollView.Add(c.Card);
+                betScrollView.Insert(0, c.Card);
                 c.Show();
             });        
         }
@@ -81,14 +92,31 @@ namespace Assets.Bet.UI
     }
     public class BetMakerWindow : Window
     {
-        Button homeButton, awayButton, drawButton;
-        Label timeDisplay;
+        Button homeButton, awayButton, drawButton, betYellow, betRed;
+        Label timeDisplay, oddYellow, oddRed, countYellowLabel, countRedLabel;
+        DropdownField dropdownYellow, dropdownRed;
+        SliderInt sliderYellow, sliderRed;
         BetApp betApp;
         public VisualElement BetMakerContainer;
         public List<MatchCard> matchCards = new();
         float oddHome, oddAway, oddDraw;
         MatchInfo currentMatchInfo;
+        int countYellow, countRed;
+        ComparisonType comparisonYellow = ComparisonType.Equal, comparisonRed = ComparisonType.Equal;
 
+        void UpdateCount(CardType color, int count)
+        {
+            if(color == CardType.Yellow)
+            {
+                countYellow = count;
+                countYellowLabel.text = (comparisonYellow == ComparisonType.Equal ? count : count + .5f).ToString();
+            }
+            if(color == CardType.Red)
+            {
+                countRed = count;
+                countRedLabel.text = (comparisonRed == ComparisonType.Equal ? count : count + .5f).ToString();
+            }
+        }
         public BetMakerWindow(BetApp betApp, VisualElement window) : base(betApp, window)
         {
             this.betApp = betApp;
@@ -97,6 +125,54 @@ namespace Assets.Bet.UI
             awayButton = window.Q<Button>("AwayWinButton");
             drawButton = window.Q<Button>("DrawButton");
             timeDisplay = window.Q<Label>("Time");
+
+            betYellow = window.Q<Button>("BetYellow");
+            oddYellow = window.Q<Label>("OddYellow");
+            countYellowLabel = window.Q<Label>("CountYellow");
+            dropdownYellow = window.Q<DropdownField>("DropdownYellow");
+            sliderYellow = window.Q<SliderInt>("SliderYellow");
+
+            betRed = window.Q<Button>("BetRed");
+            oddRed = window.Q<Label>("OddRed");
+            countRedLabel = window.Q<Label>("CountRed");
+            dropdownRed = window.Q<DropdownField>("DropdownRed");
+            sliderRed = window.Q<SliderInt>("SliderRed");
+
+            dropdownYellow.RegisterCallback<ChangeEvent<string>>(c => 
+            {
+                comparisonYellow = c.newValue switch
+                {
+                    "More Than" => ComparisonType.GreaterThan,
+                    "Less Than" => ComparisonType.LessThan,
+                    _ => ComparisonType.Equal
+                };
+                if(comparisonYellow == ComparisonType.LessThan) sliderYellow.lowValue = 1;
+                else sliderYellow.lowValue = 0;
+                
+                UpdateCount(CardType.Yellow, countYellow);
+            });
+            dropdownRed.RegisterCallback<ChangeEvent<string>>(c => 
+            {
+                comparisonRed = c.newValue switch
+                {
+                    "More Than" => ComparisonType.GreaterThan,
+                    "Less Than" => ComparisonType.LessThan,
+                    _ => ComparisonType.Equal
+                };
+                if(comparisonRed == ComparisonType.LessThan) sliderRed.lowValue = 1;
+                else sliderRed.lowValue = 0;
+
+                UpdateCount(CardType.Red, countRed);
+            });
+
+            sliderYellow.RegisterCallback<ChangeEvent<int>>(c =>
+            {
+                UpdateCount(CardType.Yellow, c.newValue);
+            });
+            sliderRed.RegisterCallback<ChangeEvent<int>>(c =>
+            {
+                UpdateCount(CardType.Red, c.newValue);
+            });
 
             homeButton.clicked += () => {
                 betApp.ctx.paymentApp.SetWinBet(currentMatchInfo, oddHome, currentMatchInfo.Home);

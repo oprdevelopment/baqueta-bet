@@ -1,6 +1,6 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UI/style.uss?fileID=7433441132597879392&amp;guid=8fef9d918d6981342983b2a32111364e&amp;type=3#style"/>
-    <ui:VisualElement name="Manipulacao" style="flex-grow: 1; position: absolute; width: 20%; height: 50%; top: 50%; translate: -50% -50%; left: 15%; background-color: rgb(255, 249, 182); border-bottom-left-radius: 0; border-bottom-right-radius: 60px; border-top-right-radius: 60px; border-top-left-radius: 0; border-top-width: 9px; border-right-width: 9px; border-bottom-width: 9px; border-left-width: 9px; border-left-color: rgba(0, 0, 0, 0.361); border-right-color: rgba(0, 0, 0, 0); border-top-color: rgba(0, 0, 0, 0); border-bottom-color: rgba(0, 0, 0, 0); padding-top: 0; align-items: stretch; justify-content: flex-start; align-self: auto;">
+    <ui:VisualElement name="Manipulacao" style="flex-grow: 1; position: absolute; width: 20%; height: 50%; top: 50%; translate: -50% -50%; left: 15%; background-color: rgb(255, 249, 182); border-bottom-left-radius: 0; border-bottom-right-radius: 60px; border-top-right-radius: 60px; border-top-left-radius: 0; border-top-width: 9px; border-right-width: 9px; border-bottom-width: 9px; border-left-width: 9px; border-left-color: rgba(0, 0, 0, 0.361); border-right-color: rgba(0, 0, 0, 0); border-top-color: rgba(0, 0, 0, 0); border-bottom-color: rgba(0, 0, 0, 0); padding-top: 0; align-items: stretch; justify-content: flex-start; align-self: auto; display: none;">
         <ui:VisualElement name="MatchSelection" style="flex-grow: 1; display: none;">
             <ui:Label text="Game Manipulation" name="Label" style="-unity-text-auto-size: best-fit 10px 100px; -unity-text-generator: advanced; height: 12%; -unity-text-align: upper-center; padding-top: 11px; padding-right: 11px; padding-bottom: 11px; padding-left: 11px; -unity-font-style: bold; -unity-font-definition: resource(&quot;Inter-VariableFont_opsz,wght&quot;);"/>
             <ui:ScrollView horizontal-scroller-visibility="Hidden" vertical-scroller-visibility="Hidden" name="ScrollView" style="width: 100%; height: 100%; padding-bottom: 31px;">
@@ -38,5 +38,15 @@
             </ui:VisualElement>
         </ui:VisualElement>
         <ui:Button text="X" name="Close" class="button" style="position: absolute; border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0; color: rgb(255, 0, 0); -unity-font-style: bold; font-size: 20px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; left: 2%; top: 0%; width: 7%; height: 4%;"/>
+    </ui:VisualElement>
+    <ui:VisualElement name="TVSelection" style="flex-grow: 1; position: absolute; width: 20%; height: 50%; top: 50%; translate: -50% -50%; left: auto; background-color: rgba(130, 130, 130, 0.835); border-bottom-left-radius: 0; border-bottom-right-radius: 0; border-top-right-radius: 0; border-top-left-radius: 0; border-top-width: 9px; border-right-width: 9px; border-bottom-width: 9px; border-left-width: 9px; border-left-color: rgba(0, 0, 0, 0.361); border-right-color: rgba(0, 0, 0, 0); border-top-color: rgba(0, 0, 0, 0); border-bottom-color: rgba(0, 0, 0, 0); padding-top: 0; align-items: stretch; justify-content: flex-start; align-self: auto; right: -9%; display: none;">
+        <ui:VisualElement name="" style="flex-grow: 1; display: flex;">
+            <ui:Button text="Quit" name="Quit" class="tv-button"/>
+            <ui:ScrollView horizontal-scroller-visibility="Hidden" vertical-scroller-visibility="Hidden" name="ScrollView" style="width: 100%; height: 100%; padding-bottom: 31px;"/>
+        </ui:VisualElement>
+    </ui:VisualElement>
+    <ui:VisualElement name="Sleep" style="flex-grow: 1; position: absolute; width: 100%; height: 100%; background-color: rgb(0, 0, 0); align-items: center; justify-content: center; opacity: 1; display: none;">
+        <ui:Label text="12:99" name="Clock" style="font-size: 1299px; color: rgb(255, 255, 255); -unity-text-auto-size: best-fit 10px 100px; -unity-text-generator: advanced;"/>
+        <ui:Button text="Wake Up" name="WakeUp" class="button wake-button" style="width: 21%; height: 11%; color: rgb(255, 255, 255); border-right-width: 10px; border-bottom-width: 10px; transition-duration: 0.2s;"/>
     </ui:VisualElement>
 </ui:UXML>

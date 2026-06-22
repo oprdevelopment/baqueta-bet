@@ -25,11 +25,16 @@ public class WorldSpaceUIToolkit : MonoBehaviour
     Vector2 ScreenToPanel(Vector2 screenPosition)
     {
         if (inputCamera == null || uiCollider == null)
+        {
+            Debug.Log("asd");
             return lastPos;
+        }
 
         Ray ray = inputCamera.ScreenPointToRay(screenPosition);
         if (!uiCollider.Raycast(ray, out RaycastHit hit, 1000f))
+        {
             return lastPos;
+        }
 
         Vector2 uv = hit.textureCoord;
         Vector2 panelPos = new(

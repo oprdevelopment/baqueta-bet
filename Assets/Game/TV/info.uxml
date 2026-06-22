@@ -1,0 +1,13 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement style="flex-grow: 0; flex-direction: row; justify-content: space-between; height: 60px;">
+        <ui:VisualElement style="flex-grow: 1; height: 63px; width: 33%;">
+            <ui:Label text="Goal" name="HomeInfo" class="text" style="-unity-text-align: upper-left; flex-grow: 1; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;"/>
+        </ui:VisualElement>
+        <ui:VisualElement style="flex-grow: 1; height: 63px; width: 33%;">
+            <ui:Label text="14&apos;" name="Time" class="text" style="-unity-text-align: upper-center; flex-grow: 1; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;"/>
+        </ui:VisualElement>
+        <ui:VisualElement style="flex-grow: 1; height: 63px; flex-shrink: 0; width: 33%;">
+            <ui:Label text="Goal" name="AwayInfo" class="text" style="-unity-text-align: upper-right; width: initial; flex-grow: 1; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;"/>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

@@ -46,11 +46,12 @@ public class ClockManager : MonoBehaviour
     public static event Action<TimeInfo> TickInfo;
     public static event Action Tick;
     public static event Action<int> DayPassed;
-    [SerializeField] float secondsPerMinute;
+    public float secondsPerMinute;
     [SerializeField] TimeInfo timeInfo;
     public static int StartingDay {get; private set;} = 16;
     public static int StartingMonth {get; private set;} = 6;
     float elapsedTime;
+    public static ClockManager Instance;
     void Start()
     {
         timeInfo = new TimeInfo

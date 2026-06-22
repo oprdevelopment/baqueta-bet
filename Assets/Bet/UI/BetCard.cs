@@ -22,8 +22,8 @@ namespace Assets.Bet.UI
 
             teamNameDisplayer.text = $"{betInfo.matchInfo.Home.name} x {betInfo.matchInfo.Away.name}";
             betTypeDisplayer.text = betInfo.GetBetType();
-            infoDisplayer.text = $"${betInfo.Amount:F2}\r\n<color=green>{betInfo.Multiplier}";
-            betStateDisplayer.text = $"In Progress\r\n{betInfo.Amount * betInfo.Multiplier}";
+            infoDisplayer.text = $"${betInfo.Amount:F2}\r\n<color=green>{betInfo.Multiplier}x";
+            betStateDisplayer.text = $"In Progress\r\n${betInfo.Amount * betInfo.Multiplier:F2}";
 
             betInfo.StateChanged += ctx => {
                 if(ctx != BetState.Lost && ctx != BetState.Won) return;

@@ -19,7 +19,7 @@ public class MatchInfo
     public readonly List<Player> activePlayers;
     public Action<Player> FoulCommited;
     public Action<CardType, Player> CardGiven;
-    public Action<Player> GoalScoredInfo;
+    public Action<Team, bool> GoalScoredInfo;
     public Action GoalScored;
     public Action<MatchState> MatchStateChange;
     public Team Home {private set; get;}
@@ -49,11 +49,19 @@ public class MatchInfo
         {
             Hours = UnityEngine.Random.Range(10, 22),
             Minutes = possibleMinutes[UnityEngine.Random.Range(0, possibleMinutes.Length)],
-            Day = UnityEngine.Random.Range(0, 3)
+            Day = UnityEngine.Random.Range(0, Objective.MaxDays)
         };
 
         ClockManager.Tick += OnTick;
         ClockManager.TickInfo += OnTickInfo;
+    }
+    public int GetRealGameTime()
+    {
+        return MatchState switch
+        {
+            MatchState.SecondHalf => 45 + GameTime,
+            _ => GameTime  
+        };
     }
     void OnTick()
     {
@@ -196,6 +204,7 @@ public class MatchInfo
         if(player.team == Away) AwayScore++;
 
         GoalScored?.Invoke();
+        GoalScoredInfo?.Invoke(player.team, false);
     }
     public void RandomOwnGoal(Team team)
     {
@@ -203,5 +212,6 @@ public class MatchInfo
         if(team == Away) HomeScore++;
 
         GoalScored?.Invoke();
+        GoalScoredInfo?.Invoke(team, true);
     }
 }

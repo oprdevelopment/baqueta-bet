@@ -2,23 +2,18 @@ using UnityEngine;
 [RequireComponent(typeof(Outline))]
 public class Interactable : MonoBehaviour
 {
+    public float MaxDistance = 2;
     Outline outline;
-    bool canEnable = true;
+    public bool canEnable = true;
+    public bool outlineEnabled = false;
     InputSystem_Actions input;
     protected PlayerMovement playerMovement;
-    void OnEnable()
-    {
-        input.Player.Enable();
-    }
-    void OnDisable()
-    {
-        input.Player.Disable();
-    }
     void Awake()
     {
         outline = GetComponent<Outline>();
         outline.enabled = false;
         input = new();
+        input.Player.Enable();
     }
     void Start()
     {
@@ -27,25 +22,38 @@ public class Interactable : MonoBehaviour
     public virtual void Interact()
     {
         outline.enabled = false;
+        outlineEnabled = false;
         canEnable = false;
     }
     public virtual void DeInteract()
     {
         canEnable = true;
     }
-
-    void OnMouseEnter()
-    {
-        if(!canEnable) return;
-        outline.enabled = true;
-    }
     void OnMouseExit()
     {
-        if(!canEnable) return;
-        outline.enabled = false;
+        if (outlineEnabled)
+        {
+            outline.enabled = false;
+            outlineEnabled = false;
+        }
     }
     void OnMouseOver()
     {
+        if(Vector3.Distance(transform.position, playerMovement.transform.position) > MaxDistance){
+            if (outlineEnabled)
+            {
+                outline.enabled = false;
+                outlineEnabled = false;
+            }
+            return;
+        }
+
+        if (!outlineEnabled && canEnable)
+        {
+            outline.enabled = true;
+            outlineEnabled = true;
+        }
+
         if(canEnable && input.Player.Interact.WasPressedThisFrame())
             Interact();
     }

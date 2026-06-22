@@ -28,7 +28,16 @@ namespace Assets.Bet.UI
 
             hourDisplayer.text = matchInfo.StartTime.FormatedTime('h');
             dayDisplayer.text = matchInfo.StartTime.FormatedDay('/');
+
             UpdateTeamName();
+            UpdateMatchState(matchInfo.MatchState);
+            UpdateScore();
+            UpdateTime();
+
+            ClockManager.Tick += UpdateTime;
+            matchInfo.MatchStateChange += UpdateMatchState;
+            matchInfo.GoalScored += UpdateScore;
+            betButton.clicked += GoToBetWindow;
         }
         void GoToBetWindow()
         {
@@ -49,30 +58,17 @@ namespace Assets.Bet.UI
         }
         void UpdateTime()
         {
-            if(matchInfo.MatchState == MatchState.Waiting) return;
-
             stateDisplayer.text = matchInfo.MatchState switch
             {
-                MatchState.FirstHalf => $"{matchInfo.GameTime.Formated()}'",
                 MatchState.Interval => $"Half\r\nTime",
-                MatchState.SecondHalf => $"{(matchInfo.GameTime + 45).Formated()}'",
                 MatchState.MatchEnded => $"Match\r\nEnded",
-                _ => ""
+                _ => $"{matchInfo.GetRealGameTime()}'"
             };
         }
         void UpdateScore() => scoreDisplayer.text = $"{matchInfo.HomeScore}\r\n{matchInfo.AwayScore}";
         void UpdateTeamName() => teamNameDisplayer.text = $"{matchInfo.Home.name}\r\n{matchInfo.Away.name}";
         public void Show()
         {
-            UpdateMatchState(matchInfo.MatchState);
-            UpdateScore();
-            UpdateTime();
-
-            ClockManager.Tick += UpdateTime;
-            matchInfo.MatchStateChange += UpdateMatchState;
-            matchInfo.GoalScored += UpdateScore;
-            betButton.clicked += GoToBetWindow;
-
             Card.Display(true);
         }
         public void Hide()
