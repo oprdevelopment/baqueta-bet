@@ -10292,7 +10292,7 @@ MonoBehaviour:
   sensitivity: {x: 12.5, y: 10}
   camTransform: {fileID: 2033690516}
   camHolder: {fileID: 506848686}
-  camRotationMin: -45
+  camRotationMin: -80
   camRotationMax: 35
   gravity: 9.81
   camTransitionTime: 1.2
@@ -10329,15 +10329,15 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1890324290}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: -4.14, y: 1.13, z: -1.28}
+  m_LocalRotation: {x: -0, y: -0.06671014, z: -0, w: 0.9977724}
+  m_LocalPosition: {x: -3.326, y: 1.13, z: -4.707}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2033690516}
   - {fileID: 506848686}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -7.65, z: 0}
 --- !u!1 &1911679724
 GameObject:
   m_ObjectHideFlags: 0
@@ -11233,7 +11233,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: adc4aa8e89c21ca468d02fb6561cc13f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CurrenyManager
-  initialBalance: 100
+  initialBalance: 500
 --- !u!114 &1982441112
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -1,0 +1,7 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/Scenes/style.uss?fileID=7433441132597879392&amp;guid=f258dff9036c801428b6378417dd26fb&amp;type=3#style"/>
+    <ui:VisualElement style="flex-grow: 1; background-color: rgb(0, 0, 0); align-items: center; justify-content: center; flex-direction: row; padding-top: 368px; padding-right: 368px; padding-bottom: 368px; padding-left: 368px;">
+        <ui:Button text="Play Again" name="Again" class="h1" style="width: 50%;"/>
+        <ui:Button text="Exit" name="Sair" class="h1" style="width: 50%;"/>
+    </ui:VisualElement>
+</ui:UXML>
