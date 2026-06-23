@@ -3,17 +3,17 @@ using UnityEngine;
 
 public class telefoner : MonoBehaviour
 {
-    ManipulateGame manipul;
-    void Awake()
+    Interactable manipul;
+    void Start()
     {
-        manipul = GetComponent<ManipulateGame>();
-        manipul.enabled = false;        
+        manipul = GetComponent<Interactable>();
+        manipul.canEnable = false;     
     }
     void Ligar(TimeInfo info)
     {
         if(info.Day == 1 && info.Hours == 12)
         {
-            manipul.enabled = true;
+            manipul.canEnable = true;
             this.enabled = false;
         }  
     }

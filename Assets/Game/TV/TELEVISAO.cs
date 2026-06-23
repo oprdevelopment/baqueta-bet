@@ -70,7 +70,7 @@ public class TELEVISAO : MonoBehaviour
             currentVisu.info.GoalScored -= PlayGoalSound;
             currentVisu.info.MatchStateChange -= EffectOnChange;   
             currentVisu.info.FoulCommited -= EffectOnFoul;   
-            visu.info.CardGiven -= EffectOnCard;
+            currentVisu.info.CardGiven -= EffectOnCard;
         }
         currentVisu = visu;
         currentVisu.info.FoulCommited += EffectOnFoul;   
