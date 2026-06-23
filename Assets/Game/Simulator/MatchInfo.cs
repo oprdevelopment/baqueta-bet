@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public enum MatchState
@@ -51,7 +52,7 @@ public class MatchInfo
             Minutes = possibleMinutes[UnityEngine.Random.Range(0, possibleMinutes.Length)],
             Day = day
         };
-
+        Debug.Log(StartTime.Day);
         ClockManager.Tick += OnTick;
         ClockManager.TickInfo += OnTickInfo;
     }

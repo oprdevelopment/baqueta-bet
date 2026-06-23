@@ -4,7 +4,7 @@ public class Objective : MonoBehaviour
 {
     public float targetMoney;
     float suspiciounes;
-    public static int MaxDays = 5;
+    public static int MaxDays = 4;
     bool ganho;
     void Start()
     {

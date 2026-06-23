@@ -48,6 +48,7 @@
     -unity-text-auto-size: none;
     width: 1px;
     height: 36px;
+    color: rgba(27, 27, 27, 0);
 }
 
 .tabButton {
@@ -178,6 +179,8 @@
 
 .windowButton:hover {
     font-size: 27px;
+    -unity-text-auto-size: best-fit 10px 100px;
+    -unity-text-generator: advanced;
 }
 
 .tabButton {
@@ -249,4 +252,5 @@
     -unity-text-auto-size: none;
     width: 1px;
     height: 36px;
+    color: rgb(0, 0, 0);
 }

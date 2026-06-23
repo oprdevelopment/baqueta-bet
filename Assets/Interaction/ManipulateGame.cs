@@ -15,6 +15,7 @@ public class ManipulateGame : Interactable
             playerMovement.LockCam(true);
             Cursor.visible = true;
             DisplayPhone(false);
+            SoundEffects.Instance.PlayClip(SoundEffects.Instance.clips[9]);
         }
         void DisplayPhone(bool value)
         {

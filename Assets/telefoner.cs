@@ -14,6 +14,7 @@ public class telefoner : MonoBehaviour
         if(info.Day == 1 && info.Hours == 12)
         {
             manipul.canEnable = true;
+            SoundEffects.Instance.PlayClip(SoundEffects.Instance.clips[10]);
             this.enabled = false;
         }  
     }

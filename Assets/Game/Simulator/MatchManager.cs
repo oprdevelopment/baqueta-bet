@@ -11,11 +11,11 @@ public class MatchManager : MonoBehaviour
     {
         Matches = new();
         int matchPerDay = 23 / Objective.MaxDays;
-        for(int i = 0; i <= Objective.MaxDays; i++)
+        for(int i = 0; i < Objective.MaxDays; i++)
         {
-            for(int j = 0; i < matchPerDay; i++)
+            for(int j = 0; j < matchPerDay; j++)
             {
-                CreateNewMatch(j);
+                CreateNewMatch(i);
             }
         }
     }
